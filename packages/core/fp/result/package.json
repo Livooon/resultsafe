@@ -59,7 +59,6 @@
     "validate:examples": "pnpm run validate:ai-json && pnpm run lint:examples && pnpm run typecheck:examples",
     "tasks:list": "type __examples__\\IMPROVEMENT_TASKS.md",
     "prepublishOnly": "pnpm run verify:release && pnpm run validate:examples",
-    "verify:release": "pnpm run build:release && pnpm run check:release:artifacts && pnpm run test && pnpm run check:release:pack",
     "npm:publish:dry": "pnpm run verify:release && npm publish ./dist --dry-run --access public",
     "npm:publish:public": "npm publish ./dist --access public --provenance"
   },
