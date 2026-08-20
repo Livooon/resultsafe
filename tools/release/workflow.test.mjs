@@ -47,6 +47,7 @@ test('qualification workflow covers supported runtimes and gated exact candidate
   assert.match(text, /git merge-base --is-ancestor "\$REQUESTED_SHA" origin\/main/);
   assert.match(text, /release:guard:result/);
   assert.match(text, /candidate\.mjs record-qualification/);
+  assert.match(text, /Record promotion inputs[\s\S]*?run: >-\n\s+printf '### Qualified candidate/);
   assert.match(text, /Upload unqualified candidate\n\s+if: needs\.authorize-source\.outputs\.authorized == 'true'/);
   assert.match(text, /Upload qualified immutable candidate/);
 });
