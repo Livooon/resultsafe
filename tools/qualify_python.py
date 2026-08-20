@@ -89,7 +89,9 @@ def main() -> int:
     for fixture in sorted((ROOT / "packages/python/typing").glob("negative_*.py")):
         command = [sys.executable, "-m", "mypy", "--strict", "--no-pretty", "--show-column-numbers", str(fixture)]
         print("+", " ".join(command), "(expected failure)", flush=True)
-        completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+        typing_env = os.environ.copy()
+        typing_env["MYPYPATH"] = str(ROOT / "packages/python/src")
+        completed = subprocess.run(command, cwd=ROOT, env=typing_env, text=True, capture_output=True)
         print(completed.stdout, end="")
         print(completed.stderr, end="", file=sys.stderr)
         actual = [line.split(f"{fixture.name}:", 1)[1] for line in completed.stdout.splitlines() if f"{fixture.name}:" in line and ": error:" in line]

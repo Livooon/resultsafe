@@ -400,6 +400,7 @@
     "eslint-plugin-simple-import-sort": "12.1.1",
     "prettier": "3.6.2",
     "rimraf": "^6.0.1",
+    "rollup": "4.62.4",
     "typescript": "^5.9.2",
     "vite": "^7.1.5",
     "vitest": "3.2.4"
