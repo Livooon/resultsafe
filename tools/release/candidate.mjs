@@ -106,7 +106,7 @@ export const verifyQualificationEvidence = async (directory, expected) => {
   const record = JSON.parse(await readFile(resolve(directory, 'qualification-run.json'), 'utf8'));
   exactKeys(record, ['schemaVersion', 'repository', 'workflow', 'event', 'ref', 'runId', 'runAttempt', 'runSha', 'conclusion', 'candidateId'], 'Qualification record');
   if (record.schemaVersion !== 1 || record.repository !== governed.repository || record.workflow !== governed.workflow || !['push', 'workflow_dispatch'].includes(record.event) || record.ref !== governed.ref || !/^[1-9][0-9]*$/.test(record.runId) || !/^[1-9][0-9]*$/.test(record.runAttempt) || !commitPattern.test(record.runSha) || record.conclusion !== 'success' || !idPattern.test(record.candidateId)) throw new Error('Qualification record is not governed.');
-  for (const [key, value] of Object.entries(expected)) if (value && record[key] !== String(value)) throw new Error(`Qualification record ${key} differs from the authorized run.`);
+  for (const [key, value] of Object.entries(expected)) if (value && String(record[key]) !== String(value)) throw new Error(`Qualification record ${key} differs from the authorized run.`);
   return record;
 };
 

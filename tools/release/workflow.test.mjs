@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { test } from 'node:test';
 import { repositoryRoot } from './release-tools.mjs';
-import { validateQualificationRun } from './candidate.mjs';
+import { validateQualificationRun, verifyQualificationEvidence } from './candidate.mjs';
 
 const workflow = (name) => readFile(resolve(repositoryRoot, '.github/workflows', name), 'utf8');
 
@@ -65,6 +66,17 @@ test('qualification run validation rejects unauthorized repository, workflow, SH
     { head_branch: 'feature' },
   ]) assert.throws(() => validateQualificationRun({ ...valid, ...altered }, '123'), /not an authorized successful governed run/);
   assert.throws(() => validateQualificationRun(valid, '999'), /not an authorized successful governed run/);
+});
+
+test('qualification evidence self-verifies its numeric schema version', async () => {
+  const directory = await mkdtemp(resolve(tmpdir(), 'resultsafe-qualification-'));
+  const record = { schemaVersion: 1, repository: 'resultsafe/resultsafe', workflow: '.github/workflows/ci-versioning.yml', event: 'push', ref: 'refs/heads/main', runId: '123', runAttempt: '1', runSha: 'a'.repeat(40), conclusion: 'success', candidateId: 'candidate-123' };
+  try {
+    await writeFile(resolve(directory, 'qualification-run.json'), JSON.stringify(record));
+    assert.deepEqual(await verifyQualificationEvidence(directory, record), record);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test('workspace policy has one lockfile and enforced runtime floors', async () => {
