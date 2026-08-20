@@ -244,10 +244,13 @@ jobs:
           CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
           MANIFEST_SHA256: ${{ needs.build-candidate.outputs.manifest_sha256 }}
           TARBALL_SHA256: ${{ needs.build-candidate.outputs.tarball_sha256 }}
-        run: >-
-          node tools/release/candidate.mjs verify --directory=.resultsafe-candidates/qualified
-           "--candidate-id=$CANDIDATE_ID" "--manifest-sha256=$MANIFEST_SHA256"
-           "--tarball-sha256=$TARBALL_SHA256" "--source-sha=${{ needs.authorize-source.outputs.source_sha }}"
+        run: |
+          node tools/release/candidate.mjs verify \
+            --directory=.resultsafe-candidates/qualified \
+            "--candidate-id=$CANDIDATE_ID" \
+            "--manifest-sha256=$MANIFEST_SHA256" \
+            "--tarball-sha256=$TARBALL_SHA256" \
+            "--source-sha=${{ needs.authorize-source.outputs.source_sha }}"
       - name: Record governed qualification run
         env:
           CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
