@@ -1,6 +1,6 @@
 {
   "name": "@resultsafe/core-fp-option",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "keywords": [],
   "license": "MIT",
@@ -13,15 +13,18 @@
     "build:cjs": "vite build --config ./config/vite.config.build.cjs.ts",
     "build:umd": "vite build --config ./config/vite.config.build.umd.ts",
     "build:all": "pnpm run clean:dist && pnpm run build:esm && pnpm run build:cjs && pnpm run build:umd && pnpm run build:types",
+    "test": "vitest run --config ./config/vitest.config.ts",
     "lint": "eslint . --ext .ts,.tsx --config config/eslint.config.mjs",
     "lint:fix": "eslint . --ext .ts,.tsx --config config/eslint.config.mjs --fix"
   },
   "dependencies": {
+    "@resultsafe/core-fp-result": "workspace:*",
     "@resultsafe/core-fp-result-shared": "workspace:*",
     "@resultsafe/core-fp-option-shared": "workspace:*"
   },
   "types": "dist/esm/index.d.ts",
-  "main": "dist/js/index.js"
+  "main": "dist/js/index.js",
+  "devDependencies": {
+    "vitest": "3.2.4"
+  }
 }
-
-

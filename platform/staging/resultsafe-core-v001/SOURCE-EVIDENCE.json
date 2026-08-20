@@ -1,0 +1,87 @@
+{
+  "document_id": "01a01af6-3bba-74ba-b091-00cec2cb62e6",
+  "document_ref": "urn:uuid:01a01af6-3bba-74ba-b091-00cec2cb62e6",
+  "document_key": "source-evidence",
+  "document_type": "evidence_catalog",
+  "document_revision": 1,
+  "schema_ref": "urn:uuid:01a01b11-f182-7300-b58a-2ed8b611789c",
+  "title": "ResultSafe architecture source evidence",
+  "summary": "Source locations and bounded observations supporting the TypeScript readiness findings and external AASDVGS integration decisions.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-19T00:00:00Z",
+  "payload": {
+    "evidence": [
+      {
+        "evidence_id": "01a01af6-78ab-74a2-8dee-0f3ea4494ebd",
+        "evidence_ref": "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd",
+        "evidence_key": "typescript-independent-readiness-audit",
+        "evidence_type": "STATIC_SOURCE_AUDIT",
+        "status": "CAPTURED",
+        "sources": [
+          "packages/core/fp/result/src/index.ts",
+          "packages/core/fp/result/src/types/core/Result.ts",
+          "packages/core/fp/result/src/types/core/Option.ts",
+          "packages/core/fp/result/src/constructors/Ok.ts",
+          "packages/core/fp/result/src/constructors/Err.ts",
+          "packages/core/fp/result/src/guards",
+          "packages/core/fp/result/src/methods",
+          "packages/core/fp/result/src/refiners",
+          "packages/core/fp/result/__tests__",
+          "packages/core/fp/result/package.json",
+          ".github/workflows"
+        ],
+        "observations": [
+          "The trusted base Result branch behavior is generally correct",
+          "Refiner runtime and declaration behavior contains critical soundness defects",
+          "Matcher state and exhaustiveness are incorrect",
+          "Release tooling is not reproducible from tracked files",
+          "No language-neutral contract authority currently exists"
+        ],
+        "execution": "READ_ONLY_NO_TESTS"
+      },
+      {
+        "evidence_id": "01a01af6-78ac-72c1-a3d5-1dbcf8354a6b",
+        "evidence_ref": "urn:uuid:01a01af6-78ac-72c1-a3d5-1dbcf8354a6b",
+        "evidence_key": "aasdvgs-standards-and-governance-audit",
+        "evidence_type": "EXTERNAL_READ_ONLY_AUDIT",
+        "status": "CAPTURED",
+        "sources": [
+          "E:/AASDVGS/00-system/CURRENT.json",
+          "E:/AASDVGS/00-system/tooling/CURRENT.json",
+          "E:/AASDVGS/00-system/operational-work/CURRENT.json",
+          "E:/AASDVGS/55-transaction-staging/platform-kernel-contracts-v001/build/aasdvgs-platform-kernel-contracts.v001",
+          "E:/AASDVGS/65-materialized-packages/aasdvgs-canonical-filesystem-root-topology-management-platform/v010"
+        ],
+        "observations": [
+          "UUIDv7 internal IDs, UUIDv4 public handles, absolute refs, and tenant-qualified relations are the selected standards-first model",
+          "The Platform Kernel contracts package remains a qualified staged candidate rather than active authority",
+          "The current Primary Work does not authorize a new ResultSafe package family",
+          "AASDVGS package publication identity requires its owning authorities",
+          "SQLite is a projection adapter and NOT_EXECUTED never means PASS"
+        ],
+        "execution": "READ_ONLY_NO_TESTS_NO_AUTHORITY_MUTATION"
+      },
+      {
+        "evidence_id": "01a01d13-0738-787d-8787-c262a1322083",
+        "evidence_ref": "urn:uuid:01a01d13-0738-787d-8787-c262a1322083",
+        "evidence_key": "failure-architecture-comparative-audit",
+        "evidence_type": "EXTERNAL_READ_ONLY_AUDIT",
+        "status": "CAPTURED",
+        "sources": [
+          "FAILURE-AUDIT.json",
+          "Rust Result", "C++ std::expected", "Swift Result", "Kotlin Result", "Scala Either", "Haskell Either", "FSharp Result",
+          "neverthrow", "fp-ts Either", "Effect Cause", "ts-results", "oxide.ts", "True Myth", "Purify Either", "Folktale Result",
+          "Python returns", "rustedpy result", "Vavr Either", "Arrow Either", "LanguageExt Either", "FluentResults", "ErrorOr", "Ardalis.Result", "OneOf"
+        ],
+        "observations": [
+          "Most surveyed typed Result and Either APIs preserve a caller-selected generic error value",
+          "Structured error libraries do not converge on one mandatory field set",
+          "Effect preserves generic E inside a separate structured Cause model",
+          "Optional structured Failure is additive while mandatory Failure would break existing ResultSafe error payloads"
+        ],
+        "execution": "READ_ONLY_EXTERNAL_DOCUMENTATION_AUDIT"
+      }
+    ]
+  }
+}

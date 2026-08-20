@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, expectTypeOf, it } from 'vitest';
 
 import { isTypedVariant } from '../../../src/refiners/isTypedVariant.js';
 import { isTypedVariantOf } from '../../../src/refiners/isTypedVariantOf.js';
@@ -18,27 +18,52 @@ describe('refiners/isTypedVariant', () => {
     expect(isCreated({})).toBe(false);
     expect(isCreated(null)).toBe(false);
     expect(isCreated('created')).toBe(false);
+
+    const inherited = Object.create({ type: 'created' });
+    expect(isCreated(inherited)).toBe(false);
   });
 });
 
 describe('refiners/isTypedVariantOf', () => {
-  it('matches by type and returns false for non-objects', () => {
-    const isCreated = isTypedVariantOf<'created', { id: string }>('created');
+  it('validates explicit schema fields and returns false for invalid shapes', () => {
+    const isCreated = isTypedVariantOf('created', {
+      id: (value: unknown): value is string => typeof value === 'string',
+    });
 
     expect(isCreated({ type: 'created', id: '1' })).toBe(true);
+    expect(isCreated({ type: 'created', id: 1 })).toBe(false);
+    expect(isCreated({ type: 'created' })).toBe(false);
     expect(isCreated({})).toBe(false);
     expect(isCreated({ type: 'failed', id: '1' })).toBe(false);
     expect(isCreated(undefined)).toBe(false);
   });
 
-  it('checks required keys when Object.keys is mocked to include payload fields', () => {
-    const keysSpy = vi.spyOn(Object, 'keys').mockReturnValue(['id']);
-    const isCreated = isTypedVariantOf<'created', { id: string }>('created');
+  it('requires own discriminator and payload fields', () => {
+    const isCreated = isTypedVariantOf('created', { id: () => true });
+    const inheritedType = Object.assign(Object.create({ type: 'created' }), {
+      id: '1',
+    });
+    const inheritedId = Object.assign(Object.create({ id: '1' }), {
+      type: 'created',
+    });
 
-    expect(isCreated({ type: 'created' })).toBe(false);
-    expect(isCreated({ type: 'created', id: '1' })).toBe(true);
+    expect(isCreated(inheritedType)).toBe(false);
+    expect(isCreated(inheritedId)).toBe(false);
+  });
 
-    keysSpy.mockRestore();
+  it('propagates validator exceptions and infers predicate fields', () => {
+    const failure = new Error('boom');
+    const isCreated = isTypedVariantOf('created', {
+      id: (value: unknown): value is string => {
+        if (value === 'boom') throw failure;
+        return typeof value === 'string';
+      },
+    });
+
+    expect(() => isCreated({ type: 'created', id: 'boom' })).toThrow(failure);
+
+    const candidate: unknown = { type: 'created', id: '1' };
+    if (isCreated(candidate)) expectTypeOf(candidate.id).toEqualTypeOf<string>();
   });
 });
 
@@ -78,16 +103,30 @@ describe('refiners/matchVariant', () => {
     expect(noHandlerResult).toBe('only-fallback:failed');
   });
 
-  it('uses nested fallback when chained handlers do not match', () => {
+  it('preserves arbitrary handler chains and narrows fallback to remaining variants', () => {
     const failed: Event = { type: 'failed', reason: 'boom' };
+
+    type ExtendedEvent =
+      | Event
+      | { type: 'deleted'; id: string }
+      | { type: 'restored'; id: string };
+    const restored: ExtendedEvent = { type: 'restored', id: '2' };
 
     const result = matchVariant<Event>(failed)
       .with('created', (v) => `ok:${v.id}`)
-      .with('created', (v) => `ok2:${v.id}`)
       .otherwise(() => 'nested-fallback')
+      .run();
+    const longResult = matchVariant<ExtendedEvent>(restored)
+      .with('created', () => 1 as const)
+      .with('failed', () => 2 as const)
+      .with('deleted', () => 3 as const)
+      .with('restored', () => 4 as const)
+      .otherwise(() => 5 as const)
       .run();
 
     expect(result).toBe('nested-fallback');
+    expect(longResult).toBe(4);
+    expectTypeOf(longResult).toEqualTypeOf<1 | 2 | 3 | 4 | 5>();
   });
 });
 
@@ -104,11 +143,11 @@ describe('refiners/matchVariantStrict', () => {
   it('throws when no handler matches', () => {
     const value: Event = { type: 'failed', reason: 'boom' };
 
-    expect(() =>
-      matchVariantStrict<Event>(value)
-        .with('created', (v) => `ok:${v.id}`)
-        .run(),
-    ).toThrowError('Unmatched variant: failed');
+    const incomplete = matchVariantStrict<Event>(value).with(
+      'created',
+      (v) => `ok:${v.id}`,
+    ) as unknown as { run: () => unknown };
+    expect(() => incomplete.run()).toThrowError('Unmatched variant: failed');
   });
 
   it('throws from root run when no handlers were registered', () => {
@@ -118,5 +157,22 @@ describe('refiners/matchVariantStrict', () => {
     };
 
     expect(() => strict.run()).toThrowError('Unmatched variant: failed');
+  });
+
+  it('preserves long chains and accumulates strict output types', () => {
+    type ExtendedEvent =
+      | Event
+      | { type: 'deleted'; id: string }
+      | { type: 'restored'; id: string };
+    const value: ExtendedEvent = { type: 'created', id: '1' };
+    const result = matchVariantStrict<ExtendedEvent>(value)
+      .with('created', () => 1 as const)
+      .with('failed', () => 'failed' as const)
+      .with('deleted', () => true as const)
+      .with('restored', () => null)
+      .run();
+
+    expect(result).toBe(1);
+    expectTypeOf(result).toEqualTypeOf<1 | 'failed' | true | null>();
   });
 });

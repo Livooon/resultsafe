@@ -1,0 +1,48 @@
+{
+  "document_id": "01a01af6-3baf-7e93-b8ac-3e6dfb97bed7",
+  "document_ref": "urn:uuid:01a01af6-3baf-7e93-b8ac-3e6dfb97bed7",
+  "document_key": "identity-policy",
+  "document_type": "policy",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01b11-f180-7185-a968-f99558a3d809",
+  "title": "ResultSafe identity and naming policy",
+  "summary": "Normative naming, UUID, reference, digest, revision, public handle, and authority rules for ResultSafe records.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-19T00:00:00Z",
+  "payload": {
+    "field_rules": {
+      "id_suffix": "Lowercase RFC 9562 UUIDv7 instance identity",
+      "ref_suffix": "Absolute URI or URN; corpus records use urn:uuid:<uuid>",
+      "key_suffix": "Natural, external, or business key that is not instance identity",
+      "digest_suffix": "Lowercase cryptographic digest with an explicitly named algorithm",
+      "position_revision_sequence_suffixes": "Nonnegative integer with no UUID-derived ordering"
+    },
+    "uuidv7_rules": [
+      "Generate with current-millisecond field and cryptographically secure random bits",
+      "Persist each allocation by stable semantic allocation key",
+      "Never derive UUIDv7 from a name",
+      "Never use UUIDv7 as authorization, tenant boundary, secret, ordering, or trusted timestamp",
+      "Reject uppercase, whitespace, wrong version, and wrong RFC variant instead of normalizing"
+    ],
+    "public_handle_rules": [
+      "Use only canonical lowercase RFC 9562 UUIDv4",
+      "Treat as an opaque rotatable locator and never as authorization",
+      "Interpret federated handles as origin authority plus public handle"
+    ],
+    "reference_rules": [
+      "Use urn:uuid for globally unambiguous corpus entity references",
+      "Do not claim an unregistered custom string is a global RFC 8141 URN namespace",
+      "Do not encode mutable filesystem paths as canonical identity"
+    ],
+    "tenant_rules": [
+      "Every tenant-owned primary and foreign key includes tenant_id",
+      "No identifier grants authorization or permits cross-tenant disclosure"
+    ],
+    "publication_rules": [
+      "ResultSafe internal IDs are independent from AASDVGS publication envelope IDs",
+      "AASDVGS PackageFamilyId, ReleaseId, and PNID require their owning authority",
+      "Legacy UUIDv5 publication metadata is never a ResultSafe entity ID"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResultSafe qualification run binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "repository", "workflow", "event", "ref", "runId", "runAttempt", "runSha", "conclusion", "candidateId"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "repository": { "const": "resultsafe/resultsafe" },
+    "workflow": { "const": ".github/workflows/ci-versioning.yml" },
+    "event": { "enum": ["push", "workflow_dispatch"] },
+    "ref": { "const": "refs/heads/main" },
+    "runId": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+    "runAttempt": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+    "runSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "conclusion": { "const": "success" },
+    "candidateId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,160}$" }
+  }
+}

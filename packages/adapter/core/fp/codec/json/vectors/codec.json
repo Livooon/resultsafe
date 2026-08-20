@@ -1,0 +1,22 @@
+{
+  "valid": [
+    { "name": "empty", "kind": "cause", "wire": { "tag": "Empty" } },
+    { "name": "fail", "kind": "cause", "wire": { "tag": "Fail", "error": "typed-error" } },
+    { "name": "die", "kind": "cause", "wire": { "tag": "Die", "failure": { "schema_version": "1.0.0", "code": "urn:example:defect", "details": null } } },
+    { "name": "interrupt", "kind": "cause", "wire": { "tag": "Interrupt", "failure": { "schema_version": "1.0.0", "code": "urn:example:interrupt" } } },
+    { "name": "grouping-and-order", "kind": "cause", "wire": { "tag": "Sequential", "left": { "tag": "Fail", "error": "first" }, "right": { "tag": "Parallel", "left": { "tag": "Empty" }, "right": { "tag": "Fail", "error": "second" } } } },
+    { "name": "failure-empty", "kind": "exit", "wire": { "tag": "Failure", "cause": { "tag": "Empty" } } },
+    { "name": "success", "kind": "exit", "wire": { "tag": "Success", "value": { "answer": 42 } } },
+    { "name": "failure", "kind": "exit", "wire": { "tag": "Failure", "cause": { "tag": "Fail", "error": "bad" } } }
+  ],
+  "malformed": [
+    { "name": "runtime-tag", "kind": "cause", "wire": { "_tag": "Empty" } },
+    { "name": "unknown-tag", "kind": "cause", "wire": { "tag": "Other" } },
+    { "name": "unknown-field", "kind": "cause", "wire": { "tag": "Empty", "extra": true } },
+    { "name": "missing-field", "kind": "cause", "wire": { "tag": "Fail" } },
+    { "name": "bad-failure-version", "kind": "cause", "wire": { "tag": "Die", "failure": { "schema_version": "2.0.0", "code": "urn:example:defect" } } },
+    { "name": "failure-unknown-field", "kind": "cause", "wire": { "tag": "Interrupt", "failure": { "schema_version": "1.0.0", "code": "urn:example:interrupt", "stack": "secret" } } },
+    { "name": "bad-exit-fields", "kind": "exit", "wire": { "tag": "Success", "value": 1, "cause": { "tag": "Empty" } } },
+    { "name": "bad-exit-tag", "kind": "exit", "wire": { "tag": "Ok", "value": 1 } }
+  ]
+}

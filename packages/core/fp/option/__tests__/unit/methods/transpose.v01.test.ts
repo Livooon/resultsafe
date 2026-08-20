@@ -14,6 +14,8 @@ describe('transpose', () => {
     const result = transpose(input);
 
     expect(result.ok).toBe(true);
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(typeof result.map).toBe('function');
     if (result.ok) {
       expect(result.value.some).toBe(true);
       if (result.value.some === true) {
@@ -107,5 +109,4 @@ describe('transpose', () => {
     }
   });
 });
-
 

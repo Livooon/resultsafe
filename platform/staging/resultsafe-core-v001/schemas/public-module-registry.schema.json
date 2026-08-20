@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01d86-7c26-7583-97d5-55cd12aaf510",
+  "title": "ResultSafe public module registry",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "document_key": { "const": "public-module-registry" },
+        "document_type": { "const": "registry" },
+        "schema_ref": { "const": "urn:uuid:01a01d86-7c26-7583-97d5-55cd12aaf510" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["package_name", "source_root", "root_entry", "module_count", "modules"],
+          "properties": {
+            "package_name": { "const": "@resultsafe/core-fp-result" },
+            "source_root": { "const": "packages/core/fp/result/src" },
+            "root_entry": { "const": "packages/core/fp/result/src/index.ts" },
+            "module_count": { "const": 66 },
+            "modules": {
+              "type": "array",
+              "minItems": 66,
+              "maxItems": 66,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["public_name", "direct_subpath", "source_path", "source_exports", "root_exported", "direct_export_required", "direct_export_observed", "export_kind", "formats"],
+                "properties": {
+                  "public_name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
+                  "direct_subpath": { "type": "string", "pattern": "^\\./(?:types/)?[A-Za-z][A-Za-z0-9]*$" },
+                  "source_path": { "type": "string", "pattern": "^packages/core/fp/result/src/.*\\.ts$" },
+                  "source_exports": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" }, "minItems": 1, "uniqueItems": true },
+                  "root_exported": { "const": true },
+                  "direct_export_required": { "const": true },
+                  "direct_export_observed": { "type": "boolean" },
+                  "export_kind": { "enum": ["RUNTIME", "TYPE_ONLY"] },
+                  "formats": { "type": "array", "items": { "enum": ["ESM", "CJS", "TYPES"] }, "minItems": 1, "uniqueItems": true }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

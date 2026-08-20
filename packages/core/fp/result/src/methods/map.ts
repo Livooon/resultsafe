@@ -1,5 +1,7 @@
+import { Ok } from '../constructors/Ok.js';
 import { isOk } from '../guards/isOk.js';
-import { type Result } from '../types/core/index.js';
+import { hydrateResultValue } from '../internal/resultValue.js';
+import { type Result, type ResultLike } from '../types/core/index.js';
 
 /**
  * Transforms the success value while preserving the error branch.
@@ -22,9 +24,9 @@ import { type Result } from '../types/core/index.js';
  * @public
  */
 export const map = <T, U, E>(
-  result: Result<T, E>,
+  result: ResultLike<T, E>,
   fn: (value: T) => U,
 ): Result<U, E> =>
   isOk(result)
-    ? { ok: true, value: fn(result.value) }
-    : (result as Result<U, E>);
+    ? Ok<U, E>(fn(result.value))
+    : (hydrateResultValue(result) as unknown as Result<U, E>);

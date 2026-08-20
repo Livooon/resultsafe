@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b11-f180-7185-a968-f99558a3d809",
+  "title": "ResultSafe identity policy",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["field_rules", "uuidv7_rules", "public_handle_rules", "reference_rules", "tenant_rules", "publication_rules"],
+          "properties": {
+            "field_rules": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id_suffix", "ref_suffix", "key_suffix", "digest_suffix", "position_revision_sequence_suffixes"],
+              "properties": {
+                "id_suffix": { "type": "string", "minLength": 10 },
+                "ref_suffix": { "type": "string", "minLength": 10 },
+                "key_suffix": { "type": "string", "minLength": 10 },
+                "digest_suffix": { "type": "string", "minLength": 10 },
+                "position_revision_sequence_suffixes": { "type": "string", "minLength": 10 }
+              }
+            },
+            "uuidv7_rules": { "$ref": "#/$defs/rules" },
+            "public_handle_rules": { "$ref": "#/$defs/rules" },
+            "reference_rules": { "$ref": "#/$defs/rules" },
+            "tenant_rules": { "$ref": "#/$defs/rules" },
+            "publication_rules": { "$ref": "#/$defs/rules" }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "rules": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true }
+  },
+  "unevaluatedProperties": false
+}

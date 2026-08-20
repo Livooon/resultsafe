@@ -19,6 +19,9 @@
   ],
   "references": [
     {
+      "path": "../result"
+    },
+    {
       "path": "../option-shared"
     },
     {
@@ -26,4 +29,3 @@
     }
   ]
 }
-

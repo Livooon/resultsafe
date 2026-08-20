@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01c4b-0d17-7d5e-ac7b-c0decf1c517a",
+  "title": "ResultSafe governed wave execution plan",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["plan_state", "execution_rule", "authorization_policy", "waves"],
+          "properties": {
+            "plan_state": { "const": "IN_PROGRESS" },
+            "execution_rule": { "const": "Execute waves in ascending position only after every dependency acceptance gate is PASS; completed waves record local qualification only and do not authorize commit, push, publish, or external admission." },
+            "authorization_policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["separate_command_required", "prohibited_without_separate_command"],
+              "properties": {
+                "separate_command_required": { "const": true },
+                "prohibited_without_separate_command": {
+                  "type": "array",
+                  "const": ["COMMIT", "PUSH", "PUBLISH", "EXTERNAL_ADMISSION"]
+                }
+              }
+            },
+            "waves": {
+              "type": "array",
+              "minItems": 8,
+              "maxItems": 8,
+              "prefixItems": [
+                { "$ref": "#/$defs/wave1" },
+                { "$ref": "#/$defs/wave2" },
+                { "$ref": "#/$defs/wave3" },
+                { "$ref": "#/$defs/wave4" },
+                { "$ref": "#/$defs/wave5" },
+                { "$ref": "#/$defs/wave6" },
+                { "$ref": "#/$defs/wave7" },
+                { "$ref": "#/$defs/wave8" }
+              ],
+              "items": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 3 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_key", "criterion", "status"],
+      "properties": {
+        "gate_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "criterion": { "type": "string", "minLength": 10 },
+         "status": { "enum": ["NOT_EXECUTED", "PASS", "PASS_LOCAL_ATOMIC", "FAIL"] }
+      }
+    },
+    "actionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reversible_actions", "irreversible_actions"],
+      "properties": {
+        "reversible_actions": { "$ref": "#/$defs/stringList" },
+        "irreversible_actions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["policy", "actions"],
+          "properties": {
+            "policy": { "const": "PROHIBITED_WITHOUT_SEPARATE_COMMAND" },
+            "actions": { "type": "array", "const": ["COMMIT", "PUSH", "PUBLISH", "EXTERNAL_ADMISSION"] }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_refs", "placeholders"],
+      "properties": {
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+          "uniqueItems": true
+        },
+        "placeholders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["evidence_key", "status", "expected_artifact"],
+            "properties": {
+              "evidence_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+               "status": { "enum": ["NOT_EXECUTED", "PASS", "PASS_LOCAL_ATOMIC", "FAIL"] },
+              "expected_artifact": { "type": "string", "minLength": 5 }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "waveBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wave_id", "position", "wave_key", "title", "state", "depends_on_wave_ids", "inputs", "outputs", "acceptance_gates", "action_policy", "evidence"],
+      "properties": {
+        "wave_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+        "position": { "type": "integer", "minimum": 1, "maximum": 8 },
+        "wave_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "title": { "type": "string", "minLength": 10 },
+        "state": { "enum": ["IN_PROGRESS", "PENDING", "BLOCKED", "COMPLETE"] },
+        "depends_on_wave_ids": {
+          "type": "array",
+          "items": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+          "uniqueItems": true
+        },
+        "inputs": { "$ref": "#/$defs/stringList" },
+        "outputs": { "$ref": "#/$defs/stringList" },
+        "acceptance_gates": { "type": "array", "items": { "$ref": "#/$defs/gate" }, "minItems": 1 },
+        "action_policy": { "$ref": "#/$defs/actionPolicy" },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      }
+    },
+    "wave1": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d19-737a-931c-3102ac9b94d5" }, "position": { "const": 1 }, "wave_key": { "const": "resultdata-runtime-result-split" }, "title": { "const": "ResultData/runtime Result split" }, "state": { "const": "COMPLETE" }, "depends_on_wave_ids": { "const": [] } } }
+      ]
+    },
+    "wave2": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d1a-714f-b067-2cefbc6619c8" }, "position": { "const": 2 }, "wave_key": { "const": "option-shared-serialization-interoperability" }, "title": { "const": "Option/shared/serialization interoperability" }, "state": { "const": "COMPLETE" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d19-737a-931c-3102ac9b94d5"] } } }
+      ]
+    },
+    "wave3": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d1b-7a28-bf79-4e406a85bb6b" }, "position": { "const": 3 }, "wave_key": { "const": "generated-cross-language-operation-surface-matrix" }, "title": { "const": "Generated cross-language operation-surface matrix" }, "state": { "const": "COMPLETE" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d1a-714f-b067-2cefbc6619c8"] } } }
+      ]
+    },
+    "wave4": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d1c-7934-9ace-46504ffbdbe9" }, "position": { "const": 4 }, "wave_key": { "const": "source-artifact-bound-atomic-qualification" }, "title": { "const": "Source/artifact-bound atomic qualification" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d1b-7a28-bf79-4e406a85bb6b"] } } }
+      ]
+    },
+    "wave5": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d1d-7cba-8919-3bec68d6f311" }, "position": { "const": 5 }, "wave_key": { "const": "compatibility-version-release-tooling" }, "title": { "const": "Compatibility/version/release tooling" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d1c-7934-9ace-46504ffbdbe9"] } } }
+      ]
+    },
+    "wave6": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d1e-7e1d-a3fc-88c6dbeb943e" }, "position": { "const": 6 }, "wave_key": { "const": "ci-supply-chain-exact-artifact-hardening" }, "title": { "const": "CI/supply-chain exact-artifact hardening" }, "state": { "const": "COMPLETE" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d1d-7cba-8919-3bec68d6f311"] } } }
+      ]
+    },
+    "wave7": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01c4b-0d1f-7a32-9fc9-a2b0812af2b8" }, "position": { "const": 7 }, "wave_key": { "const": "immutable-local-release-candidate" }, "title": { "const": "Immutable local release candidate" }, "state": { "const": "COMPLETE" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d1e-7e1d-a3fc-88c6dbeb943e"] } } }
+      ]
+    },
+    "wave8": {
+      "allOf": [
+        { "$ref": "#/$defs/waveBase" },
+        { "type": "object", "properties": { "wave_id": { "const": "01a01d86-7c2e-7720-810a-e7377a4ff382" }, "position": { "const": 8 }, "wave_key": { "const": "core-modularity-and-compatibility-evidence" }, "title": { "const": "Core modularity and compatibility evidence" }, "state": { "const": "COMPLETE" }, "depends_on_wave_ids": { "const": ["01a01c4b-0d1f-7a32-9fc9-a2b0812af2b8"] } } }
+      ]
+    }
+  },
+  "unevaluatedProperties": false
+}

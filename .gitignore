@@ -44,9 +44,14 @@ Thumbs.db
 *.local
 **/.npmrc
 **/.pytest_cache
+**/__pycache__/
+**/*.egg-info/
 
 **/docs/api/
 **/docs/examples/
 **/dist/
 **/coverage/
 **/node_modules/
+.resultsafe-candidates/
+platform/candidates/
+notes/

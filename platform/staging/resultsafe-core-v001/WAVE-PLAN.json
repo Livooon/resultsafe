@@ -1,0 +1,487 @@
+{
+  "document_id": "01a01c4b-0d18-7835-9930-1128e58833b3",
+  "document_ref": "urn:uuid:01a01c4b-0d18-7835-9930-1128e58833b3",
+  "document_key": "wave-plan",
+  "document_type": "execution_plan",
+  "document_revision": 24,
+  "schema_ref": "urn:uuid:01a01c4b-0d17-7d5e-ac7b-c0decf1c517a",
+  "title": "ResultSafe governed execution wave plan",
+  "summary": "Machine-readable execution plan recording local atomic qualification through Wave 8; clean commit-bound promotion remains blocked and unapproved.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-20T00:00:00Z",
+  "updated_at": "2026-08-20T05:28:27.939Z",
+  "payload": {
+    "plan_state": "IN_PROGRESS",
+    "execution_rule": "Execute waves in ascending position only after every dependency acceptance gate is PASS; completed waves record local qualification only and do not authorize commit, push, publish, or external admission.",
+    "authorization_policy": {
+      "separate_command_required": true,
+      "prohibited_without_separate_command": [
+        "COMMIT",
+        "PUSH",
+        "PUBLISH",
+        "EXTERNAL_ADMISSION"
+      ]
+    },
+    "waves": [
+      {
+        "wave_id": "01a01c4b-0d19-737a-931c-3102ac9b94d5",
+        "position": 1,
+        "wave_key": "resultdata-runtime-result-split",
+        "title": "ResultData/runtime Result split",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [],
+        "inputs": [
+          "Approved ResultData and runtime Result architecture",
+          "Current TypeScript Result package source and public API baseline"
+        ],
+        "outputs": [
+          "Separated ResultData representation and runtime Result behavior",
+          "Migration and regression evidence for the split"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "resultdata-contract",
+            "criterion": "ResultData is data-only and runtime Result behavior remains contract-conformant.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "result-split-regression",
+            "criterion": "Type, unit, and public API regression suites pass against the split.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Edit local source and tests",
+            "Rebuild disposable local artifacts"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-1-qualification",
+              "status": "PASS",
+              "expected_artifact": "QUALIFICATION-RECEIPT.json revision 33: TypeScript unit, contract typing, packed runtime/declaration, and 198-scenario conformance PASS"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01c4b-0d1a-714f-b067-2cefbc6619c8",
+        "position": 2,
+        "wave_key": "option-shared-serialization-interoperability",
+        "title": "Option/shared/serialization interoperability",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d19-737a-931c-3102ac9b94d5"
+        ],
+        "inputs": [
+          "Accepted ResultData/runtime Result split",
+          "Option, shared types, and serialization contracts"
+        ],
+        "outputs": [
+          "Interoperable Option and shared boundaries",
+          "Stable serialization and deserialization behavior"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "option-result-interoperability",
+            "criterion": "Option and Result conversions preserve value, error, and absence semantics.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "serialization-round-trip",
+            "criterion": "Supported serialized values round-trip across governed package boundaries.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Edit local interoperability code and tests",
+            "Regenerate disposable fixtures"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-2-interoperability",
+              "status": "PASS",
+              "expected_artifact": "Result 149 tests, Option 59 tests/build, Python 89 tests/strict typing/wheel, shared type build, and transport boundary tests PASS"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01c4b-0d1b-7a28-bf79-4e406a85bb6b",
+        "position": 3,
+        "wave_key": "generated-cross-language-operation-surface-matrix",
+        "title": "Generated cross-language operation-surface matrix",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d1a-714f-b067-2cefbc6619c8"
+        ],
+        "inputs": [
+          "Accepted interoperability surface",
+          "Contract IR and language projection bindings"
+        ],
+        "outputs": [
+          "Deterministically generated cross-language operation-surface matrix",
+          "Coverage and drift report for every governed operation"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "matrix-generation",
+            "criterion": "The matrix is generated solely from governed contract and projection inputs.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "matrix-exact-coverage",
+            "criterion": "Every applicable operation has exactly one language-surface disposition.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Generate local matrix artifacts",
+            "Discard and regenerate derived outputs"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-3-matrix",
+              "status": "PASS",
+              "expected_artifact": "CONFORMANCE-MATRIX.json revision 9: 88/88 exact packed-artifact runtime cells PASS; operation-specific type evidence NOT_ASSESSED"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01c4b-0d1c-7934-9ace-46504ffbdbe9",
+        "position": 4,
+        "wave_key": "source-artifact-bound-atomic-qualification",
+        "title": "Source/artifact-bound atomic qualification",
+        "state": "IN_PROGRESS",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d1b-7a28-bf79-4e406a85bb6b"
+        ],
+        "inputs": [
+          "Accepted generated operation-surface matrix",
+          "Exact source tree and locally built artifacts"
+        ],
+        "outputs": [
+          "Atomic qualification receipt bound to source and artifact digests",
+          "Failure-safe staging decision with no partial admission"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "source-artifact-binding",
+            "criterion": "Qualification identifies exact source and artifact digests from one run.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "atomic-qualification",
+            "criterion": "Any failed required check rejects the complete qualification unit.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Build isolated local artifacts",
+            "Discard failed qualification staging"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-4-atomic-qualification",
+              "status": "PASS",
+              "expected_artifact": "QUALIFICATION-RECEIPT.json parent run 01a01d6d-d4b8-7757-a86c-75d761dea087, exact local snapshot and artifacts PASS; commit-bound promotion blocked by dirty/uncommitted source"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01c4b-0d1d-7cba-8919-3bec68d6f311",
+        "position": 5,
+        "wave_key": "compatibility-version-release-tooling",
+        "title": "Compatibility/version/release tooling",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d1c-7934-9ace-46504ffbdbe9"
+        ],
+        "inputs": [
+          "Accepted atomic qualification model",
+          "Compatibility migrations and package version policy"
+        ],
+        "outputs": [
+          "Compatibility and version decision automation",
+          "Guarded local release preparation tooling"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "compatibility-decision",
+            "criterion": "Observed API changes deterministically produce the required version decision.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "release-tool-guards",
+            "criterion": "Release preparation refuses stale, incomplete, or unauthorized inputs.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Run local compatibility analysis",
+            "Prepare disposable local version changes"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-5-release-tooling",
+              "status": "PASS",
+              "expected_artifact": "Release tool unit tests, governed Changeset validation, API-diff requirement, and exact calculated release allowlist passed locally; no versioning or publication executed"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01c4b-0d1e-7e1d-a3fc-88c6dbeb943e",
+        "position": 6,
+        "wave_key": "ci-supply-chain-exact-artifact-hardening",
+        "title": "CI/supply-chain exact-artifact hardening",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d1d-7cba-8919-3bec68d6f311"
+        ],
+        "inputs": [
+          "Accepted compatibility and release tooling",
+          "CI workflow and dependency provenance policy"
+        ],
+        "outputs": [
+          "Exact-artifact CI qualification path",
+          "Supply-chain provenance and tamper checks"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "ci-exact-artifact",
+            "criterion": "CI tests the exact immutable artifacts designated for local candidacy.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "supply-chain-evidence",
+            "criterion": "Dependencies, build inputs, and produced artifacts have verifiable provenance.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Edit and dry-run local CI definitions",
+            "Create disposable provenance attestations"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-6-supply-chain",
+              "status": "PASS",
+              "expected_artifact": "Workflow policy tests and local candidate wave6-local-dry-run passed exact manifest/tarball digest verification, CycloneDX 1.5 SBOM and in-toto provenance binding, content budgets, package/Python/storage/contracts/atomic gates; tarball sha256 0e1e5bef9ca50b8f39cacc6b5dbac16fa6e916641ec68201743c7a3b17bc9be6; security and long classes deferred; no registry contacted"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01c4b-0d1f-7a32-9fc9-a2b0812af2b8",
+        "position": 7,
+        "wave_key": "immutable-local-release-candidate",
+        "title": "Immutable local release candidate",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d1e-7e1d-a3fc-88c6dbeb943e"
+        ],
+        "inputs": [
+          "Accepted exact-artifact CI and supply-chain evidence",
+          "Fully qualified local package artifacts"
+        ],
+        "outputs": [
+          "Immutable digest-addressed local release candidate",
+          "Local candidate inventory and qualification receipt"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "candidate-immutability",
+            "criterion": "Candidate artifacts are immutable and recoverable solely by recorded digests.",
+            "status": "PASS"
+          },
+          {
+            "gate_key": "local-only-admission",
+            "criterion": "The candidate remains local and no publish or external admission occurs.",
+            "status": "PASS"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Assemble isolated local candidate staging",
+            "Delete an unadmitted local candidate"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-7-local-candidate",
+              "status": "PASS",
+              "expected_artifact": "QUALIFIED_LOCAL_RC 01a01cad-320d-745d-a5d8-6240b7a5d35d at platform/candidates/resultsafe-core-fp-result/0.3.0/01a01cad-320d-745d-a5d8-6240b7a5d35d; manifest sha256:bb9f793a549d6ca187111f90fd9824f5afffb4adfa5124014a651ece800f2e87; tree sha256:e6347b6f1622fa35425f2b4440dc3011ab089c74c752a508921e4894d200f8e4; promotion blocked"
+            }
+          ]
+        }
+      },
+      {
+        "wave_id": "01a01d86-7c2e-7720-810a-e7377a4ff382",
+        "position": 8,
+        "wave_key": "core-modularity-and-compatibility-evidence",
+        "title": "Core modularity and compatibility evidence",
+        "state": "COMPLETE",
+        "depends_on_wave_ids": [
+          "01a01c4b-0d1f-7a32-9fc9-a2b0812af2b8"
+        ],
+        "inputs": [
+          "Core modularity policy and 66-module public registry",
+          "Confirmed remediation plan and exact current package source"
+        ],
+        "outputs": [
+          "Root and direct-subpath package surface",
+          "Exact packed-artifact modularity evidence",
+          "Truthful Effect and Cause/Exit executable evidence dispositions"
+        ],
+        "acceptance_gates": [
+          {
+            "gate_key": "all-direct-subpaths",
+            "criterion": "All 66 registered public modules resolve through derived packed export conditions.",
+            "status": "PASS_LOCAL_ATOMIC"
+          },
+          {
+            "gate_key": "zero-dependency-no-side-effect",
+            "criterion": "The exact packed artifact proves zero runtime dependencies and no import side effects.",
+            "status": "PASS_LOCAL_ATOMIC"
+          },
+          {
+            "gate_key": "effect-compatibility-evidence",
+            "criterion": "Effect 3.22.1 compatibility has current executable separate-package adapter evidence.",
+            "status": "PASS_LOCAL_ATOMIC"
+          },
+          {
+            "gate_key": "cause-exit-matrix-evidence",
+            "criterion": "Cause and Exit claims have current executable exact-artifact evidence.",
+            "status": "PASS_LOCAL_ATOMIC"
+          },
+          {
+            "gate_key": "result-baseline-preserved",
+            "criterion": "The neutral Result surface remains exactly 23 operations and 88 cells.",
+            "status": "PASS_LOCAL_ATOMIC"
+          }
+        ],
+        "action_policy": {
+          "reversible_actions": [
+            "Edit local package exports and tests",
+            "Build and inspect disposable packed artifacts"
+          ],
+          "irreversible_actions": {
+            "policy": "PROHIBITED_WITHOUT_SEPARATE_COMMAND",
+            "actions": [
+              "COMMIT",
+              "PUSH",
+              "PUBLISH",
+              "EXTERNAL_ADMISSION"
+            ]
+          }
+        },
+        "evidence": {
+          "evidence_refs": [],
+          "placeholders": [
+            {
+              "evidence_key": "wave-8-modularity",
+              "status": "PASS_LOCAL_ATOMIC",
+              "expected_artifact": "Parent 01a01dbf-c7c7-77e8-82f9-f1a9b0befe58 core-modularity PASS evidence for exact packed ESM, CJS, declaration, dependency, and side-effect checks across all 66 registered modules; promotion blocked"
+            },
+            {
+              "evidence_key": "wave-8-compatibility",
+              "status": "PASS_LOCAL_ATOMIC",
+              "expected_artifact": "Parent 01a01dbf-c7c7-77e8-82f9-f1a9b0befe58 effect-adapter and cause-exit-exact-artifacts PASS evidence; local qualification only, release approval and promotion not claimed"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

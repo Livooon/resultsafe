@@ -4,7 +4,7 @@ import type { VariantConfig } from './VariantConfig.js';
  * Extracts the payload keys from a `VariantConfig`.
  *
  * @typeParam T - The `VariantConfig` type to extract keys from.
- * @returns The union of payload keys, or `never` if payload is `'never'`.
+ * @returns The union of payload keys, or `never` for an empty key list.
  *
  * @example
  * ```ts

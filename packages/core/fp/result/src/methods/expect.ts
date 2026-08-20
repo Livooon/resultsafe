@@ -1,5 +1,6 @@
+import { ResultExtractionError } from '../errors/ResultExtractionError.js';
 import { isOk } from '../guards/isOk.js';
-import { type Result } from '../types/core/index.js';
+import { type ResultLike } from '../types/core/index.js';
 
 /**
  * Returns the success value or throws an exception with a custom message.
@@ -9,7 +10,7 @@ import { type Result } from '../types/core/index.js';
  * @param result - The source `Result`.
  * @param msg - The error message used when `result` is `Err`.
  * @returns The unwrapped success value.
- * @throws Error - Throws an exception when `result` is `Err`.
+ * @throws ResultExtractionError - Thrown when `result` is `Err`.
  * @since 0.1.0
  * @see {@link expectErr} - Symmetric helper for the error branch.
  * @example
@@ -21,9 +22,9 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const expect = <T, E>(result: Result<T, E>, msg: string): T => {
+export const expect = <T, E>(result: ResultLike<T, E>, msg: string): T => {
   if (isOk(result)) {
     return result.value;
   }
-  throw new Error(msg);
+  throw new ResultExtractionError(msg, result.error);
 };

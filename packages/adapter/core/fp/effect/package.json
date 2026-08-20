@@ -1,0 +1,50 @@
+{
+  "name": "@resultsafe/adapter-core-fp-effect",
+  "version": "0.1.0",
+  "description": "Explicit semantic adapters between ResultSafe Cause/Exit and Effect Cause/Exit.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.13.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist config/tsconfig.build.tsbuildinfo",
+    "build": "pnpm run clean && tsc -p config/tsconfig.build.json",
+    "test": "vitest run --config config/vitest.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify": "pnpm run typecheck && pnpm run test && pnpm run build"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./Cause": {
+      "types": "./dist/Cause.d.ts",
+      "import": "./dist/Cause.js"
+    },
+    "./Exit": {
+      "types": "./dist/Exit.d.ts",
+      "import": "./dist/Exit.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "@resultsafe/core-fp-result": "0.3.0",
+    "effect": "3.22.1"
+  },
+  "devDependencies": {
+    "@resultsafe/core-fp-result": "workspace:*",
+    "effect": "3.22.1",
+    "rimraf": "6.0.1",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4"
+  }
+}

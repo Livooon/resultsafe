@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-980c-7504-bfd0-235440c33890",
+  "title": "ResultSafe staging integrity manifest",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["digest_algorithm", "canonicalization", "scope", "files", "tree_digest"],
+          "properties": {
+            "digest_algorithm": { "const": "SHA-256" },
+            "canonicalization": { "const": "RFC-8785-JCS" },
+            "scope": { "const": "Every JSON file below the staging root except INTEGRITY-MANIFEST.json and QUALIFICATION-RECEIPT.json" },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["path", "sha256_digest", "size"],
+                "properties": {
+                  "path": { "type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!.*\\.\\.).+" },
+                  "sha256_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+                  "size": { "type": "integer", "minimum": 1 }
+                }
+              }
+            },
+            "tree_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b11-f182-7300-b58a-2ed8b611789c",
+  "title": "ResultSafe source evidence catalog",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["evidence"],
+          "properties": {
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["evidence_id", "evidence_ref", "evidence_key", "evidence_type", "status", "sources", "observations", "execution"],
+                "properties": {
+                  "evidence_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+                  "evidence_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+                  "evidence_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+                  "evidence_type": { "enum": ["STATIC_SOURCE_AUDIT", "EXTERNAL_READ_ONLY_AUDIT"] },
+                  "status": { "const": "CAPTURED" },
+                  "sources": { "type": "array", "items": { "type": "string", "minLength": 3 }, "minItems": 1, "uniqueItems": true },
+                  "observations": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true },
+                  "execution": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]+$" }
+                }
+              },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

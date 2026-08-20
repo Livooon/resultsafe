@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0a-da06-7930-8f32-7c9e231f3087",
+  "title": "ResultSafe optional Exit model",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "document_key": { "const": "exit-model" },
+        "document_type": { "const": "exit_model" },
+        "schema_ref": { "const": "urn:uuid:01a01f0a-da06-7930-8f32-7c9e231f3087" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["model_version", "adoption_model", "instance_schema_ref", "cause_model_ref", "result_compatibility", "variants", "invariants", "codec_policy", "resource_limits", "scenario_refs"],
+          "properties": {
+            "model_version": { "const": "1.0.0" },
+            "adoption_model": { "const": "OPTIONAL_SEPARATE_MODEL" },
+            "instance_schema_ref": { "const": "urn:uuid:01a01f0a-da09-7590-9665-b8841a81fe96" },
+            "cause_model_ref": { "const": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4" },
+            "result_compatibility": { "$ref": "#/$defs/statements" },
+            "variants": { "type": "array", "prefixItems": [{ "$ref": "#/$defs/success" }, { "$ref": "#/$defs/failure" }], "items": false, "minItems": 2, "maxItems": 2 },
+            "invariants": { "$ref": "#/$defs/statements" },
+            "codec_policy": { "$ref": "#/$defs/statements" },
+            "resource_limits": { "$ref": "#/$defs/limits" },
+            "scenario_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 1, "uniqueItems": true }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "statements": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true },
+    "variant": { "type": "object", "additionalProperties": false, "required": ["tag", "fields", "semantics"], "properties": { "tag": { "type": "string" }, "fields": { "type": "array", "items": { "type": "string" } }, "semantics": { "type": "string", "minLength": 10 } } },
+    "success": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Success" }, "fields": { "const": ["value"] } } }] },
+    "failure": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Failure" }, "fields": { "const": ["cause"] } } }] },
+    "limits": { "type": "object", "additionalProperties": false, "required": ["max_depth", "max_nodes"], "properties": { "max_depth": { "const": 32 }, "max_nodes": { "const": 1024 } } }
+  },
+  "unevaluatedProperties": false
+}

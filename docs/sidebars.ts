@@ -14,7 +14,12 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Guides',
-      items: ['guides/basic-usage', 'guides/index'],
+      items: [
+        'guides/index',
+        'guides/basic-usage',
+        'guides/structured-failure',
+        'guides/cause-exit',
+      ],
     },
     {
       type: 'category',

@@ -1,0 +1,566 @@
+{
+  "document_id": "01a01af6-3bbc-74ee-afde-135b2665411e",
+  "document_ref": "urn:uuid:01a01af6-3bbc-74ee-afde-135b2665411e",
+  "document_key": "projection-catalog",
+  "document_type": "projection_catalog",
+  "document_revision": 10,
+  "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "ResultSafe projection catalog",
+  "summary": "Strict mappings from the neutral Contract IR into languages, logical relational storage, SQLite, and external AASDVGS integration.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "items": [
+      {
+        "record_id": "01a01af6-3bfd-78d3-862e-2e2c0d6072e3",
+        "record_ref": "urn:uuid:01a01af6-3bfd-78d3-862e-2e2c0d6072e3",
+        "record_key": "typescript-result-projection",
+        "record_revision": 4,
+        "kind": "projection",
+        "code": "RS-PRJ-001",
+        "title": "TypeScript Result projection",
+        "status": "DRAFT",
+        "projection_kind": "LANGUAGE",
+        "target_key": "typescript",
+        "authority": "DERIVED",
+        "contract_ir_ref": "urn:uuid:01a01af6-3bb1-7002-8958-73436a16f14f",
+        "contract_ir_revision": 2,
+        "operation_bindings": [
+          {
+            "operation_key": "construct-success",
+            "module_name": "Ok"
+          },
+          {
+            "operation_key": "construct-failure",
+            "module_name": "Err"
+          },
+          {
+            "operation_key": "is-failure",
+            "module_name": "isErr",
+            "method_name": "isErr"
+          },
+          {
+            "operation_key": "is-success",
+            "module_name": "isOk",
+            "method_name": "isOk"
+          },
+          {
+            "operation_key": "is-failure-and",
+            "module_name": "isErrAnd",
+            "method_name": "isErrAnd"
+          },
+          {
+            "operation_key": "is-success-and",
+            "module_name": "isOkAnd",
+            "method_name": "isOkAnd"
+          },
+          {
+            "operation_key": "chain-success",
+            "module_name": "andThen",
+            "method_name": "andThen"
+          },
+          {
+            "operation_key": "failure-option",
+            "module_name": "err",
+            "method_name": "err"
+          },
+          {
+            "operation_key": "success-option",
+            "module_name": "ok",
+            "method_name": "toOption"
+          },
+          {
+            "operation_key": "expect-success",
+            "module_name": "expect",
+            "method_name": "expect"
+          },
+          {
+            "operation_key": "expect-failure",
+            "module_name": "expectErr",
+            "method_name": "expectErr"
+          },
+          {
+            "operation_key": "flatten-result",
+            "module_name": "flatten",
+            "method_name": "flatten"
+          },
+          {
+            "operation_key": "map-success",
+            "module_name": "map",
+            "method_name": "map"
+          },
+          {
+            "operation_key": "map-failure",
+            "module_name": "mapErr",
+            "method_name": "mapErr"
+          },
+          {
+            "operation_key": "match-result",
+            "module_name": "match",
+            "method_name": "match"
+          },
+          {
+            "operation_key": "recover-failure",
+            "module_name": "orElse",
+            "method_name": "orElse"
+          },
+          {
+            "operation_key": "tap-success",
+            "module_name": "tap",
+            "method_name": "tap"
+          },
+          {
+            "operation_key": "tap-failure",
+            "module_name": "tapErr",
+            "method_name": "tapErr"
+          },
+          {
+            "operation_key": "transpose-result-option",
+            "module_name": "transpose",
+            "method_name": "transpose"
+          },
+          {
+            "operation_key": "unwrap-success",
+            "module_name": "unwrap",
+            "method_name": "unwrap"
+          },
+          {
+            "operation_key": "unwrap-failure",
+            "module_name": "unwrapErr",
+            "method_name": "unwrapErr"
+          },
+          {
+            "operation_key": "unwrap-or",
+            "module_name": "unwrapOr",
+            "method_name": "unwrapOr"
+          },
+          {
+            "operation_key": "unwrap-or-else",
+            "module_name": "unwrapOrElse",
+            "method_name": "unwrapOrElse"
+          },
+          {
+            "operation_key": "is-tagged-variant",
+            "module_name": "isTypedVariant"
+          },
+          {
+            "operation_key": "is-validated-tagged-variant",
+            "module_name": "isTypedVariantOf"
+          },
+          {
+            "operation_key": "match-tagged-variant",
+            "module_name": "matchVariant"
+          },
+          {
+            "operation_key": "match-tagged-variant-strict",
+            "module_name": "matchVariantStrict"
+          },
+          {
+            "operation_key": "refine-sync-kernel",
+            "module_name": "refineResultU"
+          },
+          {
+            "operation_key": "refine-async-kernel",
+            "module_name": "refineAsyncResultU"
+          },
+          {
+            "operation_key": "refine-variant-map",
+            "module_name": "refineVariantMap"
+          }
+        ],
+        "support_bindings": [
+          {
+            "operation_key": "tap-success",
+            "module_name": "inspect",
+            "binding": "ALIAS"
+          },
+          {
+            "operation_key": "tap-failure",
+            "module_name": "inspectErr",
+            "binding": "ALIAS"
+          },
+          {
+            "operation_key": "refine-sync-kernel",
+            "module_name": "refineResult",
+            "binding": "CURRIED"
+          },
+          {
+            "operation_key": "refine-async-kernel",
+            "module_name": "refineAsyncResult",
+            "binding": "CURRIED"
+          }
+        ],
+        "transport_bindings": [
+          {
+            "surface_key": "to-result-data",
+            "module_name": "toResultData",
+            "method_name": "toResultData",
+            "input": "ResultLike<T,E>",
+            "output": "ResultData<T,E>"
+          },
+          {
+            "surface_key": "from-result-data",
+            "module_name": "fromResultData",
+            "input": "ResultData<T,E>",
+            "output": "Result<T,E>"
+          },
+          {
+            "surface_key": "hydrate-result",
+            "module_name": "hydrateResult",
+            "input": "ResultLike<T,E>",
+            "output": "Result<T,E>"
+          }
+        ],
+        "mapping_rules": [
+          "SUCCESS maps to a frozen object with ok true and value",
+          "FAILURE maps to a frozen object with ok false and error",
+          "All neutral non-constructor operations are exposed as both camelCase module callables and Result instance methods; success-option uses method toOption because ok is the required boolean discriminator, and constructors are module-only",
+          "TypeScript extensions are camelCase module callables and never Result instance methods",
+          "Compile-time types must not exceed runtime evidence",
+          "ResultData is plain branch data; JSON, spread, assignment, and structured clone do not preserve Result methods",
+          "Free Result operations accept ResultLike and every Result-valued output is a canonical local methodful wrapper",
+          "Hydration reuses local wrappers and rewraps transport data or wrappers from another package copy",
+          "Optional structured Failure projects as the Failure type, Failure constructor, isFailure guard, and governed bounded-validation limits without constraining Result<T,E>"
+        ],
+        "model_bindings": [
+          {
+            "model_key": "cause",
+            "status": "IMPLEMENTED",
+            "exports": [
+              "Cause",
+              "CauseEmpty",
+              "CauseFail",
+              "CauseDie",
+              "CauseInterrupt",
+              "CauseSequential",
+              "CauseParallel",
+              "isCause",
+              "matchCause"
+            ]
+          },
+          {
+            "model_key": "exit",
+            "status": "IMPLEMENTED",
+            "exports": [
+              "Exit",
+              "ExitSuccess",
+              "ExitFailure",
+              "isExit",
+              "matchExit",
+              "resultToExit",
+              "exitToResult",
+              "exitToResultCollapsed"
+            ]
+          }
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bfe-7660-9f5d-0769fc9c32ed",
+        "record_ref": "urn:uuid:01a01af6-3bfe-7660-9f5d-0769fc9c32ed",
+        "record_key": "python-result-projection",
+        "record_revision": 4,
+        "kind": "projection",
+        "code": "RS-PRJ-002",
+        "title": "Python Result projection",
+        "status": "IMPLEMENTED",
+        "projection_kind": "LANGUAGE",
+        "target_key": "python",
+        "authority": "DERIVED",
+        "contract_ir_ref": "urn:uuid:01a01af6-3bb1-7002-8958-73436a16f14f",
+        "contract_ir_revision": 2,
+        "operation_bindings": [
+          {
+            "operation_key": "construct-success",
+            "module_name": "Ok"
+          },
+          {
+            "operation_key": "construct-failure",
+            "module_name": "Err"
+          },
+          {
+            "operation_key": "is-failure",
+            "module_name": "is_err",
+            "method_name": "is_err"
+          },
+          {
+            "operation_key": "is-success",
+            "module_name": "is_ok",
+            "method_name": "is_ok"
+          },
+          {
+            "operation_key": "is-failure-and",
+            "module_name": "is_err_and",
+            "method_name": "is_err_and"
+          },
+          {
+            "operation_key": "is-success-and",
+            "module_name": "is_ok_and",
+            "method_name": "is_ok_and"
+          },
+          {
+            "operation_key": "chain-success",
+            "module_name": "and_then",
+            "method_name": "and_then"
+          },
+          {
+            "operation_key": "failure-option",
+            "module_name": "err",
+            "method_name": "err"
+          },
+          {
+            "operation_key": "success-option",
+            "module_name": "ok",
+            "method_name": "ok"
+          },
+          {
+            "operation_key": "expect-success",
+            "module_name": "expect",
+            "method_name": "expect"
+          },
+          {
+            "operation_key": "expect-failure",
+            "module_name": "expect_err",
+            "method_name": "expect_err"
+          },
+          {
+            "operation_key": "flatten-result",
+            "module_name": "flatten",
+            "method_name": "flatten"
+          },
+          {
+            "operation_key": "map-success",
+            "module_name": "map",
+            "method_name": "map"
+          },
+          {
+            "operation_key": "map-failure",
+            "module_name": "map_err",
+            "method_name": "map_err"
+          },
+          {
+            "operation_key": "match-result",
+            "module_name": "match",
+            "method_name": "match"
+          },
+          {
+            "operation_key": "recover-failure",
+            "module_name": "or_else",
+            "method_name": "or_else"
+          },
+          {
+            "operation_key": "tap-success",
+            "module_name": "tap",
+            "method_name": "tap"
+          },
+          {
+            "operation_key": "tap-failure",
+            "module_name": "tap_err",
+            "method_name": "tap_err"
+          },
+          {
+            "operation_key": "transpose-result-option",
+            "module_name": "transpose",
+            "method_name": "transpose"
+          },
+          {
+            "operation_key": "unwrap-success",
+            "module_name": "unwrap",
+            "method_name": "unwrap"
+          },
+          {
+            "operation_key": "unwrap-failure",
+            "module_name": "unwrap_err",
+            "method_name": "unwrap_err"
+          },
+          {
+            "operation_key": "unwrap-or",
+            "module_name": "unwrap_or",
+            "method_name": "unwrap_or"
+          },
+          {
+            "operation_key": "unwrap-or-else",
+            "module_name": "unwrap_or_else",
+            "method_name": "unwrap_or_else"
+          }
+        ],
+        "transport_bindings": [
+          {
+            "surface_key": "to-result-data",
+            "module_name": "to_result_data",
+            "input": "ResultLike[T,E]",
+            "output": "ResultData[T,E]"
+          },
+          {
+            "surface_key": "from-result-data",
+            "module_name": "from_result_data",
+            "input": "ResultData[T,E]",
+            "output": "Result[T,E]"
+          },
+          {
+            "surface_key": "hydrate-result",
+            "module_name": "hydrate_result",
+            "input": "ResultLike[T,E]",
+            "output": "Result[T,E]"
+          }
+        ],
+        "mapping_rules": [
+          "PyPI distribution resultsafe uses import root resultsafe and has no runtime dependencies",
+          "SUCCESS maps to frozen slotted generic Ok(value) and FAILURE maps to frozen slotted generic Err(error)",
+          "SOME maps to frozen slotted generic Some(value) and NONE maps to singleton NOTHING",
+          "The 21 neutral non-constructor operations are exposed as both snake_case module callables and Result instance methods; constructors are module-only and TypeScript extensions are excluded",
+          "ResultExtractionError.payload preserves the opposite branch payload by identity",
+          "Pass-through branches reuse wrappers; constructed branches preserve payload references; callback counts, exceptions, transpose branches, laws, and shallow immutability follow Contract IR",
+          "The package includes py.typed and is qualified with strict mypy and an isolated wheel consumer",
+          "ResultData uses explicit discriminator dictionaries; dataclasses.asdict is not a transport conversion",
+          "Pickle and copy preserve runtime dataclass behavior while explicit hydration restores runtime values from transport dictionaries",
+          "Optional structured Failure projects as a frozen slotted dataclass with explicit to_failure_data conversion and does not constrain Result[T,E]"
+        ],
+        "model_bindings": [
+          {
+            "model_key": "cause",
+            "status": "IMPLEMENTED",
+            "exports": [
+              "Cause",
+              "Empty",
+              "Fail",
+              "Die",
+              "Interrupt",
+              "Sequential",
+              "Parallel"
+            ]
+          },
+          {
+            "model_key": "exit",
+            "status": "IMPLEMENTED",
+            "exports": [
+              "Exit",
+              "ExitSuccess",
+              "ExitFailure",
+              "result_to_exit",
+              "exit_to_cause_result",
+              "exit_to_result"
+            ]
+          }
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bff-7a5b-a4a3-02d9b4cf7b55",
+        "record_ref": "urn:uuid:01a01af6-3bff-7a5b-a4a3-02d9b4cf7b55",
+        "record_key": "relational-contract-projection",
+        "record_revision": 2,
+        "kind": "projection",
+        "code": "RS-PRJ-003",
+        "title": "Relational Contract IR projection",
+        "status": "IMPLEMENTED",
+        "projection_kind": "RELATIONAL",
+        "target_key": "relational",
+        "authority": "DERIVED",
+        "mapping_rules": [
+          "Canonical records map losslessly to normalized relations plus canonical JSON",
+          "All PK and FK relationships preserve UUID identity",
+          "Tenant-owned operational overlays use tenant-qualified PK and FK",
+          "No database vendor or compiler language appears in logical semantics",
+          "Structured Failure storage is an explicitly selected operational relation profile and generic Result storage remains unchanged"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c00-779a-b885-de63c2532024",
+        "record_ref": "urn:uuid:01a01af6-3c00-779a-b885-de63c2532024",
+        "record_key": "sqlite-relational-profile",
+        "record_revision": 2,
+        "kind": "projection",
+        "code": "RS-PRJ-004",
+        "title": "SQLite relational profile",
+        "status": "IMPLEMENTED",
+        "projection_kind": "DATABASE_PROFILE",
+        "target_key": "sqlite",
+        "authority": "DERIVED",
+        "mapping_rules": [
+          "Use STRICT tables and foreign keys",
+          "Record application_id and user_version",
+          "Store canonical JSON and normalized query columns",
+          "Generate in staging and atomically publish after integrity checks",
+          "Compare deterministic logical dumps rather than binary page layout",
+          "The structured-failure profile adds two STRICT tables only when explicitly selected and records a distinct user_version"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c01-7421-b097-c3dffe14f910",
+        "record_ref": "urn:uuid:01a01af6-3c01-7421-b097-c3dffe14f910",
+        "record_key": "aasdvgs-result-integration",
+        "record_revision": 0,
+        "kind": "projection",
+        "code": "RS-PRJ-005",
+        "title": "AASDVGS Result integration",
+        "status": "PLANNED",
+        "projection_kind": "INTEGRATION",
+        "target_key": "aasdvgs",
+        "authority": "EXTERNAL_ADMISSION",
+        "mapping_rules": [
+          "SUCCESS maps to status SUCCESS and value",
+          "FAILURE maps to status FAILURE and structured AASDVGS Failure",
+          "Generic ResultSafe error is constrained by the integration profile",
+          "Admission requires external package identity and governed publication authority"
+        ]
+      },
+      {
+        "record_id": "01a01d86-7c2d-736c-b0c6-b0125046c6ea",
+        "record_ref": "urn:uuid:01a01d86-7c2d-736c-b0c6-b0125046c6ea",
+        "record_key": "typescript-core-package-surface",
+        "record_revision": 0,
+        "kind": "projection",
+        "code": "RS-PRJ-006",
+        "title": "TypeScript core package surface",
+        "status": "DRAFT",
+        "projection_kind": "INTEGRATION",
+        "target_key": "typescript-core-package",
+        "authority": "DERIVED",
+        "mapping_rules": [
+          "Project the public module registry into root and direct package export conditions",
+          "Derive artifact targets only through CORE-MODULARITY-POLICY.json",
+          "Keep type-only modules declaration-only and runtime modules available in ESM, CJS, and declarations",
+          "Do not project optional integrations into the core package"
+        ]
+      },
+      {
+        "record_id": "01a01f50-0050-7000-8000-000000000050",
+        "record_ref": "urn:uuid:01a01f50-0050-7000-8000-000000000050",
+        "record_key": "explicit-json-codec-integration",
+        "record_revision": 0,
+        "kind": "projection",
+        "code": "RS-PRJ-007",
+        "title": "Explicit JSON codec integration",
+        "status": "IMPLEMENTED",
+        "projection_kind": "INTEGRATION",
+        "target_key": "json-codec-package",
+        "authority": "DERIVED",
+        "mapping_rules": [
+          "Package @resultsafe/core-fp-codec-json is implemented at packages/adapter/core/fp/codec/json",
+          "The package consumes @resultsafe/core-fp-result only as peer dependency ^0.3.0 and creates zero dependency from core",
+          "Cause and Exit JSON conversion is explicit and governed by the valid and malformed vectors in OPTIONAL-INTEGRATIONS.json",
+          "Implementation evidence does not imply artifact-bound qualification or release approval"
+        ]
+      },
+      {
+        "record_id": "01a01f50-0051-7000-8000-000000000051",
+        "record_ref": "urn:uuid:01a01f50-0051-7000-8000-000000000051",
+        "record_key": "effect-adapter-integration",
+        "record_revision": 0,
+        "kind": "projection",
+        "code": "RS-PRJ-008",
+        "title": "Separate Effect adapter integration",
+        "status": "IMPLEMENTED",
+        "projection_kind": "INTEGRATION",
+        "target_key": "effect-adapter-package",
+        "authority": "DERIVED",
+        "mapping_rules": [
+          "Package @resultsafe/adapter-core-fp-effect is implemented at packages/adapter/core/fp/effect",
+          "The adapter supports Effect exactly at version 3.22.1 through a required peer dependency",
+          "The adapter consumes @resultsafe/core-fp-result as a peer and creates zero dependency from core",
+          "Executable compatibility evidence is QUALIFIED_LOCAL_SNAPSHOT for exact effect@3.22.1 by the PASS_LOCAL_ATOMIC adapter gate; release approval is not claimed"
+        ]
+      }
+    ]
+  }
+}

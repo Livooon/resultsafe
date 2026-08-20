@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b11-f184-71d9-8caa-3534afa944ba",
+  "title": "ResultSafe schema index",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schemas"],
+          "properties": {
+            "schemas": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["schema_key", "schema_ref", "path", "purpose"],
+                "properties": {
+                  "schema_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+                  "schema_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+                  "path": { "type": "string", "pattern": "^schemas/[a-z0-9-]+\\.schema\\.json$" },
+                  "purpose": { "type": "string", "minLength": 10 }
+                }
+              },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,81 @@
+{
+  "document_id": "01a01f0a-da00-7b10-9266-a2689c0f75a7",
+  "document_ref": "urn:uuid:01a01f0a-da00-7b10-9266-a2689c0f75a7",
+  "document_key": "cause-audit",
+  "document_type": "architecture_audit",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01f0a-da04-7b65-91c4-77b96153b6ab",
+  "title": "Cause and Exit architecture audit",
+  "summary": "Official-source audit selecting an optional binary semantic Cause and Exit model without changing generic Result.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T12:00:00Z",
+  "updated_at": "2026-08-20T12:00:00Z",
+  "payload": {
+    "audit_version": "1.0.0",
+    "question": "Should ResultSafe define optional portable Cause<E> and Exit<T,E> models, and which topology and compatibility boundary should they use?",
+    "methodology": [
+      "Inspect official language, runtime, and project documentation and record only directly documented public behavior",
+      "Keep direct source observations separate from ResultSafe interpretation and known limitations",
+      "Score explicit options against weighted ResultSafe criteria whose weights total 100",
+      "Treat scoring as transparent decision support rather than proof or source authority"
+    ],
+    "official_source_practices": [
+      { "practice_key": "effect-cause-algebra", "product": "Effect", "official_url": "https://effect.website/docs/data-types/cause/", "source_kind": "FORMAL_GUIDE", "observation": "Cause documents Empty, Fail, Die, Interrupt, Sequential, and Parallel cases for typed errors, defects, interruption, and composition." },
+      { "practice_key": "effect-exit-algebra", "product": "Effect", "official_url": "https://effect.website/docs/data-types/exit/", "source_kind": "FORMAL_GUIDE", "observation": "Exit documents Success carrying a value and Failure carrying a Cause." },
+      { "practice_key": "effect-sandbox", "product": "Effect", "official_url": "https://effect.website/docs/error-management/sandboxing/", "source_kind": "FORMAL_GUIDE", "observation": "Sandboxing exposes the complete Cause in the typed error channel and unsandbox restores it." },
+      { "practice_key": "zio-cause", "product": "ZIO", "official_url": "https://zio.dev/reference/core/cause/", "source_kind": "FORMAL_GUIDE", "observation": "ZIO Cause preserves typed failure, defects, interruption, and sequential or parallel composition." },
+      { "practice_key": "zio-exit", "product": "ZIO", "official_url": "https://zio.dev/reference/core/exit/", "source_kind": "FORMAL_GUIDE", "observation": "ZIO Exit describes an effect result as Success or Failure with a Cause." },
+      { "practice_key": "cats-effect-outcome", "product": "Cats Effect", "official_url": "https://typelevel.org/cats-effect/api/3.x/cats/effect/kernel/Outcome.html", "source_kind": "FORMAL_API", "observation": "Outcome distinguishes Succeeded, Errored, and Canceled terminal outcomes." },
+      { "practice_key": "rust-result", "product": "Rust", "official_url": "https://doc.rust-lang.org/std/result/enum.Result.html", "source_kind": "FORMAL_API", "observation": "Result is Ok(T) or Err(E), preserving independently selected generic success and error values." },
+      { "practice_key": "rust-error-source", "product": "Rust", "official_url": "https://doc.rust-lang.org/std/error/trait.Error.html", "source_kind": "FORMAL_API", "observation": "Error source returns an optional lower-level error source and does not define parallel topology." },
+      { "practice_key": "cpp-expected", "product": "C++", "official_url": "https://eel.is/c++draft/expected", "source_kind": "PUBLIC_DRAFT", "observation": "std::expected represents either an expected T value or an unexpected E value." },
+      { "practice_key": "swift-result", "product": "Swift", "official_url": "https://developer.apple.com/documentation/swift/result", "source_kind": "FORMAL_API", "observation": "Swift Result has success and failure cases and constrains the caller-selected Failure type to Error." },
+      { "practice_key": "kotlin-result", "product": "Kotlin", "official_url": "https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/", "source_kind": "FORMAL_API", "observation": "Kotlin Result encapsulates a successful value or a Throwable failure." },
+      { "practice_key": "java-completion-exception", "product": "Java", "official_url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletionException.html", "source_kind": "FORMAL_API", "observation": "CompletionException is an exception wrapper whose documented constructors can retain an underlying cause." },
+      { "practice_key": "java-suppressed", "product": "Java", "official_url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html", "source_kind": "FORMAL_API", "observation": "Throwable exposes one cause and a list of suppressed exceptions in addition to message and stack trace data." },
+      { "practice_key": "dotnet-inner-exception", "product": ".NET", "official_url": "https://learn.microsoft.com/en-us/dotnet/api/system.exception.innerexception", "source_kind": "FORMAL_API", "observation": "Exception.InnerException retrieves the exception that caused the current exception when one is supplied." },
+      { "practice_key": "dotnet-aggregate-exception", "product": ".NET", "official_url": "https://learn.microsoft.com/en-us/dotnet/api/system.aggregateexception", "source_kind": "FORMAL_API", "observation": "AggregateException consolidates multiple failures and exposes them through InnerExceptions." },
+      { "practice_key": "python-exception-chaining", "product": "Python", "official_url": "https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement", "source_kind": "LANGUAGE_REFERENCE", "observation": "Python raise-from explicitly sets exception cause and exception context records implicit handling context." },
+      { "practice_key": "python-exception-group", "product": "Python", "official_url": "https://docs.python.org/3/library/exceptions.html#ExceptionGroup", "source_kind": "FORMAL_API", "observation": "ExceptionGroup wraps a non-empty sequence of exceptions and supports nested exception groups." },
+      { "practice_key": "javascript-error-cause", "product": "ECMAScript", "official_url": "https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-installerrorcause", "source_kind": "LANGUAGE_STANDARD", "observation": "The Error options cause property associates an arbitrary cause value with an Error object." },
+      { "practice_key": "javascript-aggregate-error", "product": "ECMAScript", "official_url": "https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-aggregate-error-objects", "source_kind": "LANGUAGE_STANDARD", "observation": "AggregateError stores an iterable-derived list of errors alongside ordinary Error behavior." },
+      { "practice_key": "go-errors-unwrapping", "product": "Go", "official_url": "https://pkg.go.dev/errors", "source_kind": "FORMAL_API", "observation": "Go errors supports trees through Unwrap returning one error or a slice, and traversal uses depth-first examination." },
+      { "practice_key": "haskell-async", "product": "Haskell async", "official_url": "https://hackage.haskell.org/package/async/docs/Control-Concurrent-Async.html", "source_kind": "FORMAL_API", "observation": "Concurrent combinators document waiting for multiple computations and cancellation behavior when peers fail." },
+      { "practice_key": "erlang-exit-signals", "product": "Erlang", "official_url": "https://www.erlang.org/doc/system/ref_man_processes.html#errors-and-error-handling", "source_kind": "LANGUAGE_REFERENCE", "observation": "Linked Erlang processes exchange exit signals carrying reasons, with trapping changing receipt into messages." }
+    ],
+    "criteria": [
+      { "criterion_key": "result-compatibility", "weight": 30, "measurement": "Preserves Result<T,E> and arbitrary existing E and T values" },
+      { "criterion_key": "semantic-fidelity", "weight": 20, "measurement": "Represents expected failure, defect, interruption, and composition without flattening" },
+      { "criterion_key": "portability", "weight": 15, "measurement": "Has deterministic language-neutral data and explicit codec boundaries" },
+      { "criterion_key": "safety", "weight": 15, "measurement": "Supports acyclicity, bounded traversal, and safe defect or interruption payloads" },
+      { "criterion_key": "ergonomics", "weight": 10, "measurement": "Keeps simple Result usage unchanged and makes richer semantics opt-in" },
+      { "criterion_key": "ecosystem-alignment", "weight": 10, "measurement": "Adapts faithfully to documented effect-system concepts without claiming representation identity" }
+    ],
+    "options": [
+      { "option_key": "NO_CAUSE_MODEL", "scores": { "result-compatibility": 100, "semantic-fidelity": 20, "portability": 50, "safety": 30, "ergonomics": 70, "ecosystem-alignment": 50 }, "weighted_total": 58, "benefits": ["No new semantic model"], "costs": ["No portable topology for concurrent or runtime failure"] },
+      { "option_key": "OPTIONAL_FLAT_MODEL", "scores": { "result-compatibility": 95, "semantic-fidelity": 55, "portability": 65, "safety": 70, "ergonomics": 80, "ecosystem-alignment": 70 }, "weighted_total": 74.75, "benefits": ["Small optional surface"], "costs": ["Flattens sequential and parallel semantics"] },
+      { "option_key": "OPTIONAL_BINARY_SEMANTIC_MODEL", "scores": { "result-compatibility": 95, "semantic-fidelity": 95, "portability": 95, "safety": 90, "ergonomics": 85, "ecosystem-alignment": 90 }, "weighted_total": 92.75, "benefits": ["Preserves generic Result and exact semantic topology", "Supports explicit portable codecs and semantic adapters"], "costs": ["Requires bounded recursive validation"] },
+      { "option_key": "MANDATORY_RESULT_REPLACEMENT", "scores": { "result-compatibility": 30, "semantic-fidelity": 90, "portability": 70, "safety": 85, "ergonomics": 50, "ecosystem-alignment": 80 }, "weighted_total": 63.25, "benefits": ["Uniform rich outcomes"], "costs": ["Breaks Result<T,E> and forces effect semantics on all callers"] }
+    ],
+    "interpretations": [
+      "Official systems repeatedly distinguish typed failure from runtime failure or cancellation, but use incompatible payloads and APIs",
+      "A binary Sequential and Parallel algebra preserves ordering and grouping without imposing n-ary canonicalization rules",
+      "Portable Die and Interrupt values require structured Failure payloads rather than runtime exception, fiber, thread, or process objects",
+      "Failure.causes is useful diagnostic ancestry but cannot preserve Cause sequencing or parallel topology",
+      "Semantic adapters can align meanings while wire formats, runtime identities, and APIs remain independent"
+    ],
+    "conclusion": {
+      "selected_option": "OPTIONAL_BINARY_SEMANTIC_MODEL",
+      "cause_variants": ["Empty", "Fail", "Die", "Interrupt", "Sequential", "Parallel"],
+      "exit_variants": ["Success", "Failure"],
+      "compatibility_rule": "Result<T,E> is unchanged; Cause<E> and Exit<T,E> are separate optional models and preserve arbitrary E and T through explicit portable codecs.",
+      "status": "ACCEPTED_FOR_IMPLEMENTATION"
+    },
+    "limitations": [
+      "Official documentation may change and this audit does not mirror external pages",
+      "Observed exception and concurrency systems are evidence of practices, not claims of representation equivalence",
+      "Weighted scores encode ResultSafe priorities and do not measure ecosystem popularity",
+      "JSON Schema cannot by itself enforce aggregate recursive depth, node count, or object-identity cycles; conforming decoders must enforce those invariants"
+    ]
+  }
+}

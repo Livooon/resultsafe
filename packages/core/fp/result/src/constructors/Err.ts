@@ -1,4 +1,23 @@
-import type { Result } from '../types/core/index.js';
+import { createErr } from '../internal/resultValue.js';
+import type { ResultMethods } from '../types/core/ResultMethods.js';
+
+/**
+ * Represents the concrete failure branch of a Result.
+ *
+ * @typeParam E - The error payload type.
+ * @since 0.3.0
+ * @example
+ * ```ts
+ * import { Err, type Err as ErrType } from '@resultsafe/core-fp-result';
+ *
+ * const result: ErrType<string> = Err('failure');
+ * ```
+ * @public
+ */
+export type Err<E> = ResultMethods<never, E> & {
+  readonly ok: false;
+  readonly error: E;
+};
 
 /**
  * Creates an error `Result` value from the provided error payload.
@@ -18,5 +37,4 @@ import type { Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const Err = <E, T = never>(error: E): Result<T, E> =>
-  ({ ok: false, error }) as const;
+export const Err = <E, _T = never>(error: E): Err<E> => createErr<E>(error);

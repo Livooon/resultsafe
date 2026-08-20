@@ -1,0 +1,466 @@
+{
+  "document_id": "01a01af6-3bb0-78bf-acbc-166fc7b1ef08",
+  "document_ref": "urn:uuid:01a01af6-3bb0-78bf-acbc-166fc7b1ef08",
+  "document_key": "id-allocation-registry",
+  "document_type": "registry",
+  "document_revision": 6,
+  "schema_ref": "urn:uuid:01a01b11-f181-7081-aec1-5d267223c734",
+  "title": "ResultSafe persisted identity allocation registry",
+  "summary": "Append-only allocation registry for document, work, release, evidence, validation, and package-family UUIDv7 identities.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "allocation_policy": "APPEND_ONLY_REUSE_BY_ALLOCATION_KEY",
+    "allocations": [
+      {
+        "allocation_key": "work/resultsafe-core-v001",
+        "entity_id": "01a01af6-78a2-7086-b4f2-462704704610"
+      },
+      {
+        "allocation_key": "release/contracts-v001",
+        "entity_id": "01a01af6-78a3-73b1-9556-9a9893ccae30"
+      },
+      {
+        "allocation_key": "family/core-contracts",
+        "entity_id": "01a01af6-78a4-771e-bd2e-3596c7daf06a"
+      },
+      {
+        "allocation_key": "family/runtime-typescript",
+        "entity_id": "01a01af6-78a5-7cf3-a7bf-c8faedf5f8c0"
+      },
+      {
+        "allocation_key": "family/runtime-python",
+        "entity_id": "01a01af6-78a6-7b78-a0ee-eb7dc9e1da2f"
+      },
+      {
+        "allocation_key": "family/projection-relational",
+        "entity_id": "01a01af6-78a7-7d36-af8d-8e0940671e00"
+      },
+      {
+        "allocation_key": "family/projection-sqlite",
+        "entity_id": "01a01af6-78a8-7402-a139-9aa57b66850c"
+      },
+      {
+        "allocation_key": "family/compiler-typescript",
+        "entity_id": "01a01af6-78a9-7130-8354-bc8a01495f55"
+      },
+      {
+        "allocation_key": "family/adapter-aasdvgs",
+        "entity_id": "01a01af6-78aa-7d6c-a5a7-77454c7870e3"
+      },
+      {
+        "allocation_key": "evidence/typescript-audit",
+        "entity_id": "01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+      },
+      {
+        "allocation_key": "evidence/aasdvgs-audit",
+        "entity_id": "01a01af6-78ac-72c1-a3d5-1dbcf8354a6b"
+      },
+      {
+        "allocation_key": "validation/run-structural-001",
+        "entity_id": "01a01af6-78ad-7e15-b810-d840439ad503"
+      },
+      {
+        "allocation_key": "schema/wave-plan",
+        "entity_id": "01a01c4b-0d17-7d5e-ac7b-c0decf1c517a"
+      },
+      {
+        "allocation_key": "document/wave-plan",
+        "entity_id": "01a01c4b-0d18-7835-9930-1128e58833b3"
+      },
+      {
+        "allocation_key": "wave/resultdata-runtime-result-split",
+        "entity_id": "01a01c4b-0d19-737a-931c-3102ac9b94d5"
+      },
+      {
+        "allocation_key": "wave/option-shared-serialization-interoperability",
+        "entity_id": "01a01c4b-0d1a-714f-b067-2cefbc6619c8"
+      },
+      {
+        "allocation_key": "migration/resultdata-runtime-result-boundary",
+        "entity_id": "01a01c4b-0d20-7abc-8def-1234567890ab"
+      },
+      {
+        "allocation_key": "wave/generated-cross-language-operation-surface-matrix",
+        "entity_id": "01a01c4b-0d1b-7a28-bf79-4e406a85bb6b"
+      },
+      {
+        "allocation_key": "wave/source-artifact-bound-atomic-qualification",
+        "entity_id": "01a01c4b-0d1c-7934-9ace-46504ffbdbe9"
+      },
+      {
+        "allocation_key": "wave/compatibility-version-release-tooling",
+        "entity_id": "01a01c4b-0d1d-7cba-8919-3bec68d6f311"
+      },
+      {
+        "allocation_key": "wave/ci-supply-chain-exact-artifact-hardening",
+        "entity_id": "01a01c4b-0d1e-7e1d-a3fc-88c6dbeb943e"
+      },
+      {
+        "allocation_key": "wave/immutable-local-release-candidate",
+        "entity_id": "01a01c4b-0d1f-7a32-9fc9-a2b0812af2b8"
+      },
+      {
+        "allocation_key": "schema/conformance-matrix",
+        "entity_id": "01a01d00-0001-7000-8000-000000000001"
+      },
+      {
+        "allocation_key": "document/conformance-matrix",
+        "entity_id": "01a01d00-0002-7000-8000-000000000002"
+      },
+      {
+        "allocation_key": "schema/failure-audit",
+        "entity_id": "01a01d13-0738-7609-880a-f556df4124ea"
+      },
+      {
+        "allocation_key": "document/failure-audit",
+        "entity_id": "01a01d13-0738-7b88-beee-14e33b781ada"
+      },
+      {
+        "allocation_key": "schema/failure-model",
+        "entity_id": "01a01d13-0738-7414-bd8b-f0b3802a56ab"
+      },
+      {
+        "allocation_key": "document/failure-model",
+        "entity_id": "01a01d13-0738-76c5-83ab-907b36ad856e"
+      },
+      {
+        "allocation_key": "schema/failure",
+        "entity_id": "01a01d13-3258-7290-918b-58b436a80180"
+      },
+      {
+        "allocation_key": "evidence/failure-architecture-audit",
+        "entity_id": "01a01d13-0738-787d-8787-c262a1322083"
+      },
+      {
+        "allocation_key": "requirement/optional-structured-failure",
+        "entity_id": "01a01d13-0738-783c-b464-18caa6e24175"
+      },
+      {
+        "allocation_key": "decision/optional-structured-failure",
+        "entity_id": "01a01d13-0738-7d5f-810e-9e912c13da97"
+      },
+      {
+        "allocation_key": "risk/failure-data-disclosure",
+        "entity_id": "01a01d13-0739-7af9-a307-b2257e169b43"
+      },
+      {
+        "allocation_key": "document/cause-audit",
+        "entity_id": "01a01f0a-da00-7b10-9266-a2689c0f75a7"
+      },
+      {
+        "allocation_key": "document/cause-model",
+        "entity_id": "01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4"
+      },
+      {
+        "allocation_key": "document/exit-model",
+        "entity_id": "01a01f0a-da02-77d4-982f-7251ea78e989"
+      },
+      {
+        "allocation_key": "document/effect-compatibility",
+        "entity_id": "01a01f0a-da03-7cbe-94a8-23bc96826838"
+      },
+      {
+        "allocation_key": "schema/cause-audit",
+        "entity_id": "01a01f0a-da04-7b65-91c4-77b96153b6ab"
+      },
+      {
+        "allocation_key": "schema/cause-model",
+        "entity_id": "01a01f0a-da05-7919-b410-d32753e67b0c"
+      },
+      {
+        "allocation_key": "schema/exit-model",
+        "entity_id": "01a01f0a-da06-7930-8f32-7c9e231f3087"
+      },
+      {
+        "allocation_key": "schema/effect-compatibility",
+        "entity_id": "01a01f0a-da07-7b11-8d9f-0e89386c0772"
+      },
+      {
+        "allocation_key": "schema/cause",
+        "entity_id": "01a01f0a-da08-7b85-87bc-dea758e0db27"
+      },
+      {
+        "allocation_key": "schema/exit",
+        "entity_id": "01a01f0a-da09-7590-9665-b8841a81fe96"
+      },
+      {
+        "allocation_key": "schema/cause-exit-conformance-matrix",
+        "entity_id": "01a01f0b-0000-7000-8000-000000000001"
+      },
+      {
+        "allocation_key": "document/cause-exit-conformance-matrix",
+        "entity_id": "01a01f0b-0001-7000-8000-000000000001"
+      },
+      {
+        "allocation_key": "requirement/optional-binary-cause-model",
+        "entity_id": "01a01f0b-0010-7000-8000-000000000010"
+      },
+      {
+        "allocation_key": "requirement/optional-exit-model",
+        "entity_id": "01a01f0b-0011-7000-8000-000000000011"
+      },
+      {
+        "allocation_key": "requirement/cause-exit-semantic-projections",
+        "entity_id": "01a01f0b-0012-7000-8000-000000000012"
+      },
+      {
+        "allocation_key": "decision/optional-cause-exit-models",
+        "entity_id": "01a01f0b-0020-7000-8000-000000000020"
+      },
+      {
+        "allocation_key": "decision/semantic-effect-compatibility-only",
+        "entity_id": "01a01f0b-0021-7000-8000-000000000021"
+      },
+      {
+        "allocation_key": "risk/cause-topology-loss",
+        "entity_id": "01a01f0b-0030-7000-8000-000000000030"
+      },
+      {
+        "allocation_key": "risk/effect-compatibility-overclaim",
+        "entity_id": "01a01f0b-0031-7000-8000-000000000031"
+      },
+      {
+        "allocation_key": "migration/scenario-subject-reference",
+        "entity_id": "01a01f0b-0040-7000-8000-000000000040"
+      },
+      {
+        "allocation_key": "migration/optional-cause-exit-api",
+        "entity_id": "01a01f0b-0041-7000-8000-000000000041"
+      },
+      {
+        "allocation_key": "scenario/cause-empty-tag",
+        "entity_id": "01a01f0b-0100-7000-8000-000000000235"
+      },
+      {
+        "allocation_key": "scenario/cause-empty-frozen",
+        "entity_id": "01a01f0b-0101-7000-8000-000000000236"
+      },
+      {
+        "allocation_key": "scenario/cause-fail-error",
+        "entity_id": "01a01f0b-0102-7000-8000-000000000237"
+      },
+      {
+        "allocation_key": "scenario/cause-fail-shallow-freeze",
+        "entity_id": "01a01f0b-0103-7000-8000-000000000238"
+      },
+      {
+        "allocation_key": "scenario/cause-die-failure",
+        "entity_id": "01a01f0b-0104-7000-8000-000000000239"
+      },
+      {
+        "allocation_key": "scenario/cause-die-valid",
+        "entity_id": "01a01f0b-0105-7000-8000-000000000240"
+      },
+      {
+        "allocation_key": "scenario/cause-interrupt-failure",
+        "entity_id": "01a01f0b-0106-7000-8000-000000000241"
+      },
+      {
+        "allocation_key": "scenario/cause-sequential-grouping",
+        "entity_id": "01a01f0b-0107-7000-8000-000000000242"
+      },
+      {
+        "allocation_key": "scenario/cause-sequential-order",
+        "entity_id": "01a01f0b-0108-7000-8000-000000000243"
+      },
+      {
+        "allocation_key": "scenario/cause-parallel-grouping",
+        "entity_id": "01a01f0b-0109-7000-8000-000000000244"
+      },
+      {
+        "allocation_key": "scenario/cause-parallel-order",
+        "entity_id": "01a01f0b-010a-7000-8000-000000000245"
+      },
+      {
+        "allocation_key": "scenario/cause-namespace-constructors",
+        "entity_id": "01a01f0b-010b-7000-8000-000000000246"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-exact-variants",
+        "entity_id": "01a01f0b-010c-7000-8000-000000000247"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-unknown-tag",
+        "entity_id": "01a01f0b-010d-7000-8000-000000000248"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-unknown-field",
+        "entity_id": "01a01f0b-010e-7000-8000-000000000249"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-cycle",
+        "entity_id": "01a01f0b-010f-7000-8000-000000000250"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-depth-bound",
+        "entity_id": "01a01f0b-0110-7000-8000-000000000251"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-node-bound",
+        "entity_id": "01a01f0b-0111-7000-8000-000000000252"
+      },
+      {
+        "allocation_key": "scenario/cause-guard-shared-child",
+        "entity_id": "01a01f0b-0112-7000-8000-000000000253"
+      },
+      {
+        "allocation_key": "scenario/cause-arbitrary-error-identity",
+        "entity_id": "01a01f0b-0113-7000-8000-000000000254"
+      },
+      {
+        "allocation_key": "scenario/match-cause-empty",
+        "entity_id": "01a01f0b-0114-7000-8000-000000000255"
+      },
+      {
+        "allocation_key": "scenario/match-cause-fail",
+        "entity_id": "01a01f0b-0115-7000-8000-000000000256"
+      },
+      {
+        "allocation_key": "scenario/match-cause-die",
+        "entity_id": "01a01f0b-0116-7000-8000-000000000257"
+      },
+      {
+        "allocation_key": "scenario/match-cause-interrupt",
+        "entity_id": "01a01f0b-0117-7000-8000-000000000258"
+      },
+      {
+        "allocation_key": "scenario/match-cause-sequential",
+        "entity_id": "01a01f0b-0118-7000-8000-000000000259"
+      },
+      {
+        "allocation_key": "scenario/match-cause-parallel",
+        "entity_id": "01a01f0b-0119-7000-8000-000000000260"
+      },
+      {
+        "allocation_key": "scenario/exit-success-identity",
+        "entity_id": "01a01f0b-011a-7000-8000-000000000261"
+      },
+      {
+        "allocation_key": "scenario/exit-success-frozen",
+        "entity_id": "01a01f0b-011b-7000-8000-000000000262"
+      },
+      {
+        "allocation_key": "scenario/exit-failure-empty",
+        "entity_id": "01a01f0b-011c-7000-8000-000000000263"
+      },
+      {
+        "allocation_key": "scenario/exit-failure-typed",
+        "entity_id": "01a01f0b-011d-7000-8000-000000000264"
+      },
+      {
+        "allocation_key": "scenario/exit-guard-success",
+        "entity_id": "01a01f0b-011e-7000-8000-000000000265"
+      },
+      {
+        "allocation_key": "scenario/exit-guard-failure",
+        "entity_id": "01a01f0b-011f-7000-8000-000000000266"
+      },
+      {
+        "allocation_key": "scenario/exit-guard-malformed",
+        "entity_id": "01a01f0b-0120-7000-8000-000000000267"
+      },
+      {
+        "allocation_key": "scenario/exit-guard-unknown-field",
+        "entity_id": "01a01f0b-0121-7000-8000-000000000268"
+      },
+      {
+        "allocation_key": "scenario/exit-guard-cause-bounds",
+        "entity_id": "01a01f0b-0122-7000-8000-000000000269"
+      },
+      {
+        "allocation_key": "scenario/match-exit-success",
+        "entity_id": "01a01f0b-0123-7000-8000-000000000270"
+      },
+      {
+        "allocation_key": "scenario/match-exit-failure",
+        "entity_id": "01a01f0b-0124-7000-8000-000000000271"
+      },
+      {
+        "allocation_key": "scenario/result-to-exit-success",
+        "entity_id": "01a01f0b-0125-7000-8000-000000000272"
+      },
+      {
+        "allocation_key": "scenario/result-to-exit-failure",
+        "entity_id": "01a01f0b-0126-7000-8000-000000000273"
+      },
+      {
+        "allocation_key": "scenario/exit-to-result-success",
+        "entity_id": "01a01f0b-0127-7000-8000-000000000274"
+      },
+      {
+        "allocation_key": "scenario/exit-to-result-preserves-cause",
+        "entity_id": "01a01f0b-0128-7000-8000-000000000275"
+      },
+      {
+        "allocation_key": "scenario/exit-to-result-collapse",
+        "entity_id": "01a01f0b-0129-7000-8000-000000000276"
+      },
+      {
+        "allocation_key": "scenario/cause-compile-narrowing",
+        "entity_id": "01a01f0b-012a-7000-8000-000000000277"
+      },
+      {
+        "allocation_key": "scenario/exit-compile-narrowing",
+        "entity_id": "01a01f0b-012b-7000-8000-000000000278"
+      },
+      { "allocation_key": "document/core-modularity-policy", "entity_id": "01a01d86-7c23-71f6-96f1-14a59676157d" },
+      { "allocation_key": "schema/core-modularity-policy", "entity_id": "01a01d86-7c24-7a3e-8f7c-a367ff5ffdc8" },
+      { "allocation_key": "document/public-module-registry", "entity_id": "01a01d86-7c25-7c79-9b5c-f4ca873b3ac1" },
+      { "allocation_key": "schema/public-module-registry", "entity_id": "01a01d86-7c26-7583-97d5-55cd12aaf510" },
+      { "allocation_key": "document/remediation-plan", "entity_id": "01a01d86-7c27-774b-a192-884970b99ad2" },
+      { "allocation_key": "schema/remediation-plan", "entity_id": "01a01d86-7c28-7c7a-b957-1e84d391418b" },
+      { "allocation_key": "requirement/core-public-modularity", "entity_id": "01a01d86-7c29-7696-afb3-f07cc12198b7" },
+      { "allocation_key": "decision/root-plus-derived-direct-subpaths", "entity_id": "01a01d86-7c2a-7903-82a8-bb1aeb388fe9" },
+      { "allocation_key": "risk/public-module-artifact-drift", "entity_id": "01a01d86-7c2b-7930-aaeb-6b40db25d4fb" },
+      { "allocation_key": "family/resultsafe-optional-integrations", "entity_id": "01a01d86-7c2c-7774-a528-a336ab89e32e" },
+      { "allocation_key": "projection/typescript-core-package-surface", "entity_id": "01a01d86-7c2d-736c-b0c6-b0125046c6ea" },
+      { "allocation_key": "wave/core-modularity-and-compatibility-evidence", "entity_id": "01a01d86-7c2e-7720-810a-e7377a4ff382" },
+      { "allocation_key": "task/exact-result-discrimination", "entity_id": "01a01d86-7c35-7523-880a-75b037d0c350" },
+      { "allocation_key": "task/immutable-none-singleton", "entity_id": "01a01d86-7c36-7da7-878e-53097e1b8090" },
+      { "allocation_key": "task/canonical-shared-declarations", "entity_id": "01a01d86-7c37-7db7-94ed-ca32fb904fde" },
+      { "allocation_key": "task/concrete-constructor-branches", "entity_id": "01a01d86-7c38-733f-b166-6bd447d4aa59" },
+      { "allocation_key": "task/stable-extraction-errors", "entity_id": "01a01d86-7c39-7cec-8ef1-c1685788f936" },
+      { "allocation_key": "task/sound-typed-variant-guard", "entity_id": "01a01d86-7c3a-734d-a567-c60d55ace5ba" },
+      { "allocation_key": "task/required-refiner-payload", "entity_id": "01a01d86-7c3b-7c03-bf87-51c3667cdea6" },
+      { "allocation_key": "task/effective-variant-controls", "entity_id": "01a01d86-7c3c-70e6-b2fb-6d3666939553" },
+      { "allocation_key": "task/persistent-matcher-handlers", "entity_id": "01a01d86-7c3d-76c5-8bd1-1e69b8d9243c" },
+      { "allocation_key": "task/strict-matcher-exhaustiveness", "entity_id": "01a01d86-7c3e-7aa5-b26b-fe0f93ac672d" },
+      { "allocation_key": "task/matcher-output-inference", "entity_id": "01a01d86-7c3f-7e72-920f-da1fcfcc2420" },
+      { "allocation_key": "task/consistent-own-properties", "entity_id": "01a01d86-7c40-7f91-a2ff-354847106196" },
+      { "allocation_key": "task/validator-output-projection", "entity_id": "01a01d86-7c41-741c-99e5-625d78ee3a9f" },
+      { "allocation_key": "task/remove-never-sentinel", "entity_id": "01a01d86-7c42-7e66-8aa9-7c0e03495769" },
+      { "allocation_key": "task/sync-async-refiner-parity", "entity_id": "01a01d86-7c43-71c9-b9dd-9feb9df9a22f" },
+      { "allocation_key": "task/clean-release-build", "entity_id": "01a01d86-7c44-7b31-a1ce-9f8bc2b084c2" },
+      { "allocation_key": "task/canonical-contract-corpus", "entity_id": "01a01d86-7c45-7221-a029-a605cd669f69" },
+      { "allocation_key": "task/packed-type-contract-tests", "entity_id": "01a01d86-7c46-7cf8-aa0f-c217986799c1" },
+      { "allocation_key": "task/declare-all-direct-subpaths", "entity_id": "01a01d86-7c47-7844-8492-5f860686265b" },
+      { "allocation_key": "task/prove-core-modularity", "entity_id": "01a01d86-7c48-7a5f-b378-33da84de3720" },
+      { "allocation_key": "task/separate-optional-integrations", "entity_id": "01a01d86-7c49-7798-97f1-da045b2f09c8" },
+      { "allocation_key": "task/qualify-effect-compatibility", "entity_id": "01a01d86-7c4a-7458-8294-fc686c4b1819" },
+      { "allocation_key": "task/qualify-cause-exit-matrix", "entity_id": "01a01d86-a3af-7d57-8404-fcc2585957ee" },
+      { "allocation_key": "document/optional-integrations", "entity_id": "01a01f50-0001-7000-8000-000000000001" },
+      { "allocation_key": "schema/optional-integrations", "entity_id": "01a01f50-0002-7000-8000-000000000002" },
+      { "allocation_key": "requirement/explicit-codec-package-boundary", "entity_id": "01a01f50-0010-7000-8000-000000000010" },
+      { "allocation_key": "requirement/separate-effect-adapter-boundary", "entity_id": "01a01f50-0011-7000-8000-000000000011" },
+      { "allocation_key": "decision/explicit-codecs-separate-package", "entity_id": "01a01f50-0020-7000-8000-000000000020" },
+      { "allocation_key": "decision/effect-runtime-separate-adapter", "entity_id": "01a01f50-0021-7000-8000-000000000021" },
+      { "allocation_key": "risk/implicit-codec-policy", "entity_id": "01a01f50-0030-7000-8000-000000000030" },
+      { "allocation_key": "risk/effect-version-drift", "entity_id": "01a01f50-0031-7000-8000-000000000031" },
+      { "allocation_key": "family/resultsafe-core-fp-codec-json", "entity_id": "01a01f50-0040-7000-8000-000000000040" },
+      { "allocation_key": "family/resultsafe-adapter-core-fp-effect", "entity_id": "01a01f50-0041-7000-8000-000000000041" },
+      { "allocation_key": "projection/explicit-json-codec-integration", "entity_id": "01a01f50-0050-7000-8000-000000000050" },
+      { "allocation_key": "projection/effect-adapter-integration", "entity_id": "01a01f50-0051-7000-8000-000000000051" },
+      { "allocation_key": "integration/explicit-json-codecs", "entity_id": "01a01f50-0060-7000-8000-000000000060" },
+      { "allocation_key": "integration/separate-effect-adapter", "entity_id": "01a01f50-0061-7000-8000-000000000061" },
+      { "allocation_key": "evidence/codec-package-manifest", "entity_id": "01a01f50-0070-7000-8000-000000000070" },
+      { "allocation_key": "evidence/codec-json-vectors", "entity_id": "01a01f50-0071-7000-8000-000000000071" },
+      { "allocation_key": "evidence/codec-vector-tests", "entity_id": "01a01f50-0072-7000-8000-000000000072" },
+      { "allocation_key": "evidence/effect-adapter-package-manifest", "entity_id": "01a01f50-0073-7000-8000-000000000073" },
+      { "allocation_key": "evidence/effect-adapter-runtime-tests", "entity_id": "01a01f50-0074-7000-8000-000000000074" },
+      { "allocation_key": "evidence/effect-adapter-type-contracts", "entity_id": "01a01f50-0075-7000-8000-000000000075" }
+    ],
+    "record_allocation_rule": "Document, schema, requirement, decision, finding, risk, contract, projection, package-family, wave, task, and scenario allocations are persisted in their owning strict documents and indexed by the applicable registries and traceability graph."
+  }
+}

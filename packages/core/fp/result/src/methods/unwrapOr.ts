@@ -1,11 +1,12 @@
 import { isOk } from '../guards/isOk.js';
-import { type Result } from '../types/core/index.js';
+import { type ResultLike } from '../types/core/index.js';
 
 /**
  * Returns the success value or the provided default fallback.
  *
  * @typeParam T - The success value type.
  * @typeParam E - The error value type.
+ * @typeParam U - The fallback value type.
  * @param result - The source `Result`.
  * @param defaultValue - The fallback value for `Err`.
  * @returns The success payload or `defaultValue`.
@@ -20,5 +21,7 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const unwrapOr = <T, E>(result: Result<T, E>, defaultValue: T): T =>
-  isOk(result) ? result.value : defaultValue;
+export const unwrapOr = <T, E, U>(
+  result: ResultLike<T, E>,
+  defaultValue: U,
+): T | U => (isOk(result) ? result.value : defaultValue);

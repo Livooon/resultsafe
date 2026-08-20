@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "ResultSafe typed catalog document",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["items"],
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": { "$ref": "urn:uuid:01a01af6-9802-7bf2-9750-5cce390d59f0" },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

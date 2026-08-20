@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9806-7d4a-ae6a-90728c600f68",
+  "title": "ResultSafe document registry",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["documents"],
+          "properties": {
+            "documents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["document_id", "document_ref", "document_key", "document_type", "path", "schema_ref"],
+                "properties": {
+                  "document_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+                  "document_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+                  "document_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+                  "document_type": { "type": "string", "minLength": 3 },
+                  "path": { "type": "string", "pattern": "^(?![A-Za-z]:)(?!/)(?!.*\\.\\.).+\\.json$" },
+                  "schema_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }
+                }
+              },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

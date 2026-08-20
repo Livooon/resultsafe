@@ -1,6 +1,6 @@
 import { isOk } from '../guards/isOk.js';
 import { None, Some } from '../internal/option.js';
-import { type Option, type Result } from '../types/core/index.js';
+import { type Option, type ResultLike } from '../types/core/index.js';
 
 /**
  * Extracts the success branch as an `Option`.
@@ -20,5 +20,5 @@ import { type Option, type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const ok = <T, E>(result: Result<T, E>): Option<T> =>
+export const ok = <T, E>(result: ResultLike<T, E>): Option<T> =>
   isOk(result) ? Some(result.value) : None;

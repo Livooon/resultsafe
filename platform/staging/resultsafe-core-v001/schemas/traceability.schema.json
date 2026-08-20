@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9808-7ece-ac83-2f765ba0b9c3",
+  "title": "ResultSafe traceability matrix",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["links"],
+          "properties": {
+            "links": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["source_ref", "relation", "target_ref"],
+                "properties": {
+                  "source_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+                  "relation": { "enum": ["EVIDENCES", "IDENTIFIES", "ADDRESSED_BY", "GOVERNS", "HAS_SCENARIO", "SPECIFIED_BY", "VERIFIED_BY", "PROJECTED_AS", "PLANNED_FOR", "IMPLEMENTED_BY", "MITIGATES", "MIGRATES", "RESPONDS_TO"] },
+                  "target_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }
+                }
+              },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,4 +1,23 @@
-import type { Result } from '../types/core/index.js';
+import { createOk } from '../internal/resultValue.js';
+import type { ResultMethods } from '../types/core/ResultMethods.js';
+
+/**
+ * Represents the concrete success branch of a Result.
+ *
+ * @typeParam T - The success payload type.
+ * @since 0.3.0
+ * @example
+ * ```ts
+ * import { Ok, type Ok as OkType } from '@resultsafe/core-fp-result';
+ *
+ * const result: OkType<number> = Ok(1);
+ * ```
+ * @public
+ */
+export type Ok<T> = ResultMethods<T, never> & {
+  readonly ok: true;
+  readonly value: T;
+};
 
 /**
  * Creates a successful `Result` value from the provided payload.
@@ -18,5 +37,4 @@ import type { Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const Ok = <T, E = never>(value: T): Result<T, E> =>
-  ({ ok: true, value }) as const;
+export const Ok = <T, _E = never>(value: T): Ok<T> => createOk<T>(value);

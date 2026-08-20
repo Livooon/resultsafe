@@ -1,0 +1,394 @@
+{
+  "document_id": "01a01af6-3bb3-70c9-87cc-da17cb6c9207",
+  "document_ref": "urn:uuid:01a01af6-3bb3-70c9-87cc-da17cb6c9207",
+  "document_key": "decisions",
+  "document_type": "decision_catalog",
+  "document_revision": 6,
+  "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "ResultSafe Core architecture decisions",
+  "summary": "Binding architecture decisions reached during the independent audit and ResultSafe platform design session.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "items": [
+      {
+        "record_id": "01a01af6-3bd6-74f9-9072-cf849ba19c54",
+        "record_ref": "urn:uuid:01a01af6-3bd6-74f9-9072-cf849ba19c54",
+        "record_key": "independent-resultsafe-canon",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-001",
+        "title": "Independent ResultSafe canon",
+        "status": "DRAFT",
+        "decision": "ResultSafe owns an independent canonical contract corpus and integrates with AASDVGS only through separately governed admission.",
+        "rationale": "This preserves ResultSafe language neutrality and avoids claiming authority from a staged external kernel candidate.",
+        "consequences": [
+          "AASDVGS admission is a projection",
+          "External publication IDs are not minted locally",
+          "ResultSafe releases remain independently versioned"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bd1-7b0c-a869-02436ab201e6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd7-70ec-af32-e69924e243bd",
+        "record_ref": "urn:uuid:01a01af6-3bd7-70ec-af32-e69924e243bd",
+        "record_key": "neutral-algebra-language-projections",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-002",
+        "title": "Neutral algebra with projections",
+        "status": "DRAFT",
+        "decision": "Canonical Result uses SUCCESS and FAILURE semantics while TypeScript, Python, and AASDVGS define distinct strict representations.",
+        "rationale": "Wire field names and runtime classes are language or integration choices rather than universal algebra.",
+        "consequences": [
+          "TypeScript retains ok/value/error",
+          "Python may use immutable classes",
+          "AASDVGS may constrain failure payloads"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc3-7dfa-b67d-335a5f0cd5f0",
+          "urn:uuid:01a01af6-3bcc-777e-965c-7d80519b8fb9"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd8-7adc-8841-6fb4971bdedc",
+        "record_ref": "urn:uuid:01a01af6-3bd8-7adc-8841-6fb4971bdedc",
+        "record_key": "standards-first-identifiers",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-003",
+        "title": "Standards-first identifiers",
+        "status": "DRAFT",
+        "decision": "Internal entity IDs use UUIDv7, public handles use UUIDv4 only when required, and canonical references use absolute URIs.",
+        "rationale": "RFC-defined formats prevent proprietary identity encodings and preserve interoperability.",
+        "consequences": [
+          "Semantic names use key fields",
+          "UUIDv7 never establishes authority or chronology",
+          "Custom ph prefixes are excluded"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc2-7fde-9c13-4c7bbfbff082"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd9-78b4-9b82-c46f6d0b373f",
+        "record_ref": "urn:uuid:01a01af6-3bd9-78b4-9b82-c46f6d0b373f",
+        "record_key": "json-is-canonical-authority",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-004",
+        "title": "JSON canonical authority",
+        "status": "DRAFT",
+        "decision": "Strict canonical JSON and JSON Schema are authoritative; Markdown, source code, SQLite, and generated documentation are projections or evidence.",
+        "rationale": "Reviewable deterministic text prevents binary authority and bidirectional synchronization conflicts.",
+        "consequences": [
+          "No reverse writes from SQLite",
+          "Documentation is generated",
+          "Contract releases carry JCS digests"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcc-777e-965c-7d80519b8fb9",
+          "urn:uuid:01a01af6-3bd3-7038-9938-4856c182b705"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bda-7e27-9403-79d97b2760d9",
+        "record_ref": "urn:uuid:01a01af6-3bda-7e27-9403-79d97b2760d9",
+        "record_key": "separate-package-families",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-005",
+        "title": "Separate package families",
+        "status": "DRAFT",
+        "decision": "Contracts, language runtimes, storage projections, projection compilers, and integration adapters use separate package families.",
+        "rationale": "Separate ownership and release cadence prevent a runtime implementation from becoming platform authority.",
+        "consequences": [
+          "No empty Python family",
+          "SQLite profile is independent from compiler language",
+          "Each family has independent integrity evidence"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcc-777e-965c-7d80519b8fb9"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bdb-7cf3-861c-69d6ef2aa7ff",
+        "record_ref": "urn:uuid:01a01af6-3bdb-7cf3-861c-69d6ef2aa7ff",
+        "record_key": "database-is-storage-projection",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-006",
+        "title": "Database is a storage projection",
+        "status": "DRAFT",
+        "decision": "Database representations are platform storage projections and are not attached to TypeScript, Python, or another language runtime.",
+        "rationale": "A compiler implementation language must not redefine projection semantics or ownership.",
+        "consequences": [
+          "Relational mapping is language-neutral",
+          "Compiler parity can be tested",
+          "Database artifacts remain derived"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcd-7607-8595-34914a264366"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bdc-72bd-8da6-8af733f4b5c2",
+        "record_ref": "urn:uuid:01a01af6-3bdc-72bd-8da6-8af733f4b5c2",
+        "record_key": "sqlite-derived-release-artifact",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-007",
+        "title": "SQLite derived release artifact",
+        "status": "DRAFT",
+        "decision": "SQLite is a vendor profile over the relational projection and generated databases are versioned release artifacts, never Git authority.",
+        "rationale": "Binary databases are unsuitable for canonical review but valuable as verified query read models.",
+        "consequences": [
+          "Schema and migrations are reviewed",
+          "Logical dumps establish determinism",
+          "Tenant operational overlays remain separate"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bce-7dcd-a0ad-ff33d500f058"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bdd-7d12-aa57-9a3fe163224f",
+        "record_ref": "urn:uuid:01a01af6-3bdd-7d12-aa57-9a3fe163224f",
+        "record_key": "stabilize-typescript-not-rewrite-platform",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-008",
+        "title": "Targeted TypeScript stabilization",
+        "status": "DRAFT",
+        "decision": "Stabilize the complete Result package boundary and directly duplicated dependencies without rewriting unrelated TypeScript platform modules.",
+        "rationale": "The smallest correct boundary is the Result family plus its concrete shared type and Option interoperability obligations.",
+        "consequences": [
+          "Existing TS representation remains",
+          "Unrelated FP modules require separate audits",
+          "Breaking fixes are published explicitly"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcf-7eec-9f22-531d9b07369c"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bde-7d19-a30c-860cab578407",
+        "record_ref": "urn:uuid:01a01af6-3bde-7d19-a30c-860cab578407",
+        "record_key": "schema-driven-refiners",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-009",
+        "title": "Schema-driven refiners",
+        "status": "DRAFT",
+        "decision": "Refiners use explicit runtime validation evidence, own-field rules, required payload presence, and typed validator output rather than erased generics.",
+        "rationale": "A type guard cannot safely assert information unavailable at runtime.",
+        "consequences": [
+          "isTypedVariantOf changes signature",
+          "strictFields and forbidden become effective",
+          "Legacy never sentinel is projection-only deprecated input"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6",
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bdf-7ed6-bcf3-9ffb6969e467",
+        "record_ref": "urn:uuid:01a01af6-3bdf-7ed6-bcf3-9ffb6969e467",
+        "record_key": "immutable-matcher-builder",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-010",
+        "title": "Immutable matcher builder",
+        "status": "DRAFT",
+        "decision": "Both matchers use one immutable accumulated handler state and strict run availability is based on an empty remaining-variant set.",
+        "rationale": "The current nested closures lose handlers and the conditional type tests only membership rather than exhaustiveness.",
+        "consequences": [
+          "Arbitrary chain length works",
+          "Duplicate handlers are excluded",
+          "Handler result types accumulate"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3be0-7cad-a917-18cfa7aae4df",
+        "record_ref": "urn:uuid:01a01af6-3be0-7cad-a917-18cfa7aae4df",
+        "record_key": "separate-npm-contracts-runtime",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-011",
+        "title": "Separate npm contracts and runtime",
+        "status": "DRAFT",
+        "decision": "Publish canonical contract artifacts and the TypeScript runtime as separate npm packages linked by release reference and digest.",
+        "rationale": "Npm is a distribution channel and runtime users should not acquire registry tooling or database dependencies.",
+        "consequences": [
+          "Contracts package contains JSON artifacts",
+          "Runtime remains zero-dependency",
+          "Runtime metadata pins contract release digest"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bd4-7a1b-9c93-0bbc2a3ea2ab"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3be1-702a-990e-c7eec6cba89b",
+        "record_ref": "urn:uuid:01a01af6-3be1-702a-990e-c7eec6cba89b",
+        "record_key": "governed-aasdvgs-admission",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-012",
+        "title": "Governed AASDVGS admission",
+        "status": "DRAFT",
+        "decision": "ResultSafe prepares an admission dossier but performs no AASDVGS authority mutation without separately approved governed work.",
+        "rationale": "The active AASDVGS work scope and staged kernel candidate do not authorize a new ResultSafe package family.",
+        "consequences": [
+          "No writes to E:/AASDVGS staging",
+          "No local AASDVGS publication identity",
+          "Admission remains an external lifecycle"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bd1-7b0c-a869-02436ab201e6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3be2-71e9-a1d3-2edfb252e967",
+        "record_ref": "urn:uuid:01a01af6-3be2-71e9-a1d3-2edfb252e967",
+        "record_key": "defer-security-long-tests",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-013",
+        "title": "Defer security and long-running tests",
+        "status": "DRAFT",
+        "decision": "Security hardening and long-running tests are deferred and MUST NOT run without an explicit owner command.",
+        "rationale": "The owner standing decision remains mandatory while normal fast correctness and integrity checks remain permitted.",
+        "consequences": [
+          "Deferred scenarios stay DEFERRED",
+          "No automatic scheduling",
+          "NOT_EXECUTED is never promoted to PASS"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bd5-7ea8-a72c-f9f579604274"
+        ]
+      },
+      {
+        "record_id": "01a01d13-0738-7d5f-810e-9e912c13da97",
+        "record_ref": "urn:uuid:01a01d13-0738-7d5f-810e-9e912c13da97",
+        "record_key": "adopt-optional-structured-failure",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-014",
+        "title": "Adopt optional structured Failure",
+        "status": "IMPLEMENTED",
+        "decision": "Provide Failure as an explicit portable payload with required schema_version and absolute-URI code while Result<T,E>, Err<E>, and FailureData<E> remain generic.",
+        "rationale": "Comparative evidence favors generic error channels, while interoperability and security require an available strict structure at selected boundaries.",
+        "consequences": [
+          "Existing arbitrary E values remain valid",
+          "Strict integration profiles may require Failure",
+          "Message remains optional presentation",
+          "AASDVGS admission remains external"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01d13-0738-783c-b464-18caa6e24175"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01d13-0738-787d-8787-c262a1322083"
+        ]
+      },
+      {
+        "record_id": "01a01f0b-0020-7000-8000-000000000020",
+        "record_ref": "urn:uuid:01a01f0b-0020-7000-8000-000000000020",
+        "record_key": "optional-cause-exit-models",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-015",
+        "title": "Optional Cause and Exit models",
+        "status": "DRAFT",
+        "decision": "Adopt separate Cause and Exit canonical models without changing generic Result, Err, or the neutral Result operation surface.",
+        "rationale": "The audit winner preserves complete failure topology while retaining every previously valid generic Result error and success value.",
+        "consequences": [
+          "Cause and Exit remain opt-in",
+          "Binary grouping and order are normative",
+          "Result operation count remains 23"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01f0b-0010-7000-8000-000000000010",
+          "urn:uuid:01a01f0b-0011-7000-8000-000000000011"
+        ]
+      },
+      {
+        "record_id": "01a01f0b-0021-7000-8000-000000000021",
+        "record_ref": "urn:uuid:01a01f0b-0021-7000-8000-000000000021",
+        "record_key": "semantic-effect-compatibility-only",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-016",
+        "title": "Semantic Effect compatibility only",
+        "status": "DRAFT",
+        "decision": "Describe Effect compatibility as explicit semantic mappings and never as runtime, wire-format, identity, or dependency compatibility.",
+        "rationale": "Effect concepts provide useful semantic correspondence but external runtime identities and representations are not portable ResultSafe values.",
+        "consequences": [
+          "Loss must be explicit",
+          "TypeScript and Python projections are independently qualified",
+          "No Effect runtime dependency enters core"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01f0b-0012-7000-8000-000000000012"
+        ]
+      },
+      {
+        "record_id": "01a01d86-7c2a-7903-82a8-bb1aeb388fe9",
+        "record_ref": "urn:uuid:01a01d86-7c2a-7903-82a8-bb1aeb388fe9",
+        "record_key": "root-plus-derived-direct-subpaths",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-017",
+        "title": "Root plus derived direct subpaths",
+        "status": "DRAFT",
+        "decision": "Expose every intended TypeScript core public module through the root and a stable direct subpath whose artifact targets follow one normative source-to-artifact derivation rule.",
+        "rationale": "A single derivation prevents hand-maintained dist path drift while direct imports preserve modular consumption and tree-shaking.",
+        "consequences": [
+          "The public module registry is authoritative for intended module membership",
+          "UMD remains a root-only browser bundle",
+          "Packed-artifact proof is mandatory before a conformance claim",
+          "Result remains exactly 23 neutral operations and 88 matrix cells"
+        ],
+        "requirement_refs": [
+          "urn:uuid:01a01d86-7c29-7696-afb3-f07cc12198b7"
+        ]
+      },
+      {
+        "record_id": "01a01f50-0020-7000-8000-000000000020",
+        "record_ref": "urn:uuid:01a01f50-0020-7000-8000-000000000020",
+        "record_key": "explicit-codecs-separate-package",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-018",
+        "title": "Explicit codecs in a separate package",
+        "status": "IMPLEMENTED",
+        "decision": "Implement portable Cause and Exit JSON codecs only in @resultsafe/core-fp-codec-json and keep codec operations absent from the core package dependency graph.",
+        "rationale": "Serialization policy is boundary-specific and must not become an implicit representation or mandatory runtime cost for generic Result consumers.",
+        "consequences": ["Codec invocation is explicit", "Valid and malformed vectors are governed", "Core retains zero dependency on the codec package", "Final packed qualification remains separate"],
+        "requirement_refs": ["urn:uuid:01a01f50-0010-7000-8000-000000000010"]
+      },
+      {
+        "record_id": "01a01f50-0021-7000-8000-000000000021",
+        "record_ref": "urn:uuid:01a01f50-0021-7000-8000-000000000021",
+        "record_key": "effect-runtime-separate-adapter",
+        "record_revision": 0,
+        "kind": "decision",
+        "code": "RS-DEC-019",
+        "title": "Effect runtime in a separate adapter",
+        "status": "IMPLEMENTED",
+        "decision": "Make @resultsafe/adapter-core-fp-effect the sole mapping authority for executable Effect interoperability, with Effect 3.22.1 as the exact supported peer version.",
+        "rationale": "A separate package preserves the zero-dependency core while allowing executable version-specific mappings without claiming representation identity.",
+        "consequences": ["Core has no Effect dependency", "Effect compatibility is version-specific", "The adapter owns executable mapping evidence", "Exact effect@3.22.1 is QUALIFIED_LOCAL_SNAPSHOT by PASS_LOCAL_ATOMIC evidence and is not release-approved"],
+        "requirement_refs": ["urn:uuid:01a01f50-0011-7000-8000-000000000011"]
+      }
+    ]
+  }
+}

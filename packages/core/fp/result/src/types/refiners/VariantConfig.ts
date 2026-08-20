@@ -19,8 +19,11 @@
  * @since 0.1.8
  * @public
  */
+/** @deprecated Use an empty payload key array (`[]`) instead. */
+type LegacyEmptyPayload = 'never';
+
 export interface VariantConfig {
-  readonly payload: 'never' | string | readonly string[];
-  readonly forbidden?: string | undefined;
+  readonly payload: LegacyEmptyPayload | string | readonly string[];
+  readonly forbidden?: string | readonly string[] | undefined;
   readonly strictFields?: boolean | undefined;
 }

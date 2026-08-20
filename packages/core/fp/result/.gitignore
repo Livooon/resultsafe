@@ -1,2 +1,5 @@
 docs/api/**
 !docs/api/_category_.json
+src/**/*.js
+src/**/*.d.ts
+src/**/*.d.ts.map

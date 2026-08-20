@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0b-0000-7000-8000-000000000001",
+  "title": "ResultSafe exact-artifact Cause and Exit conformance evidence",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "document_key": { "const": "cause-exit-conformance-matrix" },
+        "document_type": { "const": "cause_exit_conformance_matrix" },
+        "schema_ref": { "const": "urn:uuid:01a01f0b-0000-7000-8000-000000000001" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["matrix_version", "cause_model_ref", "cause_model_revision", "exit_model_ref", "exit_model_revision", "projection_catalog_ref", "projection_catalog_revision", "run_id", "cells", "aggregate"],
+          "properties": {
+            "matrix_version": { "const": "2.0.0" },
+            "cause_model_ref": { "const": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4" },
+            "cause_model_revision": { "type": "integer", "minimum": 0 },
+            "exit_model_ref": { "const": "urn:uuid:01a01f0a-da02-77d4-982f-7251ea78e989" },
+            "exit_model_revision": { "type": "integer", "minimum": 0 },
+            "projection_catalog_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+            "projection_catalog_revision": { "type": "integer", "minimum": 0 },
+            "run_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+            "cells": { "type": "array", "minItems": 16, "maxItems": 16, "items": { "$ref": "#/$defs/cell" } },
+            "aggregate": {
+              "type": "object", "additionalProperties": false,
+              "required": ["total", "passed", "failed", "status"],
+              "properties": {
+                "total": { "const": 16 }, "passed": { "type": "integer", "minimum": 0, "maximum": 16 },
+                "failed": { "type": "integer", "minimum": 0, "maximum": 16 }, "status": { "enum": ["PASS", "FAIL"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "outcome": { "type": "object", "minProperties": 2, "additionalProperties": { "type": "boolean" } },
+    "cell": {
+      "type": "object", "additionalProperties": false,
+      "required": ["cell_key", "target_key", "model_key", "variant", "cause_model_revision", "exit_model_revision", "projection_catalog_revision", "projection_revision", "artifact", "run_id", "scenario_refs", "expected_semantic_outcome", "actual_semantic_outcome", "runtime_disposition", "type_disposition", "type_evidence", "status"],
+      "properties": {
+        "cell_key": { "type": "string", "pattern": "^(typescript|python):(Empty|Fail|Die|Interrupt|Sequential|Parallel|Success|Failure)$" },
+        "target_key": { "enum": ["typescript", "python"] }, "model_key": { "enum": ["cause", "exit"] },
+        "variant": { "enum": ["Empty", "Fail", "Die", "Interrupt", "Sequential", "Parallel", "Success", "Failure"] },
+        "cause_model_revision": { "type": "integer", "minimum": 0 }, "exit_model_revision": { "type": "integer", "minimum": 0 },
+        "projection_catalog_revision": { "type": "integer", "minimum": 0 }, "projection_revision": { "type": "integer", "minimum": 0 },
+        "artifact": {
+          "type": "object", "additionalProperties": false, "required": ["kind", "sha256"],
+          "properties": { "kind": { "enum": ["typescript-tarball", "python-wheel"] }, "sha256": { "$ref": "#/$defs/digest" } }
+        },
+        "run_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+        "scenario_refs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" } },
+        "expected_semantic_outcome": { "$ref": "#/$defs/outcome" }, "actual_semantic_outcome": { "$ref": "#/$defs/outcome" },
+        "runtime_disposition": { "enum": ["PASS", "FAIL"] }, "type_disposition": { "enum": ["PASS", "FAIL", "NOT_APPLICABLE"] }, "type_evidence": { "type": "string", "minLength": 20 },
+        "status": { "enum": ["PASS", "FAIL"] }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

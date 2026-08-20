@@ -15,4 +15,12 @@ describe('constructors/Ok', () => {
       expect(result.value).toBe(value);
     }
   });
+
+  it('shallow-freezes the wrapper without freezing the payload', () => {
+    const value = { id: '1' };
+    const result = Ok(value);
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(value)).toBe(false);
+  });
 });

@@ -11,6 +11,7 @@ node_modules/
 ########################################
 build/
 **/build/
+!core/fp/result/__scripts__/build/
 dist/
 **/dist/
 .lock-wscript

@@ -13,8 +13,13 @@ const config: Config = {
   organizationName: 'resultsafe',
   projectName: 'resultsafe',
 
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'throw',
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
@@ -28,6 +33,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/Livooon/resultsafe/tree/main/docs/',
+          exclude: ['api/**'],
         },
         blog: false,
         theme: {
@@ -66,7 +72,7 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/docs/introduction/01-overview',
+              to: '/docs/introduction/introduction/01-overview',
             },
             {
               label: 'Examples',

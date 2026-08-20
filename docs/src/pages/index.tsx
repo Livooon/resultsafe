@@ -20,7 +20,7 @@ const packages: PackageCard[] = [
     version: '0.2.1',
     description:
       'Functional Result type for TypeScript with explicit error handling. Rust-style Result with zero dependencies.',
-    path: '/packages/core-fp-result/introduction/01-overview',
+    path: '/docs/introduction/introduction/01-overview',
     emoji: '🎯',
     tags: ['Functional', 'Type-Safe', 'Zero Dependencies'],
     status: 'stable',
@@ -30,7 +30,7 @@ const packages: PackageCard[] = [
     version: '0.1.0',
     description:
       'Functional Option type for nullable values. Safe handling of optional values.',
-    path: '/packages/core-fp-option',
+    path: '#',
     emoji: '❓',
     tags: ['Functional', 'Optional', 'Type-Safe'],
     status: 'dev',
@@ -39,7 +39,7 @@ const packages: PackageCard[] = [
     name: '@resultsafe/core-fp-either',
     version: '0.1.0',
     description: 'Functional Either type for sum types and union handling.',
-    path: '/packages/core-fp-either',
+    path: '#',
     emoji: '⚖️',
     tags: ['Functional', 'Sum Types', 'Union'],
     status: 'dev',
@@ -49,7 +49,7 @@ const packages: PackageCard[] = [
     version: '0.1.0',
     description:
       'Utility functions and helpers for functional programming patterns.',
-    path: '/packages/utils',
+    path: '#',
     emoji: '🔧',
     tags: ['Utilities', 'Helpers', 'FP'],
     status: 'beta',
@@ -59,7 +59,7 @@ const packages: PackageCard[] = [
     version: '0.1.0',
     description:
       'ESLint plugin with custom rules for ResultSafe patterns and best practices.',
-    path: '/packages/eslint-plugin',
+    path: '#',
     emoji: '🔍',
     tags: ['Linting', 'Quality', 'Automation'],
     status: 'beta',
@@ -69,7 +69,7 @@ const packages: PackageCard[] = [
     version: '0.1.0',
     description:
       'Command-line interface for ResultSafe tools, generators, and utilities.',
-    path: '/packages/cli',
+    path: '#',
     emoji: '💻',
     tags: ['CLI', 'Tools', 'Automation'],
     status: 'dev',
@@ -135,7 +135,7 @@ function QuickLinks() {
             <div className={styles.quickLink}>
               <span className={styles.quickLinkEmoji}>📚</span>
               <h4>Documentation</h4>
-              <Link to="/packages/core-fp-result/introduction/01-overview">
+              <Link to="/docs/introduction/introduction/01-overview">
                 Get Started →
               </Link>
             </div>
@@ -144,14 +144,14 @@ function QuickLinks() {
             <div className={styles.quickLink}>
               <span className={styles.quickLinkEmoji}>📦</span>
               <h4>Examples</h4>
-              <Link to="/packages/core-fp-result/examples">51 Examples →</Link>
+              <Link to="/docs/examples/">51 Examples →</Link>
             </div>
           </div>
           <div className="col col--3">
             <div className={styles.quickLink}>
               <span className={styles.quickLinkEmoji}>🔧</span>
               <h4>API Reference</h4>
-              <Link to="/packages/core-fp-result/api/core-fp-result">
+              <Link to="/docs/introduction/introduction/package-readme">
                 View API →
               </Link>
             </div>
@@ -232,13 +232,13 @@ export default function Home() {
           <div className={styles.heroButtons}>
             <Link
               className="button button--primary button--lg"
-              to="/packages/core-fp-result/introduction/01-overview"
+              to="/docs/introduction/introduction/01-overview"
             >
               Get Started 🎯
             </Link>
             <Link
               className="button button--outline button--secondary button--lg"
-              to="/packages/core-fp-result/examples"
+              to="/docs/examples/"
             >
               Browse Examples 📚
             </Link>

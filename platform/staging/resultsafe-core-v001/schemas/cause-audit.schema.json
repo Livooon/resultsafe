@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0a-da04-7b65-91c4-77b96153b6ab",
+  "title": "ResultSafe Cause and Exit architecture audit",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "document_key": { "const": "cause-audit" },
+        "document_type": { "const": "architecture_audit" },
+        "schema_ref": { "const": "urn:uuid:01a01f0a-da04-7b65-91c4-77b96153b6ab" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["audit_version", "question", "methodology", "official_source_practices", "criteria", "options", "interpretations", "conclusion", "limitations"],
+          "properties": {
+            "audit_version": { "const": "1.0.0" },
+            "question": { "type": "string", "minLength": 20 },
+            "methodology": { "$ref": "#/$defs/statements" },
+            "official_source_practices": { "type": "array", "items": { "$ref": "#/$defs/practice" }, "minItems": 20 },
+            "criteria": { "type": "array", "prefixItems": [
+              { "$ref": "#/$defs/resultCompatibilityCriterion" },
+              { "$ref": "#/$defs/semanticFidelityCriterion" },
+              { "$ref": "#/$defs/portabilityCriterion" },
+              { "$ref": "#/$defs/safetyCriterion" },
+              { "$ref": "#/$defs/ergonomicsCriterion" },
+              { "$ref": "#/$defs/ecosystemCriterion" }
+            ], "items": false, "minItems": 6, "maxItems": 6 },
+            "options": { "type": "array", "items": { "$ref": "#/$defs/option" }, "minItems": 4, "maxItems": 4 },
+            "interpretations": { "$ref": "#/$defs/statements" },
+            "conclusion": { "$ref": "#/$defs/conclusion" },
+            "limitations": { "$ref": "#/$defs/statements" }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "statements": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true },
+    "practice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["practice_key", "product", "official_url", "source_kind", "observation"],
+      "properties": {
+        "practice_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "product": { "type": "string", "minLength": 1 },
+        "official_url": { "type": "string", "format": "uri" },
+        "source_kind": { "enum": ["FORMAL_API", "FORMAL_GUIDE", "PUBLIC_DRAFT", "LANGUAGE_REFERENCE", "LANGUAGE_STANDARD"] },
+        "observation": { "type": "string", "minLength": 20 }
+      }
+    },
+    "criterionBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion_key", "weight", "measurement"],
+      "properties": {
+        "criterion_key": { "type": "string" },
+        "weight": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+        "measurement": { "type": "string", "minLength": 10 }
+      }
+    },
+    "resultCompatibilityCriterion": { "allOf": [{ "$ref": "#/$defs/criterionBase" }, { "type": "object", "properties": { "criterion_key": { "const": "result-compatibility" }, "weight": { "const": 30 } } }] },
+    "semanticFidelityCriterion": { "allOf": [{ "$ref": "#/$defs/criterionBase" }, { "type": "object", "properties": { "criterion_key": { "const": "semantic-fidelity" }, "weight": { "const": 20 } } }] },
+    "portabilityCriterion": { "allOf": [{ "$ref": "#/$defs/criterionBase" }, { "type": "object", "properties": { "criterion_key": { "const": "portability" }, "weight": { "const": 15 } } }] },
+    "safetyCriterion": { "allOf": [{ "$ref": "#/$defs/criterionBase" }, { "type": "object", "properties": { "criterion_key": { "const": "safety" }, "weight": { "const": 15 } } }] },
+    "ergonomicsCriterion": { "allOf": [{ "$ref": "#/$defs/criterionBase" }, { "type": "object", "properties": { "criterion_key": { "const": "ergonomics" }, "weight": { "const": 10 } } }] },
+    "ecosystemCriterion": { "allOf": [{ "$ref": "#/$defs/criterionBase" }, { "type": "object", "properties": { "criterion_key": { "const": "ecosystem-alignment" }, "weight": { "const": 10 } } }] },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result-compatibility", "semantic-fidelity", "portability", "safety", "ergonomics", "ecosystem-alignment"],
+      "properties": {
+        "result-compatibility": { "type": "number", "minimum": 0, "maximum": 100 },
+        "semantic-fidelity": { "type": "number", "minimum": 0, "maximum": 100 },
+        "portability": { "type": "number", "minimum": 0, "maximum": 100 },
+        "safety": { "type": "number", "minimum": 0, "maximum": 100 },
+        "ergonomics": { "type": "number", "minimum": 0, "maximum": 100 },
+        "ecosystem-alignment": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["option_key", "scores", "weighted_total", "benefits", "costs"],
+      "properties": {
+        "option_key": { "enum": ["NO_CAUSE_MODEL", "OPTIONAL_FLAT_MODEL", "OPTIONAL_BINARY_SEMANTIC_MODEL", "MANDATORY_RESULT_REPLACEMENT"] },
+        "scores": { "$ref": "#/$defs/scores" },
+        "weighted_total": { "type": "number", "minimum": 0, "maximum": 100 },
+        "benefits": { "$ref": "#/$defs/statements" },
+        "costs": { "$ref": "#/$defs/statements" }
+      }
+    },
+    "conclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selected_option", "cause_variants", "exit_variants", "compatibility_rule", "status"],
+      "properties": {
+        "selected_option": { "const": "OPTIONAL_BINARY_SEMANTIC_MODEL" },
+        "cause_variants": { "const": ["Empty", "Fail", "Die", "Interrupt", "Sequential", "Parallel"] },
+        "exit_variants": { "const": ["Success", "Failure"] },
+        "compatibility_rule": { "type": "string", "minLength": 20 },
+        "status": { "const": "ACCEPTED_FOR_IMPLEMENTATION" }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

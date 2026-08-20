@@ -18,4 +18,6 @@
  * @since 0.1.8
  * @public
  */
-export type VariantOf<K extends string = string> = { type: K };
+export type VariantOf<K extends string = string> = K extends string
+  ? { type: K }
+  : never;

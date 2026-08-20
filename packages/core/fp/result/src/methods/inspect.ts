@@ -1,5 +1,4 @@
-import { isOk } from '../guards/isOk.js';
-import { type Result } from '../types/core/index.js';
+import { tap } from './tap.js';
 
 /**
  * Performs a side effect for the success value and returns the original `Result`.
@@ -20,12 +19,4 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const inspect = <T, E>(
-  result: Result<T, E>,
-  fn: (value: T) => void,
-): Result<T, E> => {
-  if (isOk(result)) {
-    fn(result.value);
-  }
-  return result;
-};
+export const inspect = tap;

@@ -1,22 +1,21 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "resultsafe-python-monorepo"
+name = "resultsafe"
 version = "0.1.0"
-description = "Python monorepo runtime for ResultSafe Rust-principled FP contracts"
+description = "Typed immutable Result and Option values for Python"
 readme = "packages/python/README.md"
 requires-python = ">=3.11"
 dependencies = []
 
 [project.optional-dependencies]
 dev = [
-  "pytest>=8.3.0",
-  "hypothesis>=6.120.0",
-  "mypy>=1.11.0",
-  "pyarrow>=18.0.0",
-  "psycopg[binary]>=3.3.0",
+  "pytest==8.4.2",
+  "hypothesis==6.165.10",
+  "mypy==1.18.2",
+  "build==1.3.0",
 ]
 
 [tool.setuptools]
@@ -25,10 +24,12 @@ package-dir = {"" = "packages/python/src"}
 [tool.setuptools.packages.find]
 where = ["packages/python/src"]
 
+[tool.setuptools.package-data]
+resultsafe = ["py.typed"]
+
 [tool.pytest.ini_options]
 testpaths = [
   "packages/python/tests",
-  "tools/automation/tests",
 ]
 pythonpath = [
   "packages/python/src",
@@ -43,5 +44,5 @@ show_error_codes = true
 pretty = true
 files = [
   "packages/python/src",
-  "packages/python/tests",
+  "packages/python/typing/positive.py",
 ]

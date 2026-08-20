@@ -21,6 +21,8 @@ export const getPayloadKeys = <C extends VariantConfig>(
   config: C,
 ): readonly PayloadKeys<C>[] => {
   const p = config.payload;
+  // `never` was the pre-0.3 empty-payload sentinel. Keep accepting persisted
+  // or untyped configuration while [] is the canonical typed representation.
   if (p === 'never') return [];
   return (Array.isArray(p) ? p : [p]) as readonly PayloadKeys<C>[];
 };

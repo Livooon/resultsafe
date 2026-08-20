@@ -1,0 +1,25 @@
+{
+  "document_id": "01a01af6-3bb6-7131-8d12-a1527f08bbd0",
+  "document_ref": "urn:uuid:01a01af6-3bb6-7131-8d12-a1527f08bbd0",
+  "document_key": "standards-catalog",
+  "document_type": "standards_catalog",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "ResultSafe normative standards catalog",
+  "summary": "External standards governing identity, references, canonical JSON, schemas, semantic versioning, SQLite, and identifier authorization boundaries.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-19T00:00:00Z",
+  "payload": {
+    "items": [
+      { "record_id": "01a01aff-5efc-7f6f-96be-857cb591f8e4", "record_ref": "urn:uuid:01a01aff-5efc-7f6f-96be-857cb591f8e4", "record_key": "rfc-9562", "record_revision": 0, "kind": "standard", "code": "RS-STD-001", "title": "RFC 9562 UUIDs", "status": "APPROVED", "standard_ref": "https://www.rfc-editor.org/rfc/rfc9562", "relevance": "Defines canonical UUIDv7 internal identities and UUIDv4 public handle syntax.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5efd-77fa-977f-73349378c01b", "record_ref": "urn:uuid:01a01aff-5efd-77fa-977f-73349378c01b", "record_key": "rfc-3986", "record_revision": 0, "kind": "standard", "code": "RS-STD-002", "title": "RFC 3986 URI", "status": "APPROVED", "standard_ref": "https://www.rfc-editor.org/rfc/rfc3986", "relevance": "Defines absolute resource-reference syntax used by every ref field.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5efe-7517-88f6-fa03b5c5787a", "record_ref": "urn:uuid:01a01aff-5efe-7517-88f6-fa03b5c5787a", "record_key": "rfc-8141", "record_revision": 0, "kind": "standard", "code": "RS-STD-003", "title": "RFC 8141 URN", "status": "APPROVED", "standard_ref": "https://www.rfc-editor.org/rfc/rfc8141", "relevance": "Prevents unregistered custom namespace strings from being claimed as global URNs.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5eff-748e-b6f2-ed0fc70f100e", "record_ref": "urn:uuid:01a01aff-5eff-748e-b6f2-ed0fc70f100e", "record_key": "rfc-8785", "record_revision": 0, "kind": "standard", "code": "RS-STD-004", "title": "RFC 8785 JCS", "status": "APPROVED", "standard_ref": "https://www.rfc-editor.org/rfc/rfc8785", "relevance": "Defines deterministic JSON canonicalization before SHA-256 digest calculation.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5f00-7f2e-8926-514e5f74479a", "record_ref": "urn:uuid:01a01aff-5f00-7f2e-8926-514e5f74479a", "record_key": "json-schema-2020-12", "record_revision": 0, "kind": "standard", "code": "RS-STD-005", "title": "JSON Schema 2020-12", "status": "APPROVED", "standard_ref": "https://json-schema.org/draft/2020-12/schema", "relevance": "Defines structural validation for the canonical machine-readable corpus.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5f01-7ef0-9e0b-c73a7e086ace", "record_ref": "urn:uuid:01a01aff-5f01-7ef0-9e0b-c73a7e086ace", "record_key": "semantic-versioning", "record_revision": 0, "kind": "standard", "code": "RS-STD-006", "title": "Semantic Versioning", "status": "APPROVED", "standard_ref": "https://semver.org/spec/v2.0.0.html", "relevance": "Defines compatibility signaling for contract records, releases, projections, and packages.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5f02-70f1-96c8-bec19aa0f8b1", "record_ref": "urn:uuid:01a01aff-5f02-70f1-96c8-bec19aa0f8b1", "record_key": "sqlite-documentation", "record_revision": 0, "kind": "standard", "code": "RS-STD-007", "title": "SQLite documentation", "status": "APPROVED", "standard_ref": "https://www.sqlite.org/docs.html", "relevance": "Defines STRICT tables, integrity checks, transactions, backup, FTS5, and profile-specific behavior.", "binding": "NORMATIVE" },
+      { "record_id": "01a01aff-5f03-74cd-9c84-b20108f4a7cc", "record_ref": "urn:uuid:01a01aff-5f03-74cd-9c84-b20108f4a7cc", "record_key": "owasp-idor", "record_revision": 0, "kind": "standard", "code": "RS-STD-008", "title": "OWASP IDOR prevention", "status": "APPROVED", "standard_ref": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html", "relevance": "Reinforces that identifiers and public handles never establish authorization or tenant access.", "binding": "GUIDANCE" }
+    ]
+  }
+}

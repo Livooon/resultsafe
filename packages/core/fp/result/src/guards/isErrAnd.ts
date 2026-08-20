@@ -1,5 +1,5 @@
-import { type Result } from '../types/core/index.js';
-import { isErr } from './isErr.js';
+import type { Err } from '../constructors/Err.js';
+import type { ErrLike, Result, ResultLike } from '../types/core/index.js';
 
 /**
  * Checks that the `Result` resulted in an error and satisfies the predicate.
@@ -20,7 +20,25 @@ import { isErr } from './isErr.js';
  * ```
  * @public
  */
-export const isErrAnd = <T, E>(
+export function isErrAnd<T, E, F extends E>(
+  result: Result<T, E>,
+  predicate: (error: E) => error is F,
+): result is Err<F>;
+export function isErrAnd<T, E>(
   result: Result<T, E>,
   predicate: (error: E) => boolean,
-): boolean => isErr(result) && predicate(result.error);
+): result is Err<E>;
+export function isErrAnd<T, E, F extends E>(
+  result: ResultLike<T, E>,
+  predicate: (error: E) => error is F,
+): result is ErrLike<F>;
+export function isErrAnd<T, E>(
+  result: ResultLike<T, E>,
+  predicate: (error: E) => boolean,
+): result is ErrLike<E>;
+export function isErrAnd<T, E>(
+  result: ResultLike<T, E>,
+  predicate: (error: E) => boolean,
+): result is ErrLike<E> {
+  return result.ok === false && predicate(result.error);
+}

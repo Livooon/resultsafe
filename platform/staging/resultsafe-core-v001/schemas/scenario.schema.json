@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9809-786e-8c44-eb875991e855",
+  "title": "ResultSafe atomic executable conformance scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scenario_id", "scenario_ref", "scenario_key", "scenario_revision", "code", "category", "status", "subject_ref", "objective", "execution", "assertions", "requirement_refs"],
+  "properties": {
+    "scenario_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+    "scenario_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+    "scenario_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "scenario_revision": { "type": "integer", "minimum": 0 },
+    "code": { "type": "string", "pattern": "^RS-SCN-[0-9]{3}$" },
+    "category": { "enum": ["RUNTIME", "COMPILE", "ASYNC", "PACKAGE"] },
+    "status": { "enum": ["NOT_EXECUTED", "PASS", "FAIL"] },
+    "subject_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+    "objective": { "type": "string", "minLength": 12 },
+    "execution": {
+      "oneOf": [
+        { "$ref": "#/$defs/runtimeExecution" },
+        { "$ref": "#/$defs/compileExecution" }
+      ]
+    },
+    "assertions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/assertion" },
+      "minItems": 1
+    },
+    "requirement_refs": {
+      "type": "array",
+      "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "finding_refs": {
+      "type": "array",
+      "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "execution_evidence": { "$ref": "#/$defs/executionEvidence" }
+  },
+  "$defs": {
+    "import": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["module", "names"],
+      "properties": {
+        "module": { "type": "string", "minLength": 1 },
+        "names": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "runtimeExecution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "imports", "fixture_source", "invocation", "capture"],
+      "properties": {
+        "kind": { "const": "RUNTIME" },
+        "imports": { "type": "array", "items": { "$ref": "#/$defs/import" }, "minItems": 1 },
+        "fixture_source": { "type": "string" },
+        "invocation": { "type": "string", "minLength": 1 },
+        "capture": { "enum": ["RETURN_OR_THROW", "AWAIT_RETURN_OR_REJECT"] }
+      }
+    },
+    "compileExecution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "compiler", "source"],
+      "properties": {
+        "kind": { "const": "COMPILE" },
+        "compiler": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["strict", "no_emit", "module_resolution"],
+          "properties": {
+            "strict": { "const": true },
+            "no_emit": { "const": true },
+            "module_resolution": { "const": "NodeNext" }
+          }
+        },
+        "source": { "type": "string", "minLength": 1 }
+      }
+    },
+    "assertion": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operator"],
+          "properties": { "operator": { "enum": ["COMPILES", "DOES_NOT_COMPILE"] } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operator", "actual"],
+          "properties": {
+            "operator": { "enum": ["TRUE", "FALSE", "FROZEN", "THROWS_ON_SET"] },
+            "actual": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operator", "actual", "expected"],
+          "properties": {
+            "operator": { "enum": ["TYPE_EXACT", "STRICT_EQUAL", "DEEP_EQUAL", "SAME_REFERENCE", "INSTANCE_OF", "SEQUENCE_EQUAL"] },
+            "actual": { "type": "string", "minLength": 1 },
+            "expected": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    },
+    "executionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "executed_at", "duration_ms", "subject", "assertions"],
+      "properties": {
+        "run_id": { "type": "string", "pattern": "^[0-9a-f-]{36}$" },
+        "executed_at": { "type": "string", "format": "date-time" },
+        "duration_ms": { "type": "integer", "minimum": 0 },
+        "subject": { "enum": ["PACKED_PACKAGE_RUNTIME", "PACKED_PACKAGE_DECLARATIONS"] },
+        "assertions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["operator", "passed", "detail"],
+            "properties": {
+              "operator": { "type": "string", "minLength": 1 },
+              "passed": { "type": "boolean" },
+              "detail": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

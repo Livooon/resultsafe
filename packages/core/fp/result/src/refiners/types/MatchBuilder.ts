@@ -5,7 +5,7 @@ import type { VariantOf } from './VariantOf.js';
  *
  * @typeParam T - The variant union type.
  * @typeParam R - The return type of the match operation.
- * @typeParam Handled - The union of already handled variant types.
+ * @typeParam Remaining - The union members not yet handled.
  *
  * @example
  * ```ts
@@ -22,12 +22,12 @@ import type { VariantOf } from './VariantOf.js';
  */
 export type MatchBuilder<
   T extends VariantOf,
-  R,
-  Handled extends T['type'] = never,
+  R = never,
+  Remaining extends T = T,
 > = {
-  readonly with: <K extends Exclude<T['type'], Handled>>(
+  readonly with: <K extends Remaining['type'], U>(
     variant: K,
-    fn: (value: Extract<T, { type: K }>) => R,
-  ) => MatchBuilder<T, R, Handled | K>;
-  readonly run: Handled extends T['type'] ? () => R : never;
+    fn: (value: Extract<Remaining, { type: K }>) => U,
+  ) => MatchBuilder<T, R | U, Exclude<Remaining, { type: K }>>;
+  readonly run: [Remaining] extends [never] ? () => R : never;
 };

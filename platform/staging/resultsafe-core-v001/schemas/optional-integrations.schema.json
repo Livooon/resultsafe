@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f50-0002-7000-8000-000000000002",
+  "title": "ResultSafe optional integrations",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "document_key": { "const": "optional-integrations" },
+        "document_type": { "const": "optional_integration_catalog" },
+        "schema_ref": { "const": "urn:uuid:01a01f50-0002-7000-8000-000000000002" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["policy_version", "core_package", "core_dependency_from_integrations", "integration_dependency_from_core", "result_surface_invariant", "packages"],
+          "properties": {
+            "policy_version": { "const": "1.0.0" },
+            "core_package": { "const": "@resultsafe/core-fp-result" },
+            "core_dependency_from_integrations": { "const": "PEER_ONLY" },
+            "integration_dependency_from_core": { "const": "ZERO" },
+            "result_surface_invariant": { "type": "object", "additionalProperties": false, "required": ["operation_count", "matrix_cell_count"], "properties": { "operation_count": { "const": 23 }, "matrix_cell_count": { "const": 88 } } },
+            "packages": { "type": "array", "prefixItems": [{ "$ref": "#/$defs/codec" }, { "$ref": "#/$defs/effect" }], "items": false, "minItems": 2, "maxItems": 2 }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "peer": { "type": "object", "additionalProperties": false, "required": ["package_name", "version", "policy"], "properties": { "package_name": { "type": "string", "minLength": 3 }, "version": { "type": "string", "minLength": 1 }, "policy": { "enum": ["REQUIRED_PEER", "REQUIRED_PEER_EXACT_SUPPORTED_VERSION"] } } },
+    "externalVersion": { "type": "object", "additionalProperties": false, "required": ["package_name", "version"], "properties": { "package_name": { "type": "string", "minLength": 3 }, "version": { "type": "string", "minLength": 1 } } },
+    "evidence": { "type": "object", "additionalProperties": false, "required": ["evidence_id", "evidence_ref", "evidence_key", "kind", "path", "status"], "properties": { "evidence_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "evidence_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "evidence_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" }, "kind": { "enum": ["PACKAGE_MANIFEST", "VECTOR_SET", "EXECUTABLE_TEST", "EXECUTABLE_TEST_SET", "TYPE_CONTRACT"] }, "path": { "type": "string", "pattern": "^packages/adapter/core/fp/(codec/json|effect)/.+" }, "status": { "const": "QUALIFIED_LOCAL_SNAPSHOT" }, "valid_vector_count": { "type": "integer", "minimum": 0 }, "malformed_vector_count": { "type": "integer", "minimum": 0 } } },
+    "atomicEvidence": { "type": "object", "additionalProperties": false, "required": ["parent_run_id", "child_run_id", "child_kind", "child_status", "evidence_artifact_path", "evidence_artifact_sha256", "promotion_blocker"], "properties": { "parent_run_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "child_run_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "child_kind": { "enum": ["json-codec", "effect-adapter"] }, "child_status": { "const": "PASS" }, "evidence_artifact_path": { "type": "string", "pattern": "^\\.resultsafe-candidates/.+/(JSON-CODEC|EFFECT-ADAPTER)-EVIDENCE\\.json$" }, "evidence_artifact_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "promotion_blocker": { "const": "DIRTY_OR_UNCOMMITTED_SOURCE" } } },
+    "package": { "type": "object", "additionalProperties": false, "required": ["integration_id", "integration_ref", "integration_key", "package_name", "package_version", "package_path", "family_ref", "projection_ref", "implementation_status", "peer_dependencies", "supported_external_versions", "exports", "evidence", "qualification_gate", "atomic_evidence"], "properties": { "integration_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "integration_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "integration_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" }, "package_name": { "type": "string" }, "package_version": { "const": "0.1.0" }, "package_path": { "type": "string" }, "family_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "projection_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "implementation_status": { "const": "QUALIFIED_LOCAL_SNAPSHOT" }, "peer_dependencies": { "type": "array", "items": { "$ref": "#/$defs/peer" }, "minItems": 1, "uniqueItems": true }, "supported_external_versions": { "type": "array", "items": { "$ref": "#/$defs/externalVersion" }, "uniqueItems": true }, "exports": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true }, "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" }, "minItems": 3 }, "qualification_gate": { "const": "PASS_LOCAL_ATOMIC" }, "atomic_evidence": { "$ref": "#/$defs/atomicEvidence" } } },
+    "codec": { "allOf": [{ "$ref": "#/$defs/package" }, { "type": "object", "properties": { "package_name": { "const": "@resultsafe/core-fp-codec-json" }, "package_path": { "const": "packages/adapter/core/fp/codec/json" }, "family_ref": { "const": "urn:uuid:01a01f50-0040-7000-8000-000000000040" }, "projection_ref": { "const": "urn:uuid:01a01f50-0050-7000-8000-000000000050" }, "atomic_evidence": { "type": "object", "properties": { "child_kind": { "const": "json-codec" } } } } }] },
+    "effect": { "allOf": [{ "$ref": "#/$defs/package" }, { "type": "object", "properties": { "package_name": { "const": "@resultsafe/adapter-core-fp-effect" }, "package_path": { "const": "packages/adapter/core/fp/effect" }, "family_ref": { "const": "urn:uuid:01a01f50-0041-7000-8000-000000000041" }, "projection_ref": { "const": "urn:uuid:01a01f50-0051-7000-8000-000000000051" }, "supported_external_versions": { "type": "array", "prefixItems": [{ "type": "object", "properties": { "package_name": { "const": "effect" }, "version": { "const": "3.22.1" } } }], "items": false, "minItems": 1, "maxItems": 1 }, "atomic_evidence": { "type": "object", "properties": { "child_kind": { "const": "effect-adapter" } } } } }] }
+  },
+  "unevaluatedProperties": false
+}

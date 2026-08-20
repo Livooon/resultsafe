@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResultSafe pending Option transition policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "transitionState", "package"],
+  "properties": {
+    "$schema": { "const": "./pending-option-transition-policy.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "transitionState": { "const": "PENDING_SEPARATE_RELEASE" },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "directory", "currentVersion", "pendingVersion", "bump"],
+      "properties": {
+        "name": { "const": "@resultsafe/core-fp-option" },
+        "directory": { "const": "packages/core/fp/option" },
+        "currentVersion": { "const": "1.0.0" },
+        "pendingVersion": { "const": "1.0.1" },
+        "bump": { "const": "patch" }
+      }
+    }
+  }
+}

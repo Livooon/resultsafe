@@ -1,39 +1,270 @@
-name: CI Versioning
+name: CI Qualification
 
 on:
   pull_request:
-    branches: ["main"]
+    branches: [main]
   push:
-    branches: ["main"]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      governed_source_sha:
+        description: Exact commit SHA on main to qualify
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qualify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PNPM_VERSION: 10.15.0
 
 jobs:
-  verify-result-release:
-    runs-on: ubuntu-latest
+  authorize-source:
+    runs-on: ubuntu-24.04
+    outputs:
+      source_sha: ${{ steps.authorize.outputs.source_sha }}
+      authorized: ${{ steps.authorize.outputs.authorized }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout protected main history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+      - name: Authorize governed source
+        id: authorize
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_REF: ${{ github.ref }}
+          RUN_SHA: ${{ github.sha }}
+          REQUESTED_SHA: ${{ inputs.governed_source_sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            source_sha="$RUN_SHA"
+            authorized=false
+          elif [[ "$EVENT_NAME" == "push" ]]; then
+            [[ "$EVENT_REF" == "refs/heads/main" ]] || exit 1
+            source_sha="$RUN_SHA"
+            authorized=true
+          else
+            [[ "$EVENT_NAME" == "workflow_dispatch" && "$EVENT_REF" == "refs/heads/main" && "$REQUESTED_SHA" =~ ^[0-9a-f]{40}$ ]] || exit 1
+            git fetch --no-tags origin main
+            git cat-file -e "$REQUESTED_SHA^{commit}"
+            git merge-base --is-ancestor "$REQUESTED_SHA" origin/main
+            source_sha="$REQUESTED_SHA"
+            authorized=true
+          fi
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "authorized=$authorized" >> "$GITHUB_OUTPUT"
 
+  build-candidate:
+    needs: authorize-source
+    runs-on: ubuntu-24.04
+    outputs:
+      candidate_id: ${{ steps.identity.outputs.candidate_id }}
+      manifest_sha256: ${{ steps.candidate.outputs.manifest_sha256 }}
+      tarball_sha256: ${{ steps.candidate.outputs.tarball_sha256 }}
+      source_sha: ${{ needs.authorize-source.outputs.source_sha }}
+      authorized: ${{ needs.authorize-source.outputs.authorized }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.authorize-source.outputs.source_sha }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
         with:
-          version: 10.15.0
-
+          version: ${{ env.PNPM_VERSION }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
-
-      - name: Install dependencies
+      - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
+      - name: Package tests, lint, and types
+        run: pnpm run pkg:result:test && pnpm run pkg:result:lint && pnpm -C packages/core/fp/result run typecheck:contracts
+      - name: Build release distribution once
+        run: pnpm -C packages/core/fp/result run build:release && pnpm -C packages/core/fp/result run check:release:artifacts
+      - name: Create candidate identity
+        if: needs.authorize-source.outputs.authorized == 'true'
+        id: identity
+        env:
+          CANDIDATE_ID: ${{ needs.authorize-source.outputs.source_sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+        run: echo "candidate_id=$CANDIDATE_ID" >> "$GITHUB_OUTPUT"
+      - name: Enforce exact governed Result release
+        if: needs.authorize-source.outputs.authorized == 'true'
+        run: pnpm run release:guard:result
+      - name: Pack exact candidate and supply-chain evidence
+        if: needs.authorize-source.outputs.authorized == 'true'
+        id: candidate
+        env:
+          CANDIDATE_ID: ${{ steps.identity.outputs.candidate_id }}
+          CANDIDATE_DIRECTORY: .resultsafe-candidates/ci
+          RESULTSAFE_SOURCE_SHA: ${{ needs.authorize-source.outputs.source_sha }}
+        run: pnpm run release:candidate:build
+      - name: Upload unqualified candidate
+        if: needs.authorize-source.outputs.authorized == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: candidate-${{ steps.identity.outputs.candidate_id }}
+          path: .resultsafe-candidates/ci/
+          if-no-files-found: error
+          retention-days: 7
 
-      - name: Validate changeset status
-        run: pnpm run changeset:check
+  node-package:
+    needs: build-candidate
+    if: needs.build-candidate.outputs.authorized == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22.13.0, 24]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.build-candidate.outputs.source_sha }}
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Download candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: candidate-${{ needs.build-candidate.outputs.candidate_id }}
+          path: .resultsafe-candidates/ci
+      - name: Verify exact candidate without registry
+        id: verify
+        env:
+          CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
+        run: node tools/release/candidate.mjs verify --directory=.resultsafe-candidates/ci "--candidate-id=$CANDIDATE_ID"
+      - name: Smoke the exact tarball offline
+        run: >-
+          npm install --offline --ignore-scripts --no-package-lock --no-audit
+          --prefix .resultsafe-candidates/smoke "${{ steps.verify.outputs.tarball }}"
+          && node --input-type=module -e
+          "import { Ok } from './.resultsafe-candidates/smoke/node_modules/@resultsafe/core-fp-result/esm/index.js'; if (Ok(7).unwrap() !== 7) process.exit(1)"
 
-      - name: Enforce API changeset policy
-        run: pnpm run changeset:require-for-api
+  contracts-storage-release-tools:
+    needs: build-candidate
+    if: needs.build-candidate.outputs.authorized == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.build-candidate.outputs.source_sha }}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile && python -m pip install -c requirements/qualification.txt -r requirements/qualification.txt
+      - name: Download candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: candidate-${{ needs.build-candidate.outputs.candidate_id }}
+          path: .resultsafe-candidates/ci
+      - name: Verify candidate for contract qualification
+        id: candidate
+        env:
+          CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
+          MANIFEST_SHA256: ${{ needs.build-candidate.outputs.manifest_sha256 }}
+          TARBALL_SHA256: ${{ needs.build-candidate.outputs.tarball_sha256 }}
+        run: >-
+          node tools/release/candidate.mjs verify --directory=.resultsafe-candidates/ci
+          "--candidate-id=$CANDIDATE_ID" "--manifest-sha256=$MANIFEST_SHA256"
+          "--tarball-sha256=$TARBALL_SHA256"
+      - name: Validate contracts and exact-candidate conformance
+        env:
+          RESULTSAFE_QUALIFIED_TARBALL: ${{ steps.candidate.outputs.tarball }}
+        run: pnpm run contracts:validate && pnpm run contracts:conformance && pnpm run contracts:matrix
+      - name: Qualify language source surfaces
+        run: pnpm run languages:qualify
+      - name: Atomic qualification
+        run: pnpm run contracts:integrity && pnpm run qualify:atomic
+      - name: Storage qualification
+        run: pnpm run storage:test && pnpm run storage:qualify
+      - name: Release, workflow, and schema tests
+        env:
+          CHANGESET_BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: pnpm run release:tools:test && pnpm run ci:workflow:test && pnpm run contracts:verify
 
-      - name: Verify release readiness
-        run: pnpm run release:verify
+  python:
+    needs: authorize-source
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.authorize-source.outputs.source_sha }}
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install constrained qualification toolchain
+        run: python -m pip install -c requirements/qualification.txt -r requirements/qualification.txt
+      - name: Qualify Python runtime, typing, and repeated wheel
+        run: python tools/qualify_python.py
+
+  qualify-candidate:
+    needs: [authorize-source, build-candidate, node-package, contracts-storage-release-tools, python]
+    if: needs.authorize-source.outputs.authorized == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout verifier
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ needs.authorize-source.outputs.source_sha }}
+      - name: Download candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: candidate-${{ needs.build-candidate.outputs.candidate_id }}
+          path: .resultsafe-candidates/qualified
+      - name: Final exact-byte verification
+        id: verify
+        env:
+          CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
+          MANIFEST_SHA256: ${{ needs.build-candidate.outputs.manifest_sha256 }}
+          TARBALL_SHA256: ${{ needs.build-candidate.outputs.tarball_sha256 }}
+        run: >-
+          node tools/release/candidate.mjs verify --directory=.resultsafe-candidates/qualified
+           "--candidate-id=$CANDIDATE_ID" "--manifest-sha256=$MANIFEST_SHA256"
+           "--tarball-sha256=$TARBALL_SHA256" "--source-sha=${{ needs.authorize-source.outputs.source_sha }}"
+      - name: Record governed qualification run
+        env:
+          CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
+          RESULTSAFE_SOURCE_SHA: ${{ needs.authorize-source.outputs.source_sha }}
+        run: node tools/release/candidate.mjs record-qualification --directory=.resultsafe-candidates/qualified
+      - name: Record promotion inputs
+        env:
+          CANDIDATE_ID: ${{ needs.build-candidate.outputs.candidate_id }}
+          MANIFEST_SHA256: ${{ needs.build-candidate.outputs.manifest_sha256 }}
+          TARBALL_SHA256: ${{ needs.build-candidate.outputs.tarball_sha256 }}
+        run: printf '### Qualified candidate\n- candidate_id: `%s`\n- manifest_sha256: `%s`\n- tarball_sha256: `%s`\n' "$CANDIDATE_ID" "$MANIFEST_SHA256" "$TARBALL_SHA256" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload qualified immutable candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: qualified-${{ needs.build-candidate.outputs.candidate_id }}
+          path: .resultsafe-candidates/qualified/
+          if-no-files-found: error
+          retention-days: 30

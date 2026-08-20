@@ -13,7 +13,8 @@ import * as refinerUtils from '../../../src/refiners/utils/index.js';
 const variantMap = {
   created: { payload: ['id', 'meta'] },
   deleted: { payload: 'id' },
-  ping: { payload: 'never' },
+  ping: { payload: [] },
+  legacyPing: { payload: 'never' },
 } as const;
 
 describe('refiners/getPayloadKeys', () => {
@@ -21,6 +22,7 @@ describe('refiners/getPayloadKeys', () => {
     expect(getPayloadKeys({ payload: 'never' })).toEqual([]);
     expect(getPayloadKeys({ payload: 'id' })).toEqual(['id']);
     expect(getPayloadKeys({ payload: ['id', 'meta'] })).toEqual(['id', 'meta']);
+    expect(getPayloadKeys({ payload: [] })).toEqual([]);
     expect(typeof refinerUtils.getPayloadKeys).toBe('function');
   });
 });
@@ -48,9 +50,44 @@ describe('refiners/refineResult', () => {
     expect(refineCreated({ type: 'created', id: '1', meta: 'bad' })).toBeNull();
   });
 
-  it('returns value for payload=never variant without validators', () => {
+  it('returns value for canonical empty payload and legacy never variants', () => {
     const refinePing = refineResult(variantMap)('ping')({});
     expect(refinePing({ type: 'ping' })).toEqual({ type: 'ping' });
+    const refineLegacyPing = refineResult(variantMap)('legacyPing')({});
+    expect(refineLegacyPing({ type: 'legacyPing' })).toEqual({
+      type: 'legacyPing',
+    });
+  });
+
+  it('enforces own payload, strict fields, forbidden fields, and callable validators', () => {
+    const map = {
+      created: {
+        payload: ['id', 'meta'],
+        strictFields: true,
+        forbidden: ['secret'],
+      },
+    } as const;
+    const refineCreated = refineResult(map)('created')({});
+    const inherited = Object.assign(Object.create({ id: '1' }), {
+      type: 'created',
+      meta: 1,
+    });
+
+    expect(refineCreated({ type: 'created', meta: 1 })).toBeNull();
+    expect(refineCreated(inherited)).toBeNull();
+    expect(
+      refineCreated({ type: 'created', id: '1', meta: 1, extra: true }),
+    ).toBeNull();
+    expect(
+      refineCreated({ type: 'created', id: '1', meta: 1, secret: undefined }),
+    ).toBeNull();
+    expect(
+      refineResult(map)('created')({ id: 1 } as never)({
+        type: 'created',
+        id: '1',
+        meta: 1,
+      }),
+    ).toBeNull();
   });
 
   it('covers missing validator branch and missing config at runtime', () => {
@@ -110,6 +147,38 @@ describe('refiners/refineAsyncResult', () => {
     await expect(
       refineCreated({ type: 'created', id: '1', meta: 'bad' }),
     ).resolves.toBeNull();
+  });
+
+  it('runs validators sequentially, short-circuits, and preserves rejection identity', async () => {
+    const map = {
+      created: { payload: ['id', 'meta'] },
+    } as const;
+    const order: string[] = [];
+    const refineCreated = refineAsyncResult(map)('created')({
+      id: async () => {
+        order.push('id:start');
+        await Promise.resolve();
+        order.push('id:end');
+        return true;
+      },
+      meta: async () => {
+        order.push('meta');
+        return false;
+      },
+    });
+
+    await expect(
+      refineCreated({ type: 'created', id: '1', meta: 1 }),
+    ).resolves.toBeNull();
+    expect(order).toEqual(['id:start', 'id:end', 'meta']);
+
+    const failure = new Error('boom');
+    const rejecting = refineAsyncResult(map)('created')({
+      id: async () => Promise.reject(failure),
+    });
+    await expect(
+      rejecting({ type: 'created', id: '1', meta: 1 }),
+    ).rejects.toBe(failure);
   });
 
   it('returns null for wrong type and non-objects', async () => {
@@ -227,6 +296,7 @@ describe('refiners/refineVariantMap', () => {
         id: (v: unknown): v is string => typeof v === 'string',
       },
       ping: {},
+      legacyPing: {},
     };
 
     expect(
@@ -263,6 +333,7 @@ describe('refiners/refineVariantMap', () => {
       created: {},
       deleted: {},
       ping: {},
+      legacyPing: {},
     };
 
     expect(
@@ -271,5 +342,15 @@ describe('refiners/refineVariantMap', () => {
       type: 'deleted',
       id: '1',
     });
+  });
+
+  it('rejects inherited map/configuration members and missing payload', () => {
+    const inheritedMap = Object.create({
+      deleted: { payload: 'id' },
+    }) as typeof variantMap;
+    expect(
+      refineVariantMap({ type: 'deleted', id: '1' }, inheritedMap, {}),
+    ).toBeNull();
+    expect(refineVariantMap({ type: 'deleted' }, variantMap, {})).toBeNull();
   });
 });

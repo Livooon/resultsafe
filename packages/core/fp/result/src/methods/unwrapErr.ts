@@ -1,5 +1,6 @@
+import { ResultExtractionError } from '../errors/ResultExtractionError.js';
 import { isErr } from '../guards/isErr.js';
-import { type Result } from '../types/core/index.js';
+import { type ResultLike } from '../types/core/index.js';
 
 /**
  * Returns the error value or throws an exception if the result is `Ok`.
@@ -8,7 +9,7 @@ import { type Result } from '../types/core/index.js';
  * @typeParam E - The error value type.
  * @param result - The source `Result`.
  * @returns The error payload.
- * @throws Error - Throws an exception when called on `Ok`.
+ * @throws ResultExtractionError - Thrown when called on `Ok`.
  * @since 0.1.0
  * @see {@link unwrapOrElse} - Returns a success fallback without throwing.
  * @example
@@ -20,9 +21,12 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const unwrapErr = <T, E>(result: Result<T, E>): E => {
+export const unwrapErr = <T, E>(result: ResultLike<T, E>): E => {
   if (isErr(result)) {
     return result.error;
   }
-  throw new Error('Called unwrapErr on an Ok value');
+  throw new ResultExtractionError(
+    'Called unwrapErr on an Ok value',
+    result.value,
+  );
 };

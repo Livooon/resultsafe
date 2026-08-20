@@ -1,0 +1,27 @@
+{
+  "$schema": "./release-policy.schema.json",
+  "schemaVersion": 1,
+  "transitionState": "APPLIED_LOCAL",
+  "baseBranch": "main",
+  "calculatedReleaseAllowlist": [
+    {
+      "name": "@resultsafe/core-fp-result",
+      "directory": "packages/core/fp/result",
+      "currentVersion": "0.2.1",
+      "pendingVersion": "0.3.0",
+      "bump": "minor"
+    }
+  ],
+  "packages": {
+    "@resultsafe/core-fp-result": {
+      "directory": "packages/core/fp/result",
+      "currentVersion": "0.2.1",
+      "pendingVersion": "0.3.0",
+      "allowedBumps": ["minor"],
+      "publicApiPaths": [
+        "packages/core/fp/result/src/",
+        "packages/core/fp/result/package.json"
+      ]
+    }
+  }
+}

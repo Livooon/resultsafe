@@ -1,0 +1,18 @@
+# Qualification toolchain lock. Runtime has no third-party dependencies.
+# Update deliberately and test on every supported Python in ci-versioning.yml.
+build==1.3.0
+colorama==0.4.6 ; sys_platform == "win32"
+hypothesis==6.165.10
+iniconfig==2.1.0
+mypy==1.18.2
+mypy_extensions==1.1.0
+packaging==25.0
+pathspec==0.12.1
+pluggy==1.6.0
+Pygments==2.19.2
+pyproject_hooks==1.2.0
+pytest==8.4.2
+setuptools==80.9.0
+sortedcontainers==2.4.0
+typing_extensions==4.15.0
+wheel==0.45.1

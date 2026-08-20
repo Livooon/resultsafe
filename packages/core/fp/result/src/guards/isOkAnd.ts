@@ -1,5 +1,5 @@
-import { type Result } from '../types/core/index.js';
-import { isOk } from './isOk.js';
+import type { Ok } from '../constructors/Ok.js';
+import type { OkLike, Result, ResultLike } from '../types/core/index.js';
 
 /**
  * Checks that the `Result` is successful and satisfies the predicate.
@@ -20,7 +20,25 @@ import { isOk } from './isOk.js';
  * ```
  * @public
  */
-export const isOkAnd = <T, E>(
+export function isOkAnd<T, E, U extends T>(
+  result: Result<T, E>,
+  predicate: (value: T) => value is U,
+): result is Ok<U>;
+export function isOkAnd<T, E>(
   result: Result<T, E>,
   predicate: (value: T) => boolean,
-): boolean => isOk(result) && predicate(result.value);
+): result is Ok<T>;
+export function isOkAnd<T, E, U extends T>(
+  result: ResultLike<T, E>,
+  predicate: (value: T) => value is U,
+): result is OkLike<U>;
+export function isOkAnd<T, E>(
+  result: ResultLike<T, E>,
+  predicate: (value: T) => boolean,
+): result is OkLike<T>;
+export function isOkAnd<T, E>(
+  result: ResultLike<T, E>,
+  predicate: (value: T) => boolean,
+): result is OkLike<T> {
+  return result.ok === true && predicate(result.value);
+}

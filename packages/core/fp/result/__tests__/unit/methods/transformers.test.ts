@@ -14,10 +14,12 @@ describe('methods/andThen', () => {
     ).toEqual({ ok: true, value: 4 });
   });
 
-  it('returns Err unchanged and does not call callback', () => {
+  it('hydrates Err data and does not call callback', () => {
     const input = { ok: false as const, error: 'boom' };
     const callback = vi.fn((v: number) => ({ ok: true as const, value: v }));
-    expect(andThen(input, callback)).toBe(input);
+    const output = andThen(input, callback);
+    expect(output).not.toBe(input);
+    expect(output.unwrapErr()).toBe('boom');
     expect(callback).not.toHaveBeenCalled();
   });
 });
@@ -29,7 +31,9 @@ describe('methods/map', () => {
       value: 3,
     });
     const err = { ok: false as const, error: 'x' };
-    expect(map(err, (v: number) => v + 1)).toBe(err);
+    const output = map(err, (v: number) => v + 1);
+    expect(output).not.toBe(err);
+    expect(output.unwrapErr()).toBe('x');
   });
 });
 
@@ -40,7 +44,9 @@ describe('methods/mapErr', () => {
       error: 'X',
     });
     const ok = { ok: true as const, value: 1 };
-    expect(mapErr(ok, (e: string) => e.toUpperCase())).toBe(ok);
+    const output = mapErr(ok, (e: string) => e.toUpperCase());
+    expect(output).not.toBe(ok);
+    expect(output.unwrap()).toBe(1);
   });
 });
 
@@ -50,7 +56,9 @@ describe('methods/orElse', () => {
       orElse({ ok: false, error: 'x' }, (e) => ({ ok: false, error: `${e}!` })),
     ).toEqual({ ok: false, error: 'x!' });
     const ok = { ok: true as const, value: 7 };
-    expect(orElse(ok, () => ({ ok: true as const, value: 0 }))).toBe(ok);
+    const output = orElse(ok, () => ({ ok: true as const, value: 0 }));
+    expect(output).not.toBe(ok);
+    expect(output.unwrap()).toBe(7);
   });
 });
 

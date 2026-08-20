@@ -1,3 +1,5 @@
+import type { AsyncValidatorFn } from '../../types/refiners/AsyncValidatorFn.js';
+import type { PayloadKeys } from '../../types/refiners/PayloadKeys.js';
 import type { VariantConfig } from '../../types/refiners/VariantConfig.js';
 
 /**
@@ -30,7 +32,13 @@ import type { VariantConfig } from '../../types/refiners/VariantConfig.js';
 export type UniversalAsyncRefinedResult<
   K extends keyof TMap & string,
   TMap extends Record<string, VariantConfig>,
-  _TValidators extends Record<string, unknown>,
+  TValidators extends Partial<Record<PayloadKeys<TMap[K]>, AsyncValidatorFn>>,
 > = {
   type: K;
-} & Record<string, unknown>;
+} & {
+  [P in PayloadKeys<TMap[K]>]: P extends keyof TValidators
+    ? TValidators[P] extends AsyncValidatorFn<infer T>
+      ? T
+      : unknown
+    : unknown;
+};

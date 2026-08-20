@@ -19,6 +19,10 @@ packages:
   - packages/core/fp/module-loader
   - packages/playground
   - packages/adapter/core/fp/codec/zod
+  - packages/adapter/core/fp/codec/json
+  - packages/adapter/core/fp/effect
+  - tools/contract-registry
+  - tools/sqlite-projection
 
 ignoredBuiltDependencies:
   - core-js

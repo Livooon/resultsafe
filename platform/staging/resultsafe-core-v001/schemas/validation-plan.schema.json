@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b11-f183-79da-8834-4e2a3809068e",
+  "title": "ResultSafe validation plan",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["gates", "standing_constraints", "promotion_rule"],
+          "properties": {
+            "gates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["position", "gate_key", "class", "required"],
+                "properties": {
+                  "position": { "type": "integer", "minimum": 1 },
+                  "gate_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+                  "class": { "enum": ["FAST_STRUCTURAL", "FAST_SEMANTIC", "FAST_BEHAVIORAL", "FAST_PACKAGE", "FAST_PROJECTION", "FAST_INTEGRITY", "SECURITY_HARDENING", "LONG_RUNNING_TESTS"] },
+                  "required": { "type": "boolean" }
+                }
+              },
+              "minItems": 1
+            },
+            "standing_constraints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["decision_key", "effect"],
+                "properties": {
+                  "decision_key": { "type": "string", "minLength": 5 },
+                  "effect": { "type": "string", "minLength": 20 }
+                }
+              },
+              "minItems": 1
+            },
+            "promotion_rule": { "type": "string", "minLength": 20 }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

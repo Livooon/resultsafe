@@ -1,0 +1,1425 @@
+{
+  "document_id": "01a01b00-fa6d-77e9-9552-fe7f36336ac1",
+  "document_ref": "urn:uuid:01a01b00-fa6d-77e9-9552-fe7f36336ac1",
+  "document_key": "contracts",
+  "document_type": "contract_catalog",
+  "document_revision": 2,
+  "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "Complete ResultSafe public contract catalog",
+  "summary": "Contract records for every runtime and type symbol exported by the current TypeScript Result package, classified by neutral semantics.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T00:00:00Z",
+  "payload": {
+    "items": [
+      {
+        "record_id": "01a01af6-3c02-7ec5-af04-6662469de7fc",
+        "record_ref": "urn:uuid:01a01af6-3c02-7ec5-af04-6662469de7fc",
+        "record_key": "result-type",
+        "record_revision": 1,
+        "kind": "contract",
+        "code": "RS-CTR-001",
+        "title": "ResultData and runtime Result split",
+        "status": "DRAFT",
+        "symbol": "Result",
+        "category": "type",
+        "semantic_name": "result",
+        "signature_model": "ResultData<T,E> = SuccessData<T> | FailureData<E>; Result<T,E> = methodful language projection; ResultLike<T,E> = Result<T,E> | ResultData<T,E>",
+        "behavior": [
+          "Defines an exclusive two-variant generic sum type",
+          "Carries a success payload T or failure payload E but never both",
+          "Keeps language-neutral transport data free of behavior members",
+          "Requires explicit hydration to restore a canonical runtime wrapper after JSON, clone, spread, assignment, or cross-copy boundaries",
+          "Allows free TypeScript Result functions to accept ResultLike while Result-valued outputs remain methodful",
+          "Offers optional structured Failure as an explicit E payload without constraining generic Result, Err, or FailureData branch semantics"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6760-79e3-a443-737c82580377",
+          "urn:uuid:01a01b34-6762-748f-b071-c013bf41b0b3",
+          "urn:uuid:01a01b34-6763-7dde-aef0-bed8740c039e"
+        ],
+        "typescript_source": "packages/core/fp/result/src/types/core/ResultData.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc3-7dfa-b67d-335a5f0cd5f0",
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c03-706f-9952-0055817b5855",
+        "record_ref": "urn:uuid:01a01af6-3c03-706f-9952-0055817b5855",
+        "record_key": "option-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-002",
+        "title": "Option type",
+        "status": "DRAFT",
+        "symbol": "Option",
+        "category": "type",
+        "semantic_name": "option",
+        "signature_model": "Option<T> = Some<T> | None",
+        "behavior": [
+          "Represents presence or absence without a null sentinel",
+          "Supports Result conversion and transpose operations"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6764-7ca6-a2f4-34073d1116e6",
+          "urn:uuid:01a01b34-6765-7d0d-945f-01cd304e3f5c",
+          "urn:uuid:01a01b34-6766-768a-b164-c6fb789791aa"
+        ],
+        "typescript_source": "packages/core/fp/result/src/types/core/Option.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc5-767e-87cc-81918bd764df"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c04-7605-9096-bd4dafd1d0fd",
+        "record_ref": "urn:uuid:01a01af6-3c04-7605-9096-bd4dafd1d0fd",
+        "record_key": "async-validator-function-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-003",
+        "title": "Async validator function",
+        "status": "DRAFT",
+        "symbol": "AsyncValidatorFn",
+        "category": "type",
+        "semantic_name": "async-validator",
+        "signature_model": "unknown -> Awaitable<boolean>",
+        "behavior": [
+          "Resolves true for accepted input and false for rejected input",
+          "Rejection propagates through async refinement"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6767-767a-926c-0a35aeb6be8c",
+          "urn:uuid:01a01b34-6768-7b17-afcc-795fdaeaa040",
+          "urn:uuid:01a01b34-6769-72e4-beab-a24f87ccc4a7"
+        ],
+        "typescript_source": "packages/core/fp/result/src/types/refiners/AsyncValidatorFn.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcb-79de-a88e-90513b80735e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c05-7fa8-876d-47ac0d976b83",
+        "record_ref": "urn:uuid:01a01af6-3c05-7fa8-876d-47ac0d976b83",
+        "record_key": "payload-keys-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-004",
+        "title": "Payload keys",
+        "status": "DRAFT",
+        "symbol": "PayloadKeys",
+        "category": "type",
+        "semantic_name": "payload-keys",
+        "signature_model": "VariantConfig -> finite ordered key set",
+        "behavior": [
+          "Derives configured payload keys without a magic string sentinel",
+          "Empty key collection represents no payload"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-676a-7380-97fb-5102ff3b2d8c",
+          "urn:uuid:01a01b34-676b-77cb-b14d-4a7dcc434ddd",
+          "urn:uuid:01a01b34-676c-7fa2-8b52-c507208a8059"
+        ],
+        "typescript_source": "packages/core/fp/result/src/types/refiners/PayloadKeys.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c06-753b-9355-b447c58a1fdd",
+        "record_ref": "urn:uuid:01a01af6-3c06-753b-9355-b447c58a1fdd",
+        "record_key": "validator-function-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-005",
+        "title": "Validator function",
+        "status": "DRAFT",
+        "symbol": "ValidatorFn",
+        "category": "type",
+        "semantic_name": "validator",
+        "signature_model": "unknown -> type predicate or boolean",
+        "behavior": [
+          "Runtime predicate output is the only evidence for a concrete refined type",
+          "Thrown exceptions propagate unless an operation explicitly maps them"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-676d-7c79-af2a-f512c32cc88b",
+          "urn:uuid:01a01b34-676e-7318-ac0d-662d7a49f116",
+          "urn:uuid:01a01b34-676f-7eb2-b567-791611fb10ee"
+        ],
+        "typescript_source": "packages/core/fp/result/src/types/refiners/ValidatorFn.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c07-7603-b9bc-d467c98f5e77",
+        "record_ref": "urn:uuid:01a01af6-3c07-7603-b9bc-d467c98f5e77",
+        "record_key": "variant-config-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-006",
+        "title": "Variant configuration",
+        "status": "DRAFT",
+        "symbol": "VariantConfig",
+        "category": "type",
+        "semantic_name": "variant-config",
+        "signature_model": "payload keys plus strict and forbidden field policy",
+        "behavior": [
+          "Payload keys are explicit and ordered",
+          "Strict fields reject undeclared own fields",
+          "Forbidden fields reject presence regardless of value"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6770-7697-ad4f-a2ed12667517",
+          "urn:uuid:01a01b34-6771-76aa-9c64-7660d247af15",
+          "urn:uuid:01a01b34-6772-796e-a8bd-52495b7c2f91"
+        ],
+        "typescript_source": "packages/core/fp/result/src/types/refiners/VariantConfig.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c08-75ca-bed5-3735d0ad5ffc",
+        "record_ref": "urn:uuid:01a01af6-3c08-75ca-bed5-3735d0ad5ffc",
+        "record_key": "handler-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-007",
+        "title": "Variant handler",
+        "status": "DRAFT",
+        "symbol": "Handler",
+        "category": "type",
+        "semantic_name": "variant-handler",
+        "signature_model": "variant key plus branch-specific callback",
+        "behavior": [
+          "A handler is associated with exactly one variant key",
+          "Callback input narrows to the matching branch"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6773-7f4a-9570-74472376eb70",
+          "urn:uuid:01a01b34-6774-78a6-b121-fd0253ffd1e0",
+          "urn:uuid:01a01b34-6775-7811-8f97-92e4feae8a64"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/Handler.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c09-7d3b-89cb-831a246ca467",
+        "record_ref": "urn:uuid:01a01af6-3c09-7d3b-89cb-831a246ca467",
+        "record_key": "match-builder-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-008",
+        "title": "Strict match builder",
+        "status": "DRAFT",
+        "symbol": "MatchBuilder",
+        "category": "type",
+        "semantic_name": "strict-match-builder",
+        "signature_model": "builder<union,outputs,remaining variants>",
+        "behavior": [
+          "Each with removes one remaining variant",
+          "Run becomes available only when no variants remain",
+          "Handler outputs accumulate"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6776-75da-9d6f-c4ca873a8886",
+          "urn:uuid:01a01b34-6777-7d47-bdb1-22973837576e",
+          "urn:uuid:01a01b34-6778-7eaf-8d84-0755c9b74f44"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/MatchBuilder.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c0a-7233-b618-362d0f0e1f1c",
+        "record_ref": "urn:uuid:01a01af6-3c0a-7233-b618-362d0f0e1f1c",
+        "record_key": "matcher-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-009",
+        "title": "Fallback matcher",
+        "status": "DRAFT",
+        "symbol": "Matcher",
+        "category": "type",
+        "semantic_name": "fallback-matcher",
+        "signature_model": "builder<union,outputs,handled variants>",
+        "behavior": [
+          "With accumulates handlers without loss",
+          "Otherwise handles only unmatched input and enables run"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-677a-715e-914b-cf5ad060c431",
+          "urn:uuid:01a01b34-677b-7934-a624-dea8630789c3",
+          "urn:uuid:01a01b34-677c-70d3-bab0-c771cd963f53"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/Matcher.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c0b-7fa3-81d0-aea55b1c4fea",
+        "record_ref": "urn:uuid:01a01af6-3c0b-7fa3-81d0-aea55b1c4fea",
+        "record_key": "sync-refined-result-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-010",
+        "title": "Synchronous refined result",
+        "status": "DRAFT",
+        "symbol": "SyncRefinedResult",
+        "category": "type",
+        "semantic_name": "sync-refined-result",
+        "signature_model": "variant plus validator-derived payload fields",
+        "behavior": [
+          "Configured present fields are represented",
+          "Validator predicates determine concrete field types and unvalidated fields remain unknown"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-677d-7cf3-b19d-8271a6781d3a",
+          "urn:uuid:01a01b34-677e-7f4f-8e32-28302dc74e27",
+          "urn:uuid:01a01b34-677f-7901-8a5d-4c267b574893"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/SyncRefinedResult.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c0c-7a0e-b538-086b5e6f6f7a",
+        "record_ref": "urn:uuid:01a01af6-3c0c-7a0e-b538-086b5e6f6f7a",
+        "record_key": "sync-refined-result-union-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-011",
+        "title": "Synchronous refined result union",
+        "status": "DRAFT",
+        "symbol": "SyncRefinedResultUnion",
+        "category": "type",
+        "semantic_name": "sync-refined-result-union",
+        "signature_model": "union of refined variants from a complete map",
+        "behavior": [
+          "Produces one branch per configured variant",
+          "Preserves branch-specific payload types"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6780-78fe-9481-91a9bffe2be8",
+          "urn:uuid:01a01b34-6781-7df2-a966-dfd92298e00d",
+          "urn:uuid:01a01b34-6782-7956-bea9-d0d99dc6d6e4"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/SyncRefinedResultUnion.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c0d-78fe-8eee-60dc24260940",
+        "record_ref": "urn:uuid:01a01af6-3c0d-78fe-8eee-60dc24260940",
+        "record_key": "sync-validator-map-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-012",
+        "title": "Synchronous validator map",
+        "status": "DRAFT",
+        "symbol": "SyncValidatorMap",
+        "category": "type",
+        "semantic_name": "sync-validator-map",
+        "signature_model": "variant key -> payload key -> validator",
+        "behavior": [
+          "Validators align with configured variant payload keys",
+          "Unknown validator keys are rejected by the type projection"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6783-7d78-9215-e3c19f8bf4d8",
+          "urn:uuid:01a01b34-6784-795f-81cb-8a33db749f44",
+          "urn:uuid:01a01b34-6785-76cc-906e-bbcdd4d8dc42"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/SyncValidatorMap.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c0e-7cb1-b883-e4fd5f3928d5",
+        "record_ref": "urn:uuid:01a01af6-3c0e-7cb1-b883-e4fd5f3928d5",
+        "record_key": "universal-async-refined-result-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-013",
+        "title": "Universal async refined result",
+        "status": "DRAFT",
+        "symbol": "UniversalAsyncRefinedResult",
+        "category": "type",
+        "semantic_name": "universal-async-refined-result",
+        "signature_model": "validated async variant output",
+        "behavior": [
+          "Represents fields actually established by async validation",
+          "Does not claim concrete field types without explicit schema output evidence"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6786-7e3a-849c-62d0dcdb3db7",
+          "urn:uuid:01a01b34-6787-7724-a82f-60a8ec12d7c9",
+          "urn:uuid:01a01b34-6788-761d-a481-5c5d3c89c316"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/UniversalAsyncRefinedResult.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcb-79de-a88e-90513b80735e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c0f-7bd1-bb22-45921324e96d",
+        "record_ref": "urn:uuid:01a01af6-3c0f-7bd1-bb22-45921324e96d",
+        "record_key": "universal-refined-result-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-014",
+        "title": "Universal refined result",
+        "status": "DRAFT",
+        "symbol": "UniversalRefinedResult",
+        "category": "type",
+        "semantic_name": "universal-refined-result",
+        "signature_model": "validated synchronous variant output",
+        "behavior": [
+          "Represents the selected variant and established payload fields",
+          "Does not widen to arbitrary unvalidated string fields"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6789-7869-afc4-0ca23898cd5d",
+          "urn:uuid:01a01b34-678a-7c20-a9c9-dc512e3fce4c",
+          "urn:uuid:01a01b34-678b-7a26-9078-b1480d6c87b6"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/UniversalRefinedResult.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c10-7928-bc25-bb9629adbab1",
+        "record_ref": "urn:uuid:01a01af6-3c10-7928-bc25-bb9629adbab1",
+        "record_key": "variant-of-type",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-015",
+        "title": "Variant union member",
+        "status": "DRAFT",
+        "symbol": "VariantOf",
+        "category": "type",
+        "semantic_name": "variant-of",
+        "signature_model": "distributive union of tagged variants",
+        "behavior": [
+          "A union of keys produces a union of individually discriminated object types",
+          "Supports branch extraction by a specific key"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-678c-727c-8911-713088a35dbb",
+          "urn:uuid:01a01b34-678d-78f8-89c7-9ab100fbf8a1",
+          "urn:uuid:01a01b34-678e-7e0f-8626-0f0baaa2d0e3"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/types/VariantOf.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c11-70cd-a6ba-3527782d0325",
+        "record_ref": "urn:uuid:01a01af6-3c11-70cd-a6ba-3527782d0325",
+        "record_key": "ok-constructor",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-016",
+        "title": "Success constructor",
+        "status": "DRAFT",
+        "symbol": "Ok",
+        "category": "constructor",
+        "semantic_name": "construct-success",
+        "signature_model": "T -> Success<T>",
+        "behavior": [
+          "Creates an immutable SUCCESS wrapper",
+          "Preserves the exact payload reference",
+          "Cannot create a failure branch"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-678f-7f33-a982-1c9e35716515",
+          "urn:uuid:01a01b34-6790-71bf-8aa0-844d6d7dc33a",
+          "urn:uuid:01a01b34-6791-741a-8a56-3af8da132add",
+          "urn:uuid:01a01b34-6792-771d-8a33-97c562af8e93"
+        ],
+        "typescript_source": "packages/core/fp/result/src/constructors/Ok.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e",
+          "urn:uuid:01a01af6-3bc5-767e-87cc-81918bd764df"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c12-7c3c-b1c3-cf7cbcdc2fab",
+        "record_ref": "urn:uuid:01a01af6-3c12-7c3c-b1c3-cf7cbcdc2fab",
+        "record_key": "err-constructor",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-017",
+        "title": "Failure constructor",
+        "status": "DRAFT",
+        "symbol": "Err",
+        "category": "constructor",
+        "semantic_name": "construct-failure",
+        "signature_model": "E -> Failure<E>",
+        "behavior": [
+          "Creates an immutable FAILURE wrapper",
+          "Preserves the exact error payload reference",
+          "Cannot create a success branch"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6793-77d4-bb6c-02b3e4202133",
+          "urn:uuid:01a01b34-6794-7b99-96e1-0d0f96ba3017",
+          "urn:uuid:01a01b34-6795-75ff-9de5-a82d929d0427",
+          "urn:uuid:01a01b34-6796-7af7-a400-9203e6984343"
+        ],
+        "typescript_source": "packages/core/fp/result/src/constructors/Err.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e",
+          "urn:uuid:01a01af6-3bc5-767e-87cc-81918bd764df"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c13-71d3-b145-5f7439e8d2fc",
+        "record_ref": "urn:uuid:01a01af6-3c13-71d3-b145-5f7439e8d2fc",
+        "record_key": "is-err-guard",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-018",
+        "title": "Failure guard",
+        "status": "DRAFT",
+        "symbol": "isErr",
+        "category": "guard",
+        "semantic_name": "is-failure",
+        "signature_model": "Result<T,E> -> branch predicate Failure<E>",
+        "behavior": [
+          "Returns true only for the exact FAILURE discriminator",
+          "Narrows to the concrete failure branch"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6797-774a-a1ac-e9636ab382d6",
+          "urn:uuid:01a01b34-6798-76a6-b3bc-ecbb01ce854f",
+          "urn:uuid:01a01b34-6799-7bf7-8fc2-93a3681f9b1b"
+        ],
+        "typescript_source": "packages/core/fp/result/src/guards/isErr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c14-7218-8059-eaeee38e5ab6",
+        "record_ref": "urn:uuid:01a01af6-3c14-7218-8059-eaeee38e5ab6",
+        "record_key": "is-err-and-guard",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-019",
+        "title": "Failure predicate guard",
+        "status": "DRAFT",
+        "symbol": "isErrAnd",
+        "category": "guard",
+        "semantic_name": "is-failure-and",
+        "signature_model": "Result<T,E> x predicate<E> -> boolean or narrowed failure",
+        "behavior": [
+          "Invokes the predicate exactly once on FAILURE",
+          "Never invokes the predicate on SUCCESS",
+          "Propagates predicate exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-679a-76a2-a64f-ca973d9bc5b0",
+          "urn:uuid:01a01b34-679b-7685-823c-22510148cffb",
+          "urn:uuid:01a01b34-679c-756e-8dcf-54e520e6e125",
+          "urn:uuid:01a01b34-679d-752d-9495-447a2c7e1b7c"
+        ],
+        "typescript_source": "packages/core/fp/result/src/guards/isErrAnd.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30",
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c15-769e-b6b9-7886c9d1ea77",
+        "record_ref": "urn:uuid:01a01af6-3c15-769e-b6b9-7886c9d1ea77",
+        "record_key": "is-ok-guard",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-020",
+        "title": "Success guard",
+        "status": "DRAFT",
+        "symbol": "isOk",
+        "category": "guard",
+        "semantic_name": "is-success",
+        "signature_model": "Result<T,E> -> branch predicate Success<T>",
+        "behavior": [
+          "Returns true only for the exact SUCCESS discriminator",
+          "Narrows to the concrete success branch"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-679e-7b9d-ab7a-ff5d84453407",
+          "urn:uuid:01a01b34-679f-70d6-b26a-9a41c3403a6e",
+          "urn:uuid:01a01b34-67a0-70ff-bb42-c816c59d9e75"
+        ],
+        "typescript_source": "packages/core/fp/result/src/guards/isOk.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c16-73b1-b217-a7982cbac52c",
+        "record_ref": "urn:uuid:01a01af6-3c16-73b1-b217-a7982cbac52c",
+        "record_key": "is-ok-and-guard",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-021",
+        "title": "Success predicate guard",
+        "status": "DRAFT",
+        "symbol": "isOkAnd",
+        "category": "guard",
+        "semantic_name": "is-success-and",
+        "signature_model": "Result<T,E> x predicate<T> -> boolean or narrowed success",
+        "behavior": [
+          "Invokes the predicate exactly once on SUCCESS",
+          "Never invokes the predicate on FAILURE",
+          "Propagates predicate exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67a1-7715-a8d5-d8d332def5e1",
+          "urn:uuid:01a01b34-67a2-78fa-9e34-0f3f4c922c83",
+          "urn:uuid:01a01b34-67a3-7e71-b4ef-327a9d88a065",
+          "urn:uuid:01a01b34-67a4-7ebf-b82f-6008108a60db"
+        ],
+        "typescript_source": "packages/core/fp/result/src/guards/isOkAnd.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30",
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c17-798c-84de-720121e51047",
+        "record_ref": "urn:uuid:01a01af6-3c17-798c-84de-720121e51047",
+        "record_key": "and-then-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-022",
+        "title": "Chain success",
+        "status": "DRAFT",
+        "symbol": "andThen",
+        "category": "transformation",
+        "semantic_name": "chain-success",
+        "signature_model": "Result<T,E> x (T -> Result<U,E>) -> Result<U,E>",
+        "behavior": [
+          "Invokes the callback once on SUCCESS and returns its Result",
+          "Returns FAILURE unchanged without callback invocation",
+          "Propagates callback exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67a5-728b-8409-ceaee774bc1e",
+          "urn:uuid:01a01b34-67a6-76ce-a6af-f842b4d50542",
+          "urn:uuid:01a01b34-67a7-7ddf-a0ef-114439b34945",
+          "urn:uuid:01a01b34-67a8-7a83-a1b3-c70bfd5577f6"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/andThen.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c18-78e2-980f-16625a49e2ea",
+        "record_ref": "urn:uuid:01a01af6-3c18-78e2-980f-16625a49e2ea",
+        "record_key": "failure-to-option-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-023",
+        "title": "Failure payload Option",
+        "status": "DRAFT",
+        "symbol": "err",
+        "category": "option_conversion",
+        "semantic_name": "failure-option",
+        "signature_model": "Result<T,E> -> Option<E>",
+        "behavior": [
+          "Returns Some error on FAILURE",
+          "Returns immutable None on SUCCESS"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67a9-70d1-b3cc-5d4a644a506e",
+          "urn:uuid:01a01b34-67aa-70ab-aa19-b86bdb087e68",
+          "urn:uuid:01a01b34-67ab-762f-a103-c3cb65b4ccd0"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/err.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc5-767e-87cc-81918bd764df"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c19-7fef-be30-8099c3eb6c58",
+        "record_ref": "urn:uuid:01a01af6-3c19-7fef-be30-8099c3eb6c58",
+        "record_key": "expect-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-024",
+        "title": "Expect success",
+        "status": "DRAFT",
+        "symbol": "expect",
+        "category": "extraction",
+        "semantic_name": "expect-success",
+        "signature_model": "Result<T,E> x message -> T or extraction failure",
+        "behavior": [
+          "Returns the success payload",
+          "Throws the projection extraction failure with the supplied message on FAILURE"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67ac-7df0-a067-64b5941a176f",
+          "urn:uuid:01a01b34-67ad-736d-a8b7-ac5b149db634",
+          "urn:uuid:01a01b34-67ae-7ad6-8e84-b36aac46b579"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/expect.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc7-75eb-a8ea-62f92f8f72d1"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c1a-76d7-a0ae-11110066ea76",
+        "record_ref": "urn:uuid:01a01af6-3c1a-76d7-a0ae-11110066ea76",
+        "record_key": "expect-error-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-025",
+        "title": "Expect failure",
+        "status": "DRAFT",
+        "symbol": "expectErr",
+        "category": "extraction",
+        "semantic_name": "expect-failure",
+        "signature_model": "Result<T,E> x message -> E or extraction failure",
+        "behavior": [
+          "Returns the failure payload",
+          "Throws the projection extraction failure with the supplied message on SUCCESS"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67af-771f-9c41-d10bb654095d",
+          "urn:uuid:01a01b34-67b0-7ff0-8466-06d95d76b31a",
+          "urn:uuid:01a01b34-67b1-73bb-9a0c-285c70e68bd0"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/expectErr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc7-75eb-a8ea-62f92f8f72d1"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c1b-7015-9a3f-9bace3bd64b0",
+        "record_ref": "urn:uuid:01a01af6-3c1b-7015-9a3f-9bace3bd64b0",
+        "record_key": "flatten-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-026",
+        "title": "Flatten nested Result",
+        "status": "DRAFT",
+        "symbol": "flatten",
+        "category": "transformation",
+        "semantic_name": "flatten-result",
+        "signature_model": "Result<Result<T,E>,E> -> Result<T,E>",
+        "behavior": [
+          "Returns the inner Result from SUCCESS",
+          "Returns equivalent FAILURE from the outer failure branch"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67b2-7f8a-a4bd-29ef57bd8955",
+          "urn:uuid:01a01b34-67b4-762d-a581-4153f5304d59",
+          "urn:uuid:01a01b34-67b5-7a88-8027-abbbc4ce49c5",
+          "urn:uuid:01a01b3c-fbdb-7340-8d13-ff7a84344170"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/flatten.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c1c-725f-b604-ad3d338fb0c2",
+        "record_ref": "urn:uuid:01a01af6-3c1c-725f-b604-ad3d338fb0c2",
+        "record_key": "inspect-success-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-027",
+        "title": "Inspect success alias",
+        "status": "DRAFT",
+        "symbol": "inspect",
+        "category": "effect",
+        "semantic_name": "inspect-success",
+        "signature_model": "alias of tap in the TypeScript projection",
+        "behavior": [
+          "Has identical semantics to tap",
+          "Exists as a projection alias rather than a separate canonical primitive"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67b6-72d8-90f5-9725db306f03",
+          "urn:uuid:01a01b34-67b7-729b-9263-2701ec50403e",
+          "urn:uuid:01a01b34-67b8-70b9-934d-dafb0ddce2dd",
+          "urn:uuid:01a01b34-67b9-7fab-b17b-4350e8e17fe4"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/inspect.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c1d-7b6e-9d2f-aa1d00fbd90e",
+        "record_ref": "urn:uuid:01a01af6-3c1d-7b6e-9d2f-aa1d00fbd90e",
+        "record_key": "inspect-failure-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-028",
+        "title": "Inspect failure alias",
+        "status": "DRAFT",
+        "symbol": "inspectErr",
+        "category": "effect",
+        "semantic_name": "inspect-failure",
+        "signature_model": "alias of tapErr in the TypeScript projection",
+        "behavior": [
+          "Has identical semantics to tapErr",
+          "Exists as a projection alias rather than a separate canonical primitive"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67ba-7f76-a8f2-9016592061e4",
+          "urn:uuid:01a01b34-67bb-7467-87c6-9936a268793a",
+          "urn:uuid:01a01b34-67bc-74b8-ad77-85483089dc4e",
+          "urn:uuid:01a01b34-67bd-74a9-be05-e207d7ca8617"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/inspectErr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c1e-7025-a455-07c6b1d714e9",
+        "record_ref": "urn:uuid:01a01af6-3c1e-7025-a455-07c6b1d714e9",
+        "record_key": "map-success-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-029",
+        "title": "Map success",
+        "status": "DRAFT",
+        "symbol": "map",
+        "category": "transformation",
+        "semantic_name": "map-success",
+        "signature_model": "Result<T,E> x (T -> U) -> Result<U,E>",
+        "behavior": [
+          "Invokes mapper exactly once on SUCCESS and wraps the output",
+          "Does not invoke mapper on FAILURE and preserves the failure payload",
+          "Propagates mapper exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67be-7b12-88b3-65edf05ac8aa",
+          "urn:uuid:01a01b34-67bf-7d33-a370-60caf816fce0",
+          "urn:uuid:01a01b34-67c0-7562-bdfc-19897d0b7abd",
+          "urn:uuid:01a01b34-67c1-729e-9df4-9e9929ba2568"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/map.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c1f-7f68-bb0d-7998a2924ce1",
+        "record_ref": "urn:uuid:01a01af6-3c1f-7f68-bb0d-7998a2924ce1",
+        "record_key": "map-failure-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-030",
+        "title": "Map failure",
+        "status": "DRAFT",
+        "symbol": "mapErr",
+        "category": "transformation",
+        "semantic_name": "map-failure",
+        "signature_model": "Result<T,E> x (E -> F) -> Result<T,F>",
+        "behavior": [
+          "Invokes mapper exactly once on FAILURE and wraps the output",
+          "Does not invoke mapper on SUCCESS and preserves the success payload",
+          "Propagates mapper exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67c2-7013-b002-f8aa7f2d2ba3",
+          "urn:uuid:01a01b34-67c3-78bd-a16e-1f2de04a9779",
+          "urn:uuid:01a01b34-67c4-7ef3-a586-d5da8ba80b27",
+          "urn:uuid:01a01b34-67c5-7a7b-b65b-36df545bc62c"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/mapErr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c20-755a-a1a6-44f7b7939d27",
+        "record_ref": "urn:uuid:01a01af6-3c20-755a-a1a6-44f7b7939d27",
+        "record_key": "match-result-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-031",
+        "title": "Match Result",
+        "status": "DRAFT",
+        "symbol": "match",
+        "category": "transformation",
+        "semantic_name": "match-result",
+        "signature_model": "Result<T,E> x (T -> A) x (E -> B) -> A | B",
+        "behavior": [
+          "Invokes exactly the active branch callback once",
+          "Returns the selected callback output",
+          "Propagates callback exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67c6-7d2f-bedc-4f1000765de4",
+          "urn:uuid:01a01b34-67c7-705c-aed4-5be2da094e1c",
+          "urn:uuid:01a01b34-67c8-72e0-8871-6b9e4f07a69e",
+          "urn:uuid:01a01b34-67c9-7fc1-987a-bf457bf197fc",
+          "urn:uuid:01a01b3c-fbda-7461-b8e7-18f23f379b8f"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/match.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c21-70bf-b253-04eeb7c1c66b",
+        "record_ref": "urn:uuid:01a01af6-3c21-70bf-b253-04eeb7c1c66b",
+        "record_key": "success-to-option-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-032",
+        "title": "Success payload Option",
+        "status": "DRAFT",
+        "symbol": "ok",
+        "category": "option_conversion",
+        "semantic_name": "success-option",
+        "signature_model": "Result<T,E> -> Option<T>",
+        "behavior": [
+          "Returns Some value on SUCCESS",
+          "Returns immutable None on FAILURE"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67ca-7edb-afae-98c5a211139d",
+          "urn:uuid:01a01b34-67cb-78b2-9822-71bef3f1cf22",
+          "urn:uuid:01a01b34-67cc-79d5-9edc-6acafcbc3d4e"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/ok.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc5-767e-87cc-81918bd764df"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c22-77b0-8785-f280fe330937",
+        "record_ref": "urn:uuid:01a01af6-3c22-77b0-8785-f280fe330937",
+        "record_key": "or-else-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-033",
+        "title": "Recover failure",
+        "status": "DRAFT",
+        "symbol": "orElse",
+        "category": "transformation",
+        "semantic_name": "recover-failure",
+        "signature_model": "Result<T,E> x (E -> Result<T,F>) -> Result<T,F>",
+        "behavior": [
+          "Invokes recovery once on FAILURE and returns its Result",
+          "Returns SUCCESS unchanged without recovery invocation",
+          "Propagates recovery exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67cd-7e2f-a2cb-f8794aa2b100",
+          "urn:uuid:01a01b34-67ce-7795-836c-fbf008fe37ea",
+          "urn:uuid:01a01b34-67cf-71e7-8d78-e32f53b21407",
+          "urn:uuid:01a01b34-67d0-7c49-9619-807ae80c5982"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/orElse.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c23-7e49-8d36-66d7671b4133",
+        "record_ref": "urn:uuid:01a01af6-3c23-7e49-8d36-66d7671b4133",
+        "record_key": "tap-success-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-034",
+        "title": "Tap success",
+        "status": "DRAFT",
+        "symbol": "tap",
+        "category": "effect",
+        "semantic_name": "tap-success",
+        "signature_model": "Result<T,E> x effect<T> -> Result<T,E>",
+        "behavior": [
+          "Invokes effect once on SUCCESS",
+          "Never invokes effect on FAILURE",
+          "Returns semantically unchanged input and propagates effect exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67d1-7e63-91f1-764873dc0d5a",
+          "urn:uuid:01a01b34-67d2-73e5-8260-ed5ebd9c2dae",
+          "urn:uuid:01a01b34-67d3-70ea-9c06-b3398609a583",
+          "urn:uuid:01a01b34-67d4-7740-9752-f5bf00c6e04f",
+          "urn:uuid:01a01b3c-fbdc-75aa-aae4-a04b7c47dfc7"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/tap.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c24-7f54-81dd-19935a12388f",
+        "record_ref": "urn:uuid:01a01af6-3c24-7f54-81dd-19935a12388f",
+        "record_key": "tap-failure-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-035",
+        "title": "Tap failure",
+        "status": "DRAFT",
+        "symbol": "tapErr",
+        "category": "effect",
+        "semantic_name": "tap-failure",
+        "signature_model": "Result<T,E> x effect<E> -> Result<T,E>",
+        "behavior": [
+          "Invokes effect once on FAILURE",
+          "Never invokes effect on SUCCESS",
+          "Returns semantically unchanged input and propagates effect exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67d5-7627-95ea-30e4b7ddf180",
+          "urn:uuid:01a01b34-67d6-7dc1-9cd3-484f7517ae43",
+          "urn:uuid:01a01b34-67d7-73f0-a0b6-779d6bd9a2b9",
+          "urn:uuid:01a01b34-67d8-7ba0-80e5-26e43494eb96"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/tapErr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c25-72e6-9e50-0acb138b1bf4",
+        "record_ref": "urn:uuid:01a01af6-3c25-72e6-9e50-0acb138b1bf4",
+        "record_key": "transpose-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-036",
+        "title": "Transpose Result and Option",
+        "status": "DRAFT",
+        "symbol": "transpose",
+        "category": "option_conversion",
+        "semantic_name": "transpose-result-option",
+        "signature_model": "Result<Option<T>,E> -> Option<Result<T,E>>",
+        "behavior": [
+          "SUCCESS Some becomes Some SUCCESS",
+          "SUCCESS None becomes None",
+          "FAILURE becomes Some FAILURE"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67d9-7363-8b4f-34c1a9ca3f75",
+          "urn:uuid:01a01b34-67da-75ab-9316-1ceaa82faa55",
+          "urn:uuid:01a01b34-67db-7d63-a356-439afcdbb8df",
+          "urn:uuid:01a01b34-67dc-74c0-bd1c-f300fc67afd1",
+          "urn:uuid:01a01b34-67dd-7246-bca9-03ea03d789ef"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/transpose.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c26-76ea-8a1e-54632d70abe2",
+        "record_ref": "urn:uuid:01a01af6-3c26-76ea-8a1e-54632d70abe2",
+        "record_key": "unwrap-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-037",
+        "title": "Unwrap success",
+        "status": "DRAFT",
+        "symbol": "unwrap",
+        "category": "extraction",
+        "semantic_name": "unwrap-success",
+        "signature_model": "Result<T,E> -> T or extraction failure",
+        "behavior": [
+          "Returns success payload",
+          "Throws a stable extraction failure on FAILURE and preserves the failure payload as diagnostic cause"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67de-7042-85ba-dada3495096b",
+          "urn:uuid:01a01b34-67df-7f7d-9ae3-442468449274",
+          "urn:uuid:01a01b34-67e0-7e88-b984-5b1247c73903"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/unwrap.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc7-75eb-a8ea-62f92f8f72d1"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c27-79e2-bafc-1d2e43223e8c",
+        "record_ref": "urn:uuid:01a01af6-3c27-79e2-bafc-1d2e43223e8c",
+        "record_key": "unwrap-error-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-038",
+        "title": "Unwrap failure",
+        "status": "DRAFT",
+        "symbol": "unwrapErr",
+        "category": "extraction",
+        "semantic_name": "unwrap-failure",
+        "signature_model": "Result<T,E> -> E or extraction failure",
+        "behavior": [
+          "Returns failure payload",
+          "Throws a stable extraction failure on SUCCESS and preserves the success payload as diagnostic cause"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67e1-7c05-8aca-d4b76308790c",
+          "urn:uuid:01a01b34-67e2-772c-a458-acf69fda9b11",
+          "urn:uuid:01a01b34-67e3-7400-84a6-900fbf224737"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/unwrapErr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc7-75eb-a8ea-62f92f8f72d1"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c28-701f-b261-8c33eebd64fb",
+        "record_ref": "urn:uuid:01a01af6-3c28-701f-b261-8c33eebd64fb",
+        "record_key": "unwrap-or-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-039",
+        "title": "Unwrap or value",
+        "status": "DRAFT",
+        "symbol": "unwrapOr",
+        "category": "extraction",
+        "semantic_name": "unwrap-or",
+        "signature_model": "Result<T,E> x U -> T | U",
+        "behavior": [
+          "Returns success payload on SUCCESS",
+          "Returns eagerly provided fallback on FAILURE"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67e4-75a4-b2fc-2e41c1990248",
+          "urn:uuid:01a01b34-67e6-7d48-b82b-30fd6f6755c8",
+          "urn:uuid:01a01b34-67e7-7acf-8f8a-1337ebaaf732"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/unwrapOr.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c29-7717-9658-68e3c250ef94",
+        "record_ref": "urn:uuid:01a01af6-3c29-7717-9658-68e3c250ef94",
+        "record_key": "unwrap-or-else-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-040",
+        "title": "Unwrap or lazy fallback",
+        "status": "DRAFT",
+        "symbol": "unwrapOrElse",
+        "category": "extraction",
+        "semantic_name": "unwrap-or-else",
+        "signature_model": "Result<T,E> x (E -> U) -> T | U",
+        "behavior": [
+          "Returns success payload without callback",
+          "Invokes fallback exactly once with failure payload",
+          "Propagates fallback exceptions"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67e8-7f54-b84d-0858ed2289f1",
+          "urn:uuid:01a01b34-67e9-754a-9b8a-d1477d16d0cb",
+          "urn:uuid:01a01b34-67ea-7214-b6da-55aad97fde72",
+          "urn:uuid:01a01b34-67eb-7bf8-b515-267e36b5c985",
+          "urn:uuid:01a01b3c-fbdd-72ee-84d0-9a45946837f6"
+        ],
+        "typescript_source": "packages/core/fp/result/src/methods/unwrapOrElse.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c2a-7445-851e-f5980f16cdd9",
+        "record_ref": "urn:uuid:01a01af6-3c2a-7445-851e-f5980f16cdd9",
+        "record_key": "is-typed-variant-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-041",
+        "title": "Tagged variant guard",
+        "status": "DRAFT",
+        "symbol": "isTypedVariant",
+        "category": "variant",
+        "semantic_name": "is-tagged-variant",
+        "signature_model": "variant key -> unknown -> discriminator predicate",
+        "behavior": [
+          "Requires a non-null object with an own type field",
+          "Requires exact discriminator equality",
+          "Does not assert payload shape"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67ec-7d04-aac7-ffc5338b405c",
+          "urn:uuid:01a01b34-67ed-7d62-b32d-b37ca1a38e58",
+          "urn:uuid:01a01b34-67ee-7a58-8874-af3a56fcb5c7"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/isTypedVariant.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c2b-7bb9-97af-bb2350f22ab0",
+        "record_ref": "urn:uuid:01a01af6-3c2b-7bb9-97af-bb2350f22ab0",
+        "record_key": "is-typed-variant-of-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-042",
+        "title": "Validated tagged variant guard",
+        "status": "DRAFT",
+        "symbol": "isTypedVariantOf",
+        "category": "variant",
+        "semantic_name": "is-validated-tagged-variant",
+        "signature_model": "variant key x runtime schema -> unknown -> validated predicate",
+        "behavior": [
+          "Requires own discriminator and payload fields",
+          "Invokes explicit validators",
+          "Infers only validator-established payload types"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67ef-745b-9f55-eba1cd6a25e5",
+          "urn:uuid:01a01b34-67f0-72aa-a1ff-c960770c6374",
+          "urn:uuid:01a01b34-67f1-7d62-abae-113d359586a9",
+          "urn:uuid:01a01b34-67f2-721a-9333-3e694d0c5094"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/isTypedVariantOf.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6",
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c2c-768a-b698-b00561778455",
+        "record_ref": "urn:uuid:01a01af6-3c2c-768a-b698-b00561778455",
+        "record_key": "match-variant-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-043",
+        "title": "Match tagged variant with fallback",
+        "status": "DRAFT",
+        "symbol": "matchVariant",
+        "category": "matcher",
+        "semantic_name": "match-variant",
+        "signature_model": "tagged union -> accumulated handlers -> fallback -> output union",
+        "behavior": [
+          "Preserves arbitrary-length handler registration order",
+          "Runs the first matching handler",
+          "Runs fallback only when no handler matches",
+          "Accumulates output types"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67f3-721a-a170-ee43628f0be3",
+          "urn:uuid:01a01b34-67f4-73bb-bb65-ff7b115f180b",
+          "urn:uuid:01a01b34-67f5-7697-88ad-ebe7c8b3731d",
+          "urn:uuid:01a01b34-67f6-7825-afa7-4b299d6b52b2",
+          "urn:uuid:01a01b34-67f7-7bda-add3-c03a2de6abb2"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/matchVariant.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c2d-702d-9211-9fe00736cf0c",
+        "record_ref": "urn:uuid:01a01af6-3c2d-702d-9211-9fe00736cf0c",
+        "record_key": "match-variant-strict-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-044",
+        "title": "Exhaustive tagged variant match",
+        "status": "DRAFT",
+        "symbol": "matchVariantStrict",
+        "category": "matcher",
+        "semantic_name": "match-variant-strict",
+        "signature_model": "tagged union -> exhaustive accumulated handlers -> output union",
+        "behavior": [
+          "Preserves every registered handler",
+          "Prevents run until all static variants are handled",
+          "Throws an unmatched-variant failure only for runtime contract violation"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67f8-7c83-98c9-4404b5d97e48",
+          "urn:uuid:01a01b34-67f9-768a-a0d3-c3636a6ff0bc",
+          "urn:uuid:01a01b34-67fa-7cf8-ad9e-ec5e984e678c",
+          "urn:uuid:01a01b34-67fb-7a2d-b0ed-4af87ebcefa2",
+          "urn:uuid:01a01b34-67fc-75ec-8332-2b01567c533e",
+          "urn:uuid:01a01b34-67fd-7fbb-b4e9-814ce102afb5"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/matchVariantStrict.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c2e-7816-bd6d-30f8ef59f1f0",
+        "record_ref": "urn:uuid:01a01af6-3c2e-7816-bd6d-30f8ef59f1f0",
+        "record_key": "refine-async-result-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-045",
+        "title": "Curried async variant refinement",
+        "status": "DRAFT",
+        "symbol": "refineAsyncResult",
+        "category": "refiner",
+        "semantic_name": "refine-async-variant",
+        "signature_model": "map -> variant -> async validators -> unknown -> Awaitable<variant|null>",
+        "behavior": [
+          "Uses the same field rules as synchronous refinement",
+          "Validates sequentially in payload-key order",
+          "Stops on first false and propagates rejection"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-67fe-7a8f-8931-7fb41f6eb2b4",
+          "urn:uuid:01a01b34-67ff-7dac-bda4-200dcc205859",
+          "urn:uuid:01a01b34-6800-7362-95f4-418e7babc646",
+          "urn:uuid:01a01b34-6801-730e-a954-a46a3174c084",
+          "urn:uuid:01a01b34-6802-7aa1-bc2f-9bfbdbf076ce",
+          "urn:uuid:01a01b34-6803-751c-824e-eb4c74298442",
+          "urn:uuid:01a01b34-6804-7dc9-9ef5-5f6d9c9382a9",
+          "urn:uuid:01a01b34-6805-7f87-ae28-0722ff846ec8",
+          "urn:uuid:01a01b34-6806-7146-bb1f-ce085e71cc2b"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/refineAsyncResult.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83",
+          "urn:uuid:01a01af6-3bcb-79de-a88e-90513b80735e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c2f-7312-b05f-2ad1aeed21e6",
+        "record_ref": "urn:uuid:01a01af6-3c2f-7312-b05f-2ad1aeed21e6",
+        "record_key": "refine-async-result-u-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-046",
+        "title": "Direct async variant refinement",
+        "status": "DRAFT",
+        "symbol": "refineAsyncResultU",
+        "category": "refiner",
+        "semantic_name": "refine-async-variant-direct",
+        "signature_model": "unknown x variant x map x async validators -> Awaitable<variant|null>",
+        "behavior": [
+          "Is semantically equivalent to the curried async form",
+          "Delegates to one shared async validation kernel"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6807-7264-9d0c-94a9d71b00ae",
+          "urn:uuid:01a01b34-6808-700f-b8b1-6b6801c82dee",
+          "urn:uuid:01a01b34-6809-7f61-a0fc-a6eb962ffa76",
+          "urn:uuid:01a01b34-680a-78ad-accc-00ff714855be",
+          "urn:uuid:01a01b34-680b-7c1a-8aaa-b5e4db011ad5",
+          "urn:uuid:01a01b34-680c-71cb-a24d-5af0f8fdb943",
+          "urn:uuid:01a01b34-680d-7533-b325-7f9f4ba68d42",
+          "urn:uuid:01a01b34-680e-7fc6-a205-37b2266d57fd",
+          "urn:uuid:01a01b34-680f-713c-a1f8-19191ac24fbf"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/refineAsyncResultU.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bcb-79de-a88e-90513b80735e"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c30-716c-95d5-c50d3c46caa9",
+        "record_ref": "urn:uuid:01a01af6-3c30-716c-95d5-c50d3c46caa9",
+        "record_key": "refine-result-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-047",
+        "title": "Curried synchronous variant refinement",
+        "status": "DRAFT",
+        "symbol": "refineResult",
+        "category": "refiner",
+        "semantic_name": "refine-variant",
+        "signature_model": "map -> variant -> validators -> unknown -> variant|null",
+        "behavior": [
+          "Requires own discriminator and configured payload presence",
+          "Applies strict and forbidden policies",
+          "Invokes validators in payload-key order and returns original value on success"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6810-73f9-9401-9cd423d40a19",
+          "urn:uuid:01a01b34-6811-7754-9319-03a28d94632d",
+          "urn:uuid:01a01b34-6812-7591-9bf2-38e707b5ae85",
+          "urn:uuid:01a01b34-6813-7686-a58b-f74a82473fa0",
+          "urn:uuid:01a01b34-6814-7779-a7c7-d5bcc9108a7b",
+          "urn:uuid:01a01b34-6815-7e3d-b27d-b2a69424add8",
+          "urn:uuid:01a01b34-6816-7025-9df9-81cecf39d609",
+          "urn:uuid:01a01b34-6817-795a-aa67-055576c1bc18",
+          "urn:uuid:01a01b34-6818-7370-acf9-23a0f2f0047c"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/refineResult.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c31-7fb4-ae4e-f395d82d5646",
+        "record_ref": "urn:uuid:01a01af6-3c31-7fb4-ae4e-f395d82d5646",
+        "record_key": "refine-result-u-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-048",
+        "title": "Direct synchronous variant refinement",
+        "status": "DRAFT",
+        "symbol": "refineResultU",
+        "category": "refiner",
+        "semantic_name": "refine-variant-direct",
+        "signature_model": "unknown x variant x map x validators -> variant|null",
+        "behavior": [
+          "Is semantically equivalent to the curried synchronous form",
+          "Delegates to one shared synchronous validation kernel"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6819-7bb0-adb3-cbd143ddb13f",
+          "urn:uuid:01a01b34-681a-7423-ab70-74b5bd62df9b",
+          "urn:uuid:01a01b34-681c-777e-80ba-839b822d59ed",
+          "urn:uuid:01a01b34-681d-7d8b-90ed-7b3d49a6a9d8",
+          "urn:uuid:01a01b34-681e-78dd-aafc-756decdf0b93",
+          "urn:uuid:01a01b34-681f-7486-b3ea-45b2abbf4661",
+          "urn:uuid:01a01b34-6820-7ae7-95d3-9201491e31b9",
+          "urn:uuid:01a01b34-6821-7b63-9489-66322302fb0b",
+          "urn:uuid:01a01b34-6822-7345-aeba-6b67bd834f9f"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/refineResultU.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3c32-7b98-974f-9709543db4cb",
+        "record_ref": "urn:uuid:01a01af6-3c32-7b98-974f-9709543db4cb",
+        "record_key": "refine-variant-map-operation",
+        "record_revision": 0,
+        "kind": "contract",
+        "code": "RS-CTR-049",
+        "title": "Full-map variant refinement",
+        "status": "DRAFT",
+        "symbol": "refineVariantMap",
+        "category": "refiner",
+        "semantic_name": "refine-variant-map",
+        "signature_model": "unknown x complete map x validator map -> refined union|null",
+        "behavior": [
+          "Requires an own known discriminator",
+          "Uses own map and validator properties only",
+          "Returns a branch-specific validator-derived type or null"
+        ],
+        "scenario_refs": [
+          "urn:uuid:01a01b34-6823-7997-bdc1-26913c4d70c2",
+          "urn:uuid:01a01b34-6824-70b0-bf06-aafd21d56022",
+          "urn:uuid:01a01b34-6825-7e71-837d-138824cc963c",
+          "urn:uuid:01a01b34-6826-7c4d-be7e-27d9fdf306a4"
+        ],
+        "typescript_source": "packages/core/fp/result/src/refiners/refineVariantMap.ts",
+        "requirement_refs": [
+          "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83"
+        ]
+      }
+    ]
+  }
+}

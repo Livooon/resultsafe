@@ -1,8 +1,7 @@
-import type { PayloadKeys } from '../types/refiners/PayloadKeys.js';
-import type { ValidatorFn } from '../types/refiners/ValidatorFn.js';
 import type { VariantConfig } from '../types/refiners/VariantConfig.js';
 import type { SyncRefinedResultUnion } from './types/SyncRefinedResultUnion.js';
 import type { SyncValidatorMap } from './types/SyncValidatorMap.js';
+import { validateSync } from './validationKernels.js';
 
 /**
  * Refines a discriminated union value by a full variant map.
@@ -41,39 +40,29 @@ export function refineVariantMap<
   variantMap: TMap,
   validators: TValidators,
 ): SyncRefinedResultUnion<TMap, TValidators> | null {
-  if (typeof value !== 'object' || value === null || !('type' in value)) {
+  if (
+    typeof value !== 'object' ||
+    value === null ||
+    !Object.prototype.hasOwnProperty.call(value, 'type')
+  ) {
     return null;
   }
 
   const rawType = (value as { type?: unknown }).type;
-  if (typeof rawType !== 'string' || !(rawType in variantMap)) return null;
+  if (
+    typeof rawType !== 'string' ||
+    !Object.prototype.hasOwnProperty.call(variantMap, rawType)
+  ) {
+    return null;
+  }
 
   // fix the specific variant key
   type K = Extract<keyof TMap, string>;
   const k = rawType as K;
 
-  const config = variantMap[k];
-  if (!config) return null;
-
-  // payload keys for the specific K
-  const payload = config.payload;
-  const keys = (
-    payload === 'never' ? [] : Array.isArray(payload) ? payload : [payload]
-  ) as readonly PayloadKeys<TMap[typeof k]>[];
-
-  // validators aligned with the specific K
-  const vvs = validators[k] as
-    | Partial<Record<PayloadKeys<TMap[typeof k]>, ValidatorFn>>
-    | undefined;
-
-  if (vvs) {
-    const obj = value as Record<string, unknown>;
-    for (const key of keys) {
-      const check = vvs[key];
-      if (!check) continue;
-      if (!check(obj[key as string])) return null;
-    }
-  }
-
-  return value as SyncRefinedResultUnion<TMap, TValidators>;
+  const vvs = Object.prototype.hasOwnProperty.call(validators, k)
+    ? validators[k]
+    : undefined;
+  const result = validateSync(value, k, variantMap, vvs ?? {});
+  return result as SyncRefinedResultUnion<TMap, TValidators> | null;
 }

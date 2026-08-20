@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0a-da05-7919-b410-d32753e67b0c",
+  "title": "ResultSafe optional Cause model",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "document_key": { "const": "cause-model" },
+        "document_type": { "const": "cause_model" },
+        "schema_ref": { "const": "urn:uuid:01a01f0a-da05-7919-b410-d32753e67b0c" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["model_version", "adoption_model", "instance_schema_ref", "result_compatibility", "variants", "topology_policy", "codec_policy", "resource_limits", "scenario_refs"],
+          "properties": {
+            "model_version": { "const": "1.0.0" },
+            "adoption_model": { "const": "OPTIONAL_SEPARATE_MODEL" },
+            "instance_schema_ref": { "const": "urn:uuid:01a01f0a-da08-7b85-87bc-dea758e0db27" },
+            "result_compatibility": { "$ref": "#/$defs/statements" },
+            "variants": { "type": "array", "prefixItems": [
+              { "$ref": "#/$defs/empty" }, { "$ref": "#/$defs/fail" }, { "$ref": "#/$defs/die" },
+              { "$ref": "#/$defs/interrupt" }, { "$ref": "#/$defs/sequential" }, { "$ref": "#/$defs/parallel" }
+            ], "items": false, "minItems": 6, "maxItems": 6 },
+            "topology_policy": { "$ref": "#/$defs/statements" },
+            "codec_policy": { "$ref": "#/$defs/statements" },
+            "resource_limits": { "$ref": "#/$defs/limits" },
+            "scenario_refs": { "$ref": "#/$defs/scenarioRefs" }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "statements": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true },
+    "variant": { "type": "object", "additionalProperties": false, "required": ["tag", "fields", "semantics"], "properties": { "tag": { "type": "string" }, "fields": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }, "semantics": { "type": "string", "minLength": 10 } } },
+    "empty": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Empty" }, "fields": { "const": [] } } }] },
+    "fail": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Fail" }, "fields": { "const": ["error"] } } }] },
+    "die": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Die" }, "fields": { "const": ["failure"] } } }] },
+    "interrupt": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Interrupt" }, "fields": { "const": ["failure"] } } }] },
+    "sequential": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Sequential" }, "fields": { "const": ["left", "right"] } } }] },
+    "parallel": { "allOf": [{ "$ref": "#/$defs/variant" }, { "type": "object", "properties": { "tag": { "const": "Parallel" }, "fields": { "const": ["left", "right"] } } }] },
+    "limits": { "type": "object", "additionalProperties": false, "required": ["max_depth", "max_nodes"], "properties": { "max_depth": { "const": 32 }, "max_nodes": { "const": 1024 } } },
+    "scenarioRefs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 1, "uniqueItems": true }
+  },
+  "unevaluatedProperties": false
+}

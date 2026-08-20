@@ -1,10 +1,11 @@
-import { type Result } from '../types/core/index.js';
+import { type ResultLike } from '../types/core/index.js';
 
 /**
  * Returns the success value or computes a fallback from the error.
  *
  * @typeParam T - The success value type.
  * @typeParam E - The error value type.
+ * @typeParam U - The fallback output type.
  * @param result - The source `Result`.
  * @param fn - The fallback provider function for `Err`.
  * @returns The success payload or the computed fallback.
@@ -19,11 +20,11 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const unwrapOrElse = <T, E>(
-  result: Result<T, E>,
-  fn: (error: E) => T,
-): T => {
-  if (result.ok) {
+export const unwrapOrElse = <T, E, U>(
+  result: ResultLike<T, E>,
+  fn: (error: E) => U,
+): T | U => {
+  if (result.ok === true) {
     return result.value;
   } else {
     return fn(result.error);

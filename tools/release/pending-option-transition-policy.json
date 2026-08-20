@@ -1,0 +1,12 @@
+{
+  "$schema": "./pending-option-transition-policy.schema.json",
+  "schemaVersion": 1,
+  "transitionState": "PENDING_SEPARATE_RELEASE",
+  "package": {
+    "name": "@resultsafe/core-fp-option",
+    "directory": "packages/core/fp/option",
+    "currentVersion": "1.0.0",
+    "pendingVersion": "1.0.1",
+    "bump": "patch"
+  }
+}

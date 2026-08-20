@@ -1,5 +1,28 @@
 // Core types (re-exported from shared packages)
-export type { Option, Result } from './core/index.js';
+export type {
+  CauseLimits,
+  CauseMatchers,
+  DieCause,
+  EmptyCause,
+  ErrData,
+  ErrLike,
+  ExitMatchers,
+  FailCause,
+  FailureClassification,
+  FailureInput,
+  FailureJsonValue,
+  FailureLimits,
+  InterruptCause,
+  OkData,
+  OkLike,
+  Option,
+  ParallelCause,
+  Result,
+  ResultData,
+  ResultLike,
+  ResultMethods,
+  SequentialCause,
+} from './core/index.js';
 
 // Refiner types (local definitions)
 export type { AsyncValidatorFn } from './refiners/AsyncValidatorFn.js';

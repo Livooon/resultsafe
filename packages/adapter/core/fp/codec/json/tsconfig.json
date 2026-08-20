@@ -1,0 +1,15 @@
+{
+  "extends": "../../../../../../tsconfig.aliases.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {},
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "incremental": false
+  },
+  "include": ["src/**/*.ts"]
+}

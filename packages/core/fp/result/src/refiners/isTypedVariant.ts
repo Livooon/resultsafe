@@ -19,7 +19,7 @@ export const isTypedVariant =
   <K extends string>(variant: K) =>
   (value: unknown): value is { type: K } => {
     if (typeof value !== 'object' || value === null) return false;
-    if (!('type' in value)) return false;
+    if (!Object.prototype.hasOwnProperty.call(value, 'type')) return false;
 
     const obj = value as Record<string, unknown>;
     return obj['type'] === variant;

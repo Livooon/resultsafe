@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01d13-0738-7609-880a-f556df4124ea",
+  "title": "ResultSafe structured Failure architecture audit",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["audit_version", "question", "methodology", "sources", "criteria", "options", "observations", "conclusion", "limitations"],
+          "properties": {
+            "audit_version": { "const": "1.0.0" },
+            "question": { "type": "string", "minLength": 20 },
+            "methodology": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 3, "uniqueItems": true },
+            "sources": { "type": "array", "items": { "$ref": "#/$defs/source" }, "minItems": 15 },
+            "criteria": { "type": "array", "items": { "$ref": "#/$defs/criterion" }, "minItems": 5 },
+            "options": { "type": "array", "items": { "$ref": "#/$defs/option" }, "minItems": 4, "maxItems": 4 },
+            "observations": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 5, "uniqueItems": true },
+            "conclusion": { "$ref": "#/$defs/conclusion" },
+            "limitations": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_key", "product", "language", "official_url", "source_kind", "error_shape", "generic_error", "mandatory_structure", "observation"],
+      "properties": {
+        "source_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "product": { "type": "string", "minLength": 2 },
+        "language": { "type": "string", "minLength": 2 },
+        "official_url": { "type": "string", "format": "uri" },
+        "source_kind": { "enum": ["FORMAL_API", "FORMAL_GUIDE", "PUBLIC_DRAFT", "PROJECT_README"] },
+        "error_shape": { "type": "string", "minLength": 5 },
+        "generic_error": { "enum": ["PRESERVED", "CONSTRAINED", "FIXED", "UNTYPED", "NOT_APPLICABLE"] },
+        "mandatory_structure": { "enum": ["NONE", "MARKER", "THROWABLE", "CAUSE_TREE", "FIXED_ERROR", "STATUS_MODEL"] },
+        "observation": { "type": "string", "minLength": 20 }
+      }
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion_key", "weight", "measurement"],
+      "properties": {
+        "criterion_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "weight": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+        "measurement": { "type": "string", "minLength": 10 }
+      }
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["option_key", "scores", "weighted_total", "benefits", "costs"],
+      "properties": {
+        "option_key": { "enum": ["NO_BASE", "MARKER_PROTOCOL", "OPTIONAL_STRUCTURED_FAILURE", "MANDATORY_STRUCTURED_FAILURE"] },
+        "scores": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 100 }, "minProperties": 5 },
+        "weighted_total": { "type": "number", "minimum": 0, "maximum": 100 },
+        "benefits": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1 },
+        "costs": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1 }
+      }
+    },
+    "conclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selected_option", "required_fields", "compatibility_rule", "status"],
+      "properties": {
+        "selected_option": { "const": "OPTIONAL_STRUCTURED_FAILURE" },
+        "required_fields": { "const": ["schema_version", "code"] },
+        "compatibility_rule": { "type": "string", "minLength": 20 },
+        "status": { "const": "ACCEPTED_FOR_IMPLEMENTATION" }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

@@ -1,9 +1,8 @@
-import { hasOwn, isObject } from '../internal/object.js';
 import type { PayloadKeys } from '../types/refiners/PayloadKeys.js';
 import type { ValidatorFn } from '../types/refiners/ValidatorFn.js';
 import type { VariantConfig } from '../types/refiners/VariantConfig.js';
 import type { UniversalRefinedResult } from './types/index.js';
-import { getPayloadKeys } from './utils/index.js';
+import { validateSync } from './validationKernels.js';
 
 /**
  * Creates a sync variant refiner with payload validators.
@@ -33,25 +32,8 @@ export const refineResult =
     validators: TValidators,
   ) =>
   (value: unknown): UniversalRefinedResult<K, TMap, TValidators> | null => {
-    if (!isObject(value)) return null;
-    if (!hasOwn(value, 'type')) return null;
-
-    const t = value['type'];
-    if (t !== variant) return null;
-
-    const config = variantMap[variant];
-    if (!config) return null;
-
-    const keys = getPayloadKeys(config);
-    for (const key of keys) {
-      const check = validators?.[key];
-      if (!check) continue;
-
-      const field = value[key as keyof typeof value];
-      if (!check(field)) return null;
-    }
-
-    return value as UniversalRefinedResult<K, TMap, TValidators>;
+    const result = validateSync(value, variant, variantMap, validators);
+    return result as UniversalRefinedResult<K, TMap, TValidators> | null;
   };
 
 /**

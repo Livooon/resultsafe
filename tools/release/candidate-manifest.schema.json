@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResultSafe exact-byte release candidate manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "candidateId", "package", "source", "artifacts", "budgets", "contents"],
+  "properties": {
+    "$schema": { "const": "./candidate-manifest.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "candidateId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,160}$" },
+    "package": { "type": "object" },
+    "source": { "type": "object" },
+    "artifacts": { "type": "object" },
+    "budgets": { "type": "object" },
+    "contents": { "type": "array", "minItems": 1 }
+  }
+}

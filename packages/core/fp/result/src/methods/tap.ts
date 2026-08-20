@@ -1,4 +1,5 @@
-import type { Result } from '../types/core/index.js';
+import { hydrateResultValue } from '../internal/resultValue.js';
+import type { Result, ResultLike } from '../types/core/index.js';
 
 /**
  * Performs a side effect for the `Ok` value and returns the input `Result`.
@@ -20,11 +21,11 @@ import type { Result } from '../types/core/index.js';
  * @public
  */
 export const tap = <T, E>(
-  result: Result<T, E>,
+  result: ResultLike<T, E>,
   fn: (value: T) => void,
 ): Result<T, E> => {
-  if (result.ok) {
+  if (result.ok === true) {
     fn(result.value);
   }
-  return result;
+  return hydrateResultValue(result);
 };

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-980a-7f91-a389-50c21e3b041f",
+  "title": "ResultSafe scenario catalog document",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["execution_state", "scenarios"],
+          "properties": {
+            "execution_state": { "enum": ["NOT_EXECUTED", "PARTIAL", "EXECUTED"] },
+            "scenarios": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9809-786e-8c44-eb875991e855" }, "minItems": 1 }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

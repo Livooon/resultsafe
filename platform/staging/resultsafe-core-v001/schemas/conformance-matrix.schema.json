@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01d00-0001-7000-8000-000000000001",
+  "title": "ResultSafe packed-artifact cross-language conformance matrix",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    { "type": "object", "properties": { "payload": { "$ref": "#/$defs/payload" } } }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "status": { "const": "PASS" },
+    "typeDisposition": { "const": "NOT_ASSESSED_OPERATION_SPECIFIC" },
+    "lawResult": {
+      "type": "object", "additionalProperties": false, "required": ["law_key", "status"],
+      "properties": { "law_key": { "$ref": "#/$defs/key" }, "status": { "$ref": "#/$defs/status" } }
+    },
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["branch_outcomes", "callback_contract", "exception_contract", "wrapper_payload_identity", "laws", "positive_types", "negative_types"],
+      "properties": {
+        "branch_outcomes": { "$ref": "#/$defs/status" }, "callback_contract": { "$ref": "#/$defs/status" },
+        "exception_contract": { "$ref": "#/$defs/status" }, "wrapper_payload_identity": { "$ref": "#/$defs/status" },
+        "laws": { "type": "array", "items": { "$ref": "#/$defs/lawResult" }, "uniqueItems": true },
+        "positive_types": { "$ref": "#/$defs/typeDisposition" }, "negative_types": { "$ref": "#/$defs/typeDisposition" }
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false, "required": ["operation_key", "module_name"],
+      "properties": { "operation_key": { "$ref": "#/$defs/key" }, "module_name": { "type": "string", "minLength": 1 }, "method_name": { "type": "string", "minLength": 1 } }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false, "required": ["target_language", "artifact_subject", "artifact_digest"],
+      "properties": {
+        "target_language": { "enum": ["typescript", "python"] }, "artifact_subject": { "type": "string", "pattern": "^(npm|wheel):.+" },
+        "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    },
+    "typescriptDiagnostic": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false, "required": ["fixture", "expectation", "actual", "status"],
+          "properties": { "fixture": { "const": "positive.mts" }, "expectation": { "const": "NO_DIAGNOSTICS" }, "actual": { "type": "array", "maxItems": 0 }, "status": { "$ref": "#/$defs/status" } }
+        },
+        {
+          "type": "object", "additionalProperties": false, "required": ["fixture", "expectation", "actual", "status"],
+          "properties": {
+            "fixture": { "const": "negative.mts" },
+            "expectation": { "type": "object", "additionalProperties": false, "required": ["code", "message"], "properties": { "code": { "type": "integer" }, "message": { "type": "string", "minLength": 1 } } },
+            "actual": { "type": "object", "additionalProperties": false, "required": ["code", "message"], "properties": { "code": { "type": "integer" }, "message": { "type": "string", "minLength": 1 } } },
+            "status": { "$ref": "#/$defs/status" }
+          }
+        }
+      ]
+    },
+    "pythonDiagnostic": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false, "required": ["fixture", "expectation", "actual", "status"],
+          "properties": { "fixture": { "const": "positive.py" }, "expectation": { "const": "NO_DIAGNOSTICS" }, "actual": { "type": "array", "maxItems": 0 }, "status": { "$ref": "#/$defs/status" } }
+        },
+        {
+          "type": "object", "additionalProperties": false, "required": ["fixture", "expectation", "actual", "status"],
+          "properties": { "fixture": { "const": "negative.py" }, "expectation": { "type": "string", "minLength": 1 }, "actual": { "type": "string", "minLength": 1 }, "status": { "$ref": "#/$defs/status" } }
+        }
+      ]
+    },
+    "cell": {
+      "type": "object", "additionalProperties": false,
+      "required": ["cell_key", "target_language", "surface", "operation_key", "binding", "contract_ir_revision", "projection_revision", "clause_keys", "law_keys", "clauses", "expected_outcome", "artifact_subject", "artifact_digest", "actual_outcome", "status"],
+      "properties": {
+        "cell_key": { "type": "string", "pattern": "^(typescript|python):[a-z0-9-]+:(module|instance_method)$" },
+        "target_language": { "enum": ["typescript", "python"] }, "surface": { "enum": ["MODULE", "INSTANCE_METHOD"] },
+        "operation_key": { "$ref": "#/$defs/key" }, "binding": { "$ref": "#/$defs/binding" },
+        "contract_ir_revision": { "type": "integer", "minimum": 0 }, "projection_revision": { "type": "integer", "minimum": 0 },
+        "clause_keys": { "type": "array", "items": { "type": "string", "minLength": 3 }, "minItems": 3, "uniqueItems": true },
+        "law_keys": { "type": "array", "items": { "$ref": "#/$defs/key" }, "uniqueItems": true },
+        "clauses": {
+          "type": "object", "additionalProperties": false, "required": ["branches", "callbacks", "exception_outcomes", "result_identity", "laws"],
+          "properties": {
+            "branches": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c#/$defs/branch" }, "minItems": 1 },
+            "callbacks": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c#/$defs/callback" } },
+            "exception_outcomes": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c#/$defs/exceptionOutcome" }, "minItems": 1 },
+            "result_identity": { "enum": ["NEW_WRAPPER_PAYLOAD_REFERENCE_PRESERVED", "REUSE_INPUT_WRAPPER", "RETURN_INPUT_PAYLOAD_REFERENCE", "RETURN_CALLBACK_RESULT", "NEW_OPTION_WRAPPER_PAYLOAD_REFERENCE_PRESERVED", "CONDITIONAL_BY_BRANCH", "NOT_APPLICABLE"] },
+            "laws": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c#/$defs/law" } }
+          }
+        },
+        "expected_outcome": { "$ref": "#/$defs/outcome" }, "artifact_subject": { "type": "string", "minLength": 5 },
+        "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "actual_outcome": { "$ref": "#/$defs/outcome" },
+        "status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "payload": {
+      "type": "object", "additionalProperties": false,
+      "required": ["matrix_version", "generation_rule", "contract_ir_ref", "contract_ir_revision", "ir_version", "projection_catalog_ref", "projection_catalog_revision", "vector_revision", "status", "counts", "artifacts", "type_diagnostics", "cells"],
+      "properties": {
+        "matrix_version": { "const": "1.0.0" }, "generation_rule": { "const": "EXACT_NEUTRAL_IR_OPERATION_X_REQUIRED_LANGUAGE_SURFACE" },
+        "contract_ir_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "contract_ir_revision": { "type": "integer", "minimum": 0 },
+        "ir_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "projection_catalog_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "projection_catalog_revision": { "type": "integer", "minimum": 0 },
+        "vector_revision": { "type": "integer", "minimum": 1 }, "status": { "$ref": "#/$defs/status" },
+        "counts": {
+          "type": "object", "additionalProperties": false, "required": ["operations", "language_operation_pairs", "cells", "passed", "failed"],
+          "properties": { "operations": { "const": 23 }, "language_operation_pairs": { "const": 46 }, "cells": { "const": 88 }, "passed": { "const": 88 }, "failed": { "const": 0 } }
+        },
+        "artifacts": { "type": "array", "items": { "$ref": "#/$defs/artifact" }, "minItems": 2, "maxItems": 2 },
+        "type_diagnostics": {
+          "type": "object", "additionalProperties": false, "required": ["scope", "typescript", "python"],
+          "properties": {
+            "scope": { "const": "PACKAGE_LEVEL_SMOKE_ONLY_NOT_PER_CELL" },
+            "typescript": {
+              "type": "array", "items": { "$ref": "#/$defs/typescriptDiagnostic" }, "minItems": 2, "maxItems": 2,
+              "allOf": [
+                { "contains": { "type": "object", "required": ["fixture"], "properties": { "fixture": { "const": "positive.mts" } } }, "minContains": 1, "maxContains": 1 },
+                { "contains": { "type": "object", "required": ["fixture"], "properties": { "fixture": { "const": "negative.mts" } } }, "minContains": 1, "maxContains": 1 }
+              ]
+            },
+            "python": {
+              "type": "array", "items": { "$ref": "#/$defs/pythonDiagnostic" }, "minItems": 2, "maxItems": 2,
+              "allOf": [
+                { "contains": { "type": "object", "required": ["fixture"], "properties": { "fixture": { "const": "positive.py" } } }, "minContains": 1, "maxContains": 1 },
+                { "contains": { "type": "object", "required": ["fixture"], "properties": { "fixture": { "const": "negative.py" } } }, "minContains": 1, "maxContains": 1 }
+              ]
+            }
+          }
+        },
+        "cells": { "type": "array", "items": { "$ref": "#/$defs/cell" }, "minItems": 88, "maxItems": 88 }
+      }
+    }
+  }
+}

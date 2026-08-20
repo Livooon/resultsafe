@@ -7,9 +7,9 @@ import type { VariantOf } from './VariantOf.js';
  * @typeParam T - The variant union type.
  * @typeParam R - The return type of the handler function.
  *
- * @internal
+ * @public
  */
-export type Handler<K extends string, T extends VariantOf<K>, R> = {
+export type Handler<K extends T['type'], T extends VariantOf, R> = {
   readonly variant: K;
   readonly fn: (value: Extract<T, { type: K }>) => R;
 };

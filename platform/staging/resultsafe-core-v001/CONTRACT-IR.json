@@ -1,0 +1,3462 @@
+{
+  "document_id": "01a01af6-3bb1-7002-8958-73436a16f14f",
+  "document_ref": "urn:uuid:01a01af6-3bb1-7002-8958-73436a16f14f",
+  "document_key": "contract-ir",
+  "document_type": "contract_ir",
+  "document_revision": 2,
+  "schema_ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c",
+  "title": "ResultSafe Core Executable Contract IR",
+  "summary": "Strict executable intermediate representation of the Result algebra, public operations, TypeScript extensions, laws, identity, exceptions, compatibility, and projection applicability.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T00:00:00Z",
+  "payload": {
+    "ir_version": "2.2.0",
+    "authority_model": "CANONICAL_JSON_DERIVED_PROJECTIONS",
+    "execution_model": {
+      "branch_selection": "FIRST_TRUE_IN_DECLARATION_ORDER",
+      "step_execution": "SEQUENTIAL_SHORT_CIRCUIT_ON_RETURN_THROW_OR_REJECT",
+      "callback_execution": "ONLY_WHEN_ELIGIBLE_WITH_DECLARED_ARGUMENTS_COUNT_AND_ORDER",
+      "exception_execution": "DECLARED_OUTCOME_WITHOUT_IMPLICIT_RESULT_CAPTURE"
+    },
+    "immutability_identity_policy": {
+      "wrapper": "SHALLOW_IMMUTABLE",
+      "nested_payload": "OUTSIDE_CORE_GUARANTEE",
+      "pass_through": "REUSE_INPUT_WRAPPER_AND_PAYLOAD_REFERENCE",
+      "constructed_wrapper": "NEW_WRAPPER_PRESERVES_PAYLOAD_REFERENCE"
+    },
+    "compatibility_policy": {
+      "additive": "A new optional projection or symbol that does not alter an existing entity is additive.",
+      "behavioral": "A callback, branch, exception, identity, law, or projection-applicability change is behavioral and requires conformance review.",
+      "breaking": "Removing or renaming a symbol, variant, required input, output member, or stable type assertion is breaking."
+    },
+    "types": {
+      "result": {
+        "type_key": "result",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "definition_kind": "TAGGED_SUM",
+        "definition": "Data-only transport algebra containing exactly one of SUCCESS<T> or FAILURE<E> and no behavior members.",
+        "variants": [
+          {
+            "variant_key": "SUCCESS",
+            "discriminator": "SUCCESS",
+            "fields": [
+              {
+                "field_key": "payload",
+                "type": "T",
+                "presence": "REQUIRED"
+              },
+              {
+                "field_key": "failure-payload",
+                "type": "E",
+                "presence": "FORBIDDEN"
+              }
+            ]
+          },
+          {
+            "variant_key": "FAILURE",
+            "discriminator": "FAILURE",
+            "fields": [
+              {
+                "field_key": "payload",
+                "type": "E",
+                "presence": "REQUIRED"
+              },
+              {
+                "field_key": "success-payload",
+                "type": "T",
+                "presence": "FORBIDDEN"
+              }
+            ]
+          }
+        ],
+        "immutability_policy": "SHALLOW_IMMUTABLE_WRAPPER",
+        "identity_policy": "PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": [
+          "typescript",
+          "python",
+          "relational",
+          "sqlite",
+          "aasdvgs"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "runtime-result": {
+        "type_key": "runtime-result",
+        "classification": "LANGUAGE_TYPE_PROJECTION",
+        "type_parameters": ["T", "E"],
+        "definition_kind": "STRUCTURAL",
+        "definition": "Methodful language projection of Result data; behavior is non-transport state and is restored only by explicit hydration.",
+        "immutability_policy": "SHALLOW_IMMUTABLE_WRAPPER",
+        "identity_policy": "PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": ["typescript", "python"],
+        "compatibility": { "stability": "STABLE", "change_class": "BREAKING" }
+      },
+      "result-like": {
+        "type_key": "result-like",
+        "classification": "LANGUAGE_TYPE_PROJECTION",
+        "type_parameters": ["T", "E"],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Boundary union of Result transport data and the runtime Result projection.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": ["typescript", "python"],
+        "compatibility": { "stability": "STABLE", "change_class": "ADDITIVE" }
+      },
+      "option": {
+        "type_key": "option",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "type_parameters": [
+          "T"
+        ],
+        "definition_kind": "TAGGED_SUM",
+        "definition": "Exactly one of SOME<T> or NONE.",
+        "variants": [
+          {
+            "variant_key": "SOME",
+            "discriminator": "SOME",
+            "fields": [
+              {
+                "field_key": "payload",
+                "type": "T",
+                "presence": "REQUIRED"
+              }
+            ]
+          },
+          {
+            "variant_key": "NONE",
+            "discriminator": "NONE",
+            "fields": [
+              {
+                "field_key": "payload",
+                "type": "T",
+                "presence": "FORBIDDEN"
+              }
+            ]
+          }
+        ],
+        "immutability_policy": "SHALLOW_IMMUTABLE_WRAPPER",
+        "identity_policy": "PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": [
+          "typescript",
+          "python",
+          "relational",
+          "sqlite"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "async-validator-function": {
+        "type_key": "async-validator-function",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "T"
+        ],
+        "definition_kind": "CALLABLE",
+        "definition": "TypeScript callable from unknown to Awaitable<boolean> with optional predicate evidence.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "payload-keys": {
+        "type_key": "payload-keys",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "C"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Ordered configured payload keys inferred from a VariantConfig.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "validator-function": {
+        "type_key": "validator-function",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "T"
+        ],
+        "definition_kind": "CALLABLE",
+        "definition": "TypeScript runtime boolean predicate with optional type-predicate evidence.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "variant-config": {
+        "type_key": "variant-config",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "K"
+        ],
+        "definition_kind": "STRUCTURAL",
+        "definition": "Payload-key order, strict-own-field policy, and forbidden-own-field policy.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "handler": {
+        "type_key": "handler",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "V",
+          "O"
+        ],
+        "definition_kind": "STRUCTURAL",
+        "definition": "One discriminator key and its branch-narrowed callback.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "match-builder": {
+        "type_key": "match-builder",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "V",
+          "O",
+          "R"
+        ],
+        "definition_kind": "BUILDER",
+        "definition": "Exhaustive matcher builder whose run member exists only when no variants remain.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "matcher": {
+        "type_key": "matcher",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "V",
+          "O",
+          "H"
+        ],
+        "definition_kind": "BUILDER",
+        "definition": "Ordered matcher builder completed by an unmatched-input fallback.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "sync-refined-result": {
+        "type_key": "sync-refined-result",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "V",
+          "C"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Selected variant with fields established by synchronous validators.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "sync-refined-result-union": {
+        "type_key": "sync-refined-result-union",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "M"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Distributive union of all synchronously refined configured variants.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "sync-validator-map": {
+        "type_key": "sync-validator-map",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "M"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Own variant keys map to own payload keys and synchronous validators.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "universal-async-refined-result": {
+        "type_key": "universal-async-refined-result",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "V",
+          "C"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Async-refined variant limited to runtime-established field evidence.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "universal-refined-result": {
+        "type_key": "universal-refined-result",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "V",
+          "C"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Synchronously refined variant limited to runtime-established field evidence.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "variant-of": {
+        "type_key": "variant-of",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "type_parameters": [
+          "K"
+        ],
+        "definition_kind": "TYPE_OPERATOR",
+        "definition": "Distributive tagged object union for each discriminator in K.",
+        "immutability_policy": "TYPE_LEVEL_ONLY",
+        "identity_policy": "TYPE_LEVEL_ONLY",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      }
+    },
+    "operations": {
+      "construct-success": {
+        "operation_key": "construct-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "T"
+        ],
+        "inputs": [
+          {
+            "input_key": "value",
+            "type": "T",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Result<T,Never>",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "ALWAYS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_VARIANT",
+                "source": "input:value",
+                "variant": "SUCCESS"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NEW_WRAPPER_PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "construct-failure": {
+        "operation_key": "construct-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "error",
+            "type": "E",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Result<Never,E>",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "ALWAYS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_VARIANT",
+                "source": "input:error",
+                "variant": "FAILURE"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NEW_WRAPPER_PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BREAKING"
+        }
+      },
+      "is-failure": {
+        "operation_key": "is-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Boolean",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": true
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": false
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NOT_APPLICABLE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "is-success": {
+        "operation_key": "is-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Boolean",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": true
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": false
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NOT_APPLICABLE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "is-failure-and": {
+        "operation_key": "is-failure-and",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "predicate",
+            "type": "Predicate<E>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Boolean",
+        "callbacks": [
+          {
+            "callback_key": "predicate",
+            "input_type": "E",
+            "output_type": "Boolean",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "predicate",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "predicate"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": false
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "NOT_APPLICABLE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "is-success-and": {
+        "operation_key": "is-success-and",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "predicate",
+            "type": "Predicate<T>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Boolean",
+        "callbacks": [
+          {
+            "callback_key": "predicate",
+            "input_type": "T",
+            "output_type": "Boolean",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "predicate",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "predicate"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": false
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "NOT_APPLICABLE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "chain-success": {
+        "operation_key": "chain-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "U"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "next",
+            "type": "Callback<T,U>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Result<U,E>",
+        "callbacks": [
+          {
+            "callback_key": "next",
+            "input_type": "T",
+            "output_type": "Result<U,E>",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "next",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "next"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "failure-option": {
+        "operation_key": "failure-option",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Option<E>",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "source": "payload:result",
+                "variant": "SOME"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "variant": "NONE"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NEW_OPTION_WRAPPER_PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "success-option": {
+        "operation_key": "success-option",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Option<T>",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "source": "payload:result",
+                "variant": "SOME"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "variant": "NONE"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NEW_OPTION_WRAPPER_PAYLOAD_REFERENCE_PRESERVED",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "expect-success": {
+        "operation_key": "expect-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "message",
+            "type": "String",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "T",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "THROW",
+                "category": "EXTRACTION_FAILURE",
+                "source": "input:message"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "EXTRACTION",
+            "outcome": "THROW_EXTRACTION_FAILURE",
+            "cause": "PRESERVE_PAYLOAD_REFERENCE"
+          }
+        ],
+        "result_identity": "RETURN_INPUT_PAYLOAD_REFERENCE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "expect-failure": {
+        "operation_key": "expect-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "message",
+            "type": "String",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "E",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "THROW",
+                "category": "EXTRACTION_FAILURE",
+                "source": "input:message"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "EXTRACTION",
+            "outcome": "THROW_EXTRACTION_FAILURE",
+            "cause": "PRESERVE_PAYLOAD_REFERENCE"
+          }
+        ],
+        "result_identity": "RETURN_INPUT_PAYLOAD_REFERENCE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "flatten-result": {
+        "operation_key": "flatten-result",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "NestedResult<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Result<T,E>",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "map-success": {
+        "operation_key": "map-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "U"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "mapper",
+            "type": "Callback<T,U>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Result<U,E>",
+        "callbacks": [
+          {
+            "callback_key": "mapper",
+            "input_type": "T",
+            "output_type": "U",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "mapper",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_VARIANT",
+                "source": "callback:mapper",
+                "variant": "SUCCESS"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "map-failure": {
+        "operation_key": "map-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "F"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "mapper",
+            "type": "Callback<E,F>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Result<T,F>",
+        "callbacks": [
+          {
+            "callback_key": "mapper",
+            "input_type": "E",
+            "output_type": "F",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "mapper",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_VARIANT",
+                "source": "callback:mapper",
+                "variant": "FAILURE"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "match-result": {
+        "operation_key": "match-result",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "A",
+          "B"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "success",
+            "type": "Callback<T,A>",
+            "evaluation": "CALLBACK"
+          },
+          {
+            "input_key": "failure",
+            "type": "Callback<E,B>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "A | B",
+        "callbacks": [
+          {
+            "callback_key": "success",
+            "input_type": "T",
+            "output_type": "A",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          },
+          {
+            "callback_key": "failure",
+            "input_type": "E",
+            "output_type": "B",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 1,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "success",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "success"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "failure",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "failure"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "RETURN_CALLBACK_RESULT",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "recover-failure": {
+        "operation_key": "recover-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "F"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "recover",
+            "type": "Callback<E,F>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Result<T,F>",
+        "callbacks": [
+          {
+            "callback_key": "recover",
+            "input_type": "E",
+            "output_type": "Result<T,F>",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "recover",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "recover"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "tap-success": {
+        "operation_key": "tap-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "effect",
+            "type": "Effect<T>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Result<T,E>",
+        "callbacks": [
+          {
+            "callback_key": "effect",
+            "input_type": "T",
+            "output_type": "Unit",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "effect",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "REUSE_INPUT_WRAPPER",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "tap-failure": {
+        "operation_key": "tap-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "effect",
+            "type": "Effect<E>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "Result<T,E>",
+        "callbacks": [
+          {
+            "callback_key": "effect",
+            "input_type": "E",
+            "output_type": "Unit",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "effect",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "REUSE_INPUT_WRAPPER",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "transpose-result-option": {
+        "operation_key": "transpose-result-option",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "ResultOption<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "OptionResult<T,E>",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "source": "payload:result",
+                "variant": "SOME",
+                "inner_variant": "FAILURE"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "PAYLOAD_VARIANT",
+              "input": "result",
+              "variant": "SOME"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "source": "payload:result",
+                "variant": "SOME",
+                "inner_variant": "SUCCESS"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_OPTION",
+                "variant": "NONE"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "unwrap-success": {
+        "operation_key": "unwrap-success",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "T",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "THROW",
+                "category": "EXTRACTION_FAILURE",
+                "source": "payload:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "EXTRACTION",
+            "outcome": "THROW_EXTRACTION_FAILURE",
+            "cause": "PRESERVE_PAYLOAD_REFERENCE"
+          }
+        ],
+        "result_identity": "RETURN_INPUT_PAYLOAD_REFERENCE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "unwrap-failure": {
+        "operation_key": "unwrap-failure",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "E",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "THROW",
+                "category": "EXTRACTION_FAILURE",
+                "source": "payload:result"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "EXTRACTION",
+            "outcome": "THROW_EXTRACTION_FAILURE",
+            "cause": "PRESERVE_PAYLOAD_REFERENCE"
+          }
+        ],
+        "result_identity": "RETURN_INPUT_PAYLOAD_REFERENCE",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "unwrap-or": {
+        "operation_key": "unwrap-or",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "U"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "fallback",
+            "type": "U",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "T | U",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:fallback"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "unwrap-or-else": {
+        "operation_key": "unwrap-or-else",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": { "requirement": "REQUIRED", "receiver_input": "result" } },
+        "type_parameters": [
+          "T",
+          "E",
+          "U"
+        ],
+        "inputs": [
+          {
+            "input_key": "result",
+            "type": "Result<T,E>",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "fallback",
+            "type": "Callback<E,U>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "T | U",
+        "callbacks": [
+          {
+            "callback_key": "fallback",
+            "input_type": "E",
+            "output_type": "U",
+            "eligible_when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "FAILURE"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "payload:result"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "INPUT_VARIANT",
+              "input": "result",
+              "variant": "SUCCESS"
+            },
+            "steps": [
+              {
+                "op": "RETURN_PAYLOAD",
+                "source": "payload:result"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "fallback",
+                "source": "payload:result"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "fallback"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "is-tagged-variant": {
+        "operation_key": "is-tagged-variant",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "K"
+        ],
+        "inputs": [
+          {
+            "input_key": "variant",
+            "type": "K",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "candidate",
+            "type": "Unknown",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Boolean",
+        "callbacks": [],
+        "branches": [
+          {
+            "when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": true
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": false
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "NONE",
+            "outcome": "NO_EXCEPTION_DEFINED"
+          }
+        ],
+        "result_identity": "NOT_APPLICABLE",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "is-validated-tagged-variant": {
+        "operation_key": "is-validated-tagged-variant",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "K",
+          "V"
+        ],
+        "inputs": [
+          {
+            "input_key": "variant",
+            "type": "K",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "schema",
+            "type": "V",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "candidate",
+            "type": "Unknown",
+            "evaluation": "EAGER"
+          }
+        ],
+        "output": "Boolean",
+        "callbacks": [
+          {
+            "callback_key": "validator",
+            "input_type": "Unknown",
+            "output_type": "Boolean",
+            "eligible_when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "field:candidate"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "VALIDATE",
+                "callback": "validator",
+                "source": "input:candidate",
+                "order": "PAYLOAD_KEY",
+                "short_circuit": true,
+                "on_false": "RETURN_FALSE"
+              },
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": true
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_BOOLEAN",
+                "value": false
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "VALIDATOR",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "NOT_APPLICABLE",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "match-tagged-variant": {
+        "operation_key": "match-tagged-variant",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "V",
+          "O"
+        ],
+        "inputs": [
+          {
+            "input_key": "candidate",
+            "type": "V",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "handlers",
+            "type": "Handlers<V,O>",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "fallback",
+            "type": "Callback<V,O>",
+            "evaluation": "CALLBACK"
+          }
+        ],
+        "output": "O",
+        "callbacks": [
+          {
+            "callback_key": "handler",
+            "input_type": "V",
+            "output_type": "O",
+            "eligible_when": {
+              "kind": "MATCH_FOUND",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "matched:candidate"
+            ]
+          },
+          {
+            "callback_key": "fallback",
+            "input_type": "V",
+            "output_type": "O",
+            "eligible_when": {
+              "kind": "MATCH_NOT_FOUND",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 1,
+            "arguments": [
+              "input:candidate"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "MATCH_FOUND",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "SELECT_FIRST_MATCH",
+                "source": "input:candidate",
+                "order": "REGISTRATION"
+              },
+              {
+                "op": "INVOKE",
+                "callback": "handler",
+                "source": "matched:candidate"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "handler"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "INVOKE",
+                "callback": "fallback",
+                "source": "input:candidate"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "fallback"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "RETURN_CALLBACK_RESULT",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "match-tagged-variant-strict": {
+        "operation_key": "match-tagged-variant-strict",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "V",
+          "O"
+        ],
+        "inputs": [
+          {
+            "input_key": "candidate",
+            "type": "V",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "handlers",
+            "type": "Handlers<V,O>",
+            "evaluation": "CONFIGURATION"
+          }
+        ],
+        "output": "O",
+        "callbacks": [
+          {
+            "callback_key": "handler",
+            "input_type": "V",
+            "output_type": "O",
+            "eligible_when": {
+              "kind": "MATCH_FOUND",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "matched:candidate"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "MATCH_FOUND",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "SELECT_FIRST_MATCH",
+                "source": "input:candidate",
+                "order": "REGISTRATION"
+              },
+              {
+                "op": "INVOKE",
+                "callback": "handler",
+                "source": "matched:candidate"
+              },
+              {
+                "op": "RETURN_CALLBACK",
+                "callback": "handler"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "THROW",
+                "category": "UNMATCHED_VARIANT",
+                "source": "input:candidate"
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "CALLBACK",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          },
+          {
+            "source": "RUNTIME_CONTRACT",
+            "outcome": "THROW_UNMATCHED_VARIANT",
+            "cause": "PRESERVE_PAYLOAD_REFERENCE"
+          }
+        ],
+        "result_identity": "RETURN_CALLBACK_RESULT",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "refine-sync-kernel": {
+        "operation_key": "refine-sync-kernel",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "V",
+          "M"
+        ],
+        "inputs": [
+          {
+            "input_key": "candidate",
+            "type": "Unknown",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "variant",
+            "type": "V",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "map",
+            "type": "M",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "validators",
+            "type": "Validators<M>",
+            "evaluation": "CONFIGURATION"
+          }
+        ],
+        "output": "V | Null",
+        "callbacks": [
+          {
+            "callback_key": "validator",
+            "input_type": "Unknown",
+            "output_type": "Boolean",
+            "eligible_when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "field:candidate"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "VALIDATE",
+                "callback": "validator",
+                "source": "input:candidate",
+                "order": "PAYLOAD_KEY",
+                "short_circuit": true,
+                "on_false": "RETURN_NULL"
+              },
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:candidate"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_NULL",
+                "value": null
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "VALIDATOR",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "refine-async-kernel": {
+        "operation_key": "refine-async-kernel",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "V",
+          "M"
+        ],
+        "inputs": [
+          {
+            "input_key": "candidate",
+            "type": "Unknown",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "variant",
+            "type": "V",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "map",
+            "type": "M",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "validators",
+            "type": "AsyncValidators<M>",
+            "evaluation": "CONFIGURATION"
+          }
+        ],
+        "output": "AsyncRefinement<V>",
+        "callbacks": [
+          {
+            "callback_key": "validator",
+            "input_type": "Unknown",
+            "output_type": "AwaitableBoolean",
+            "eligible_when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "field:candidate"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "VALIDATE",
+                "callback": "validator",
+                "source": "input:candidate",
+                "order": "PAYLOAD_KEY",
+                "short_circuit": true,
+                "on_false": "RETURN_NULL"
+              },
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:candidate"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_NULL",
+                "value": null
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "VALIDATOR",
+            "outcome": "REJECT_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      },
+      "refine-variant-map": {
+        "operation_key": "refine-variant-map",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "surface_contract": { "module_callable": "REQUIRED", "instance_method": "FORBIDDEN" },
+        "type_parameters": [
+          "M"
+        ],
+        "inputs": [
+          {
+            "input_key": "candidate",
+            "type": "Unknown",
+            "evaluation": "EAGER"
+          },
+          {
+            "input_key": "map",
+            "type": "M",
+            "evaluation": "CONFIGURATION"
+          },
+          {
+            "input_key": "validators",
+            "type": "Validators<M>",
+            "evaluation": "CONFIGURATION"
+          }
+        ],
+        "output": "RefinedUnion<M> | Null",
+        "callbacks": [
+          {
+            "callback_key": "validator",
+            "input_type": "Unknown",
+            "output_type": "Boolean",
+            "eligible_when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "eligible_count": 1,
+            "ineligible_count": 0,
+            "order": 0,
+            "arguments": [
+              "field:candidate"
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "when": {
+              "kind": "KNOWN_VARIANT",
+              "input": "candidate"
+            },
+            "steps": [
+              {
+                "op": "VALIDATE",
+                "callback": "validator",
+                "source": "input:candidate",
+                "order": "PAYLOAD_KEY",
+                "short_circuit": true,
+                "on_false": "RETURN_NULL"
+              },
+              {
+                "op": "RETURN_INPUT",
+                "source": "input:candidate"
+              }
+            ]
+          },
+          {
+            "when": {
+              "kind": "OTHERWISE"
+            },
+            "steps": [
+              {
+                "op": "RETURN_NULL",
+                "value": null
+              }
+            ]
+          }
+        ],
+        "exception_outcomes": [
+          {
+            "source": "VALIDATOR",
+            "outcome": "PROPAGATE_IDENTITY",
+            "cause": "PRESERVE_EXCEPTION_IDENTITY"
+          }
+        ],
+        "result_identity": "CONDITIONAL_BY_BRANCH",
+        "projection_applicability": [
+          "typescript"
+        ],
+        "compatibility": {
+          "stability": "STABLE",
+          "change_class": "BEHAVIORAL"
+        }
+      }
+    },
+    "laws": [
+      {
+        "law_key": "result-exclusive-branch",
+        "quantified_types": [
+          "T",
+          "E"
+        ],
+        "left": "activeBranches(Result<T,E>)",
+        "right": "1",
+        "equivalence": "VALUE_AND_BRANCH",
+        "applies_to": [
+          "result",
+          "construct-success",
+          "construct-failure"
+        ]
+      },
+      {
+        "law_key": "map-identity",
+        "quantified_types": [
+          "T",
+          "E"
+        ],
+        "left": "map-success(result, identity)",
+        "right": "result",
+        "equivalence": "VALUE_AND_BRANCH",
+        "applies_to": [
+          "map-success"
+        ]
+      },
+      {
+        "law_key": "tap-identity",
+        "quantified_types": [
+          "T",
+          "E"
+        ],
+        "left": "tap-success(result, no-op)",
+        "right": "result",
+        "equivalence": "REFERENCE_IDENTITY",
+        "applies_to": [
+          "tap-success",
+          "tap-failure"
+        ]
+      },
+      {
+        "law_key": "flatten-chain",
+        "quantified_types": [
+          "T",
+          "E",
+          "U"
+        ],
+        "left": "chain-success(result, callback)",
+        "right": "flatten-result(map-success(result, callback))",
+        "equivalence": "VALUE_AND_BRANCH",
+        "applies_to": [
+          "chain-success",
+          "flatten-result",
+          "map-success"
+        ]
+      },
+      {
+        "law_key": "refinement-form-equivalence",
+        "quantified_types": [
+          "V",
+          "M"
+        ],
+        "left": "curried(map, variant, validators, candidate)",
+        "right": "uncurried(candidate, variant, map, validators)",
+        "equivalence": "OBSERVATIONAL",
+        "applies_to": [
+          "refine-sync-kernel",
+          "refine-async-kernel"
+        ]
+      },
+      {
+        "law_key": "match-single-callback",
+        "quantified_types": [
+          "V",
+          "O"
+        ],
+        "left": "callbackInvocations(match(candidate))",
+        "right": "1",
+        "equivalence": "OBSERVATIONAL",
+        "applies_to": [
+          "match-result",
+          "match-tagged-variant",
+          "match-tagged-variant-strict"
+        ]
+      }
+    ],
+    "projection_applicability": {
+      "typescript": "FULL",
+      "python": "FULL",
+      "relational": "STRUCTURAL_ONLY",
+      "sqlite": "STRUCTURAL_ONLY",
+      "aasdvgs": "STRUCTURAL_ONLY"
+    },
+    "public_symbols": {
+      "Result": {
+        "contract_ref": "urn:uuid:01a01af6-3c02-7ec5-af04-6662469de7fc",
+        "classification": "LANGUAGE_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "runtime-result",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "ResultData": {
+        "contract_ref": "urn:uuid:01a01af6-3c02-7ec5-af04-6662469de7fc",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "TYPE_ENTITY",
+        "entity_key": "result",
+        "projection_applicability": ["typescript", "python", "relational", "sqlite", "aasdvgs"]
+      },
+      "ResultLike": {
+        "contract_ref": "urn:uuid:01a01af6-3c02-7ec5-af04-6662469de7fc",
+        "classification": "LANGUAGE_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "result-like",
+        "projection_applicability": ["typescript", "python"]
+      },
+      "Option": {
+        "contract_ref": "urn:uuid:01a01af6-3c03-706f-9952-0055817b5855",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "TYPE_ENTITY",
+        "entity_key": "option",
+        "projection_applicability": [
+          "typescript",
+          "python",
+          "relational",
+          "sqlite"
+        ]
+      },
+      "AsyncValidatorFn": {
+        "contract_ref": "urn:uuid:01a01af6-3c04-7605-9096-bd4dafd1d0fd",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "async-validator-function",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "PayloadKeys": {
+        "contract_ref": "urn:uuid:01a01af6-3c05-7fa8-876d-47ac0d976b83",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "payload-keys",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "ValidatorFn": {
+        "contract_ref": "urn:uuid:01a01af6-3c06-753b-9355-b447c58a1fdd",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "validator-function",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "VariantConfig": {
+        "contract_ref": "urn:uuid:01a01af6-3c07-7603-b9bc-d467c98f5e77",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "variant-config",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "Handler": {
+        "contract_ref": "urn:uuid:01a01af6-3c08-75ca-bed5-3735d0ad5ffc",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "handler",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "MatchBuilder": {
+        "contract_ref": "urn:uuid:01a01af6-3c09-7d3b-89cb-831a246ca467",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "match-builder",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "Matcher": {
+        "contract_ref": "urn:uuid:01a01af6-3c0a-7233-b618-362d0f0e1f1c",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "matcher",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "SyncRefinedResult": {
+        "contract_ref": "urn:uuid:01a01af6-3c0b-7fa3-81d0-aea55b1c4fea",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "sync-refined-result",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "SyncRefinedResultUnion": {
+        "contract_ref": "urn:uuid:01a01af6-3c0c-7a0e-b538-086b5e6f6f7a",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "sync-refined-result-union",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "SyncValidatorMap": {
+        "contract_ref": "urn:uuid:01a01af6-3c0d-78fe-8eee-60dc24260940",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "sync-validator-map",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "UniversalAsyncRefinedResult": {
+        "contract_ref": "urn:uuid:01a01af6-3c0e-7cb1-b883-e4fd5f3928d5",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "universal-async-refined-result",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "UniversalRefinedResult": {
+        "contract_ref": "urn:uuid:01a01af6-3c0f-7bd1-bb22-45921324e96d",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "universal-refined-result",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "VariantOf": {
+        "contract_ref": "urn:uuid:01a01af6-3c10-7928-bc25-bb9629adbab1",
+        "classification": "TYPESCRIPT_TYPE_PROJECTION",
+        "form": "TYPE_ENTITY",
+        "entity_key": "variant-of",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "Ok": {
+        "contract_ref": "urn:uuid:01a01af6-3c11-70cd-a6ba-3527782d0325",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "construct-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "Err": {
+        "contract_ref": "urn:uuid:01a01af6-3c12-7c3c-b1c3-cf7cbcdc2fab",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "construct-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "isErr": {
+        "contract_ref": "urn:uuid:01a01af6-3c13-71d3-b145-5f7439e8d2fc",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "is-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "isErrAnd": {
+        "contract_ref": "urn:uuid:01a01af6-3c14-7218-8059-eaeee38e5ab6",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "is-failure-and",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "isOk": {
+        "contract_ref": "urn:uuid:01a01af6-3c15-769e-b6b9-7886c9d1ea77",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "is-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "isOkAnd": {
+        "contract_ref": "urn:uuid:01a01af6-3c16-73b1-b217-a7982cbac52c",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "is-success-and",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "andThen": {
+        "contract_ref": "urn:uuid:01a01af6-3c17-798c-84de-720121e51047",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "chain-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "err": {
+        "contract_ref": "urn:uuid:01a01af6-3c18-78e2-980f-16625a49e2ea",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "failure-option",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "expect": {
+        "contract_ref": "urn:uuid:01a01af6-3c19-7fef-be30-8099c3eb6c58",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "expect-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "expectErr": {
+        "contract_ref": "urn:uuid:01a01af6-3c1a-76d7-a0ae-11110066ea76",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "expect-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "flatten": {
+        "contract_ref": "urn:uuid:01a01af6-3c1b-7015-9a3f-9bace3bd64b0",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "flatten-result",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "inspect": {
+        "contract_ref": "urn:uuid:01a01af6-3c1c-725f-b604-ad3d338fb0c2",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_REFERENCE",
+        "entity_key": "tap-success",
+        "operation": {
+          "operation_ref": "tap-success",
+          "binding": "ALIAS",
+          "inputs": [
+            {
+              "input_key": "result",
+              "type": "Result<T,E>",
+              "evaluation": "EAGER"
+            },
+            {
+              "input_key": "effect",
+              "type": "Effect<T>",
+              "evaluation": "CALLBACK"
+            }
+          ],
+          "output": "Result<T,E>"
+        },
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "inspectErr": {
+        "contract_ref": "urn:uuid:01a01af6-3c1d-7b6e-9d2f-aa1d00fbd90e",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_REFERENCE",
+        "entity_key": "tap-failure",
+        "operation": {
+          "operation_ref": "tap-failure",
+          "binding": "ALIAS",
+          "inputs": [
+            {
+              "input_key": "result",
+              "type": "Result<T,E>",
+              "evaluation": "EAGER"
+            },
+            {
+              "input_key": "effect",
+              "type": "Effect<E>",
+              "evaluation": "CALLBACK"
+            }
+          ],
+          "output": "Result<T,E>"
+        },
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "map": {
+        "contract_ref": "urn:uuid:01a01af6-3c1e-7025-a455-07c6b1d714e9",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "map-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "mapErr": {
+        "contract_ref": "urn:uuid:01a01af6-3c1f-7f68-bb0d-7998a2924ce1",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "map-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "match": {
+        "contract_ref": "urn:uuid:01a01af6-3c20-755a-a1a6-44f7b7939d27",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "match-result",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "ok": {
+        "contract_ref": "urn:uuid:01a01af6-3c21-70bf-b253-04eeb7c1c66b",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "success-option",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "orElse": {
+        "contract_ref": "urn:uuid:01a01af6-3c22-77b0-8785-f280fe330937",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "recover-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "tap": {
+        "contract_ref": "urn:uuid:01a01af6-3c23-7e49-8d36-66d7671b4133",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "tap-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "tapErr": {
+        "contract_ref": "urn:uuid:01a01af6-3c24-7f54-81dd-19935a12388f",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "tap-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "transpose": {
+        "contract_ref": "urn:uuid:01a01af6-3c25-72e6-9e50-0acb138b1bf4",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "transpose-result-option",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "unwrap": {
+        "contract_ref": "urn:uuid:01a01af6-3c26-76ea-8a1e-54632d70abe2",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "unwrap-success",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "unwrapErr": {
+        "contract_ref": "urn:uuid:01a01af6-3c27-79e2-bafc-1d2e43223e8c",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "unwrap-failure",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "unwrapOr": {
+        "contract_ref": "urn:uuid:01a01af6-3c28-701f-b261-8c33eebd64fb",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "unwrap-or",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "unwrapOrElse": {
+        "contract_ref": "urn:uuid:01a01af6-3c29-7717-9658-68e3c250ef94",
+        "classification": "NEUTRAL_PRIMITIVE",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "unwrap-or-else",
+        "projection_applicability": [
+          "typescript",
+          "python"
+        ]
+      },
+      "isTypedVariant": {
+        "contract_ref": "urn:uuid:01a01af6-3c2a-7445-851e-f5980f16cdd9",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "is-tagged-variant",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "isTypedVariantOf": {
+        "contract_ref": "urn:uuid:01a01af6-3c2b-7bb9-97af-bb2350f22ab0",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "is-validated-tagged-variant",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "matchVariant": {
+        "contract_ref": "urn:uuid:01a01af6-3c2c-768a-b698-b00561778455",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "match-tagged-variant",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "matchVariantStrict": {
+        "contract_ref": "urn:uuid:01a01af6-3c2d-702d-9211-9fe00736cf0c",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "match-tagged-variant-strict",
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "refineAsyncResult": {
+        "contract_ref": "urn:uuid:01a01af6-3c2e-7816-bd6d-30f8ef59f1f0",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_REFERENCE",
+        "entity_key": "refine-async-kernel",
+        "operation": {
+          "operation_ref": "refine-async-kernel",
+          "binding": "CURRIED",
+          "inputs": [
+            {
+              "input_key": "map",
+              "type": "M",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "variant",
+              "type": "V",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "validators",
+              "type": "AsyncValidators<M>",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "candidate",
+              "type": "Unknown",
+              "evaluation": "EAGER"
+            }
+          ],
+          "output": "AsyncRefinement<V>"
+        },
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "refineAsyncResultU": {
+        "contract_ref": "urn:uuid:01a01af6-3c2f-7312-b05f-2ad1aeed21e6",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_REFERENCE",
+        "entity_key": "refine-async-kernel",
+        "operation": {
+          "operation_ref": "refine-async-kernel",
+          "binding": "UNCURRIED",
+          "inputs": [
+            {
+              "input_key": "candidate",
+              "type": "Unknown",
+              "evaluation": "EAGER"
+            },
+            {
+              "input_key": "variant",
+              "type": "V",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "map",
+              "type": "M",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "validators",
+              "type": "AsyncValidators<M>",
+              "evaluation": "CONFIGURATION"
+            }
+          ],
+          "output": "AsyncRefinement<V>"
+        },
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "refineResult": {
+        "contract_ref": "urn:uuid:01a01af6-3c30-716c-95d5-c50d3c46caa9",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_REFERENCE",
+        "entity_key": "refine-sync-kernel",
+        "operation": {
+          "operation_ref": "refine-sync-kernel",
+          "binding": "CURRIED",
+          "inputs": [
+            {
+              "input_key": "map",
+              "type": "M",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "variant",
+              "type": "V",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "validators",
+              "type": "Validators<M>",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "candidate",
+              "type": "Unknown",
+              "evaluation": "EAGER"
+            }
+          ],
+          "output": "V | Null"
+        },
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "refineResultU": {
+        "contract_ref": "urn:uuid:01a01af6-3c31-7fb4-ae4e-f395d82d5646",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_REFERENCE",
+        "entity_key": "refine-sync-kernel",
+        "operation": {
+          "operation_ref": "refine-sync-kernel",
+          "binding": "UNCURRIED",
+          "inputs": [
+            {
+              "input_key": "candidate",
+              "type": "Unknown",
+              "evaluation": "EAGER"
+            },
+            {
+              "input_key": "variant",
+              "type": "V",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "map",
+              "type": "M",
+              "evaluation": "CONFIGURATION"
+            },
+            {
+              "input_key": "validators",
+              "type": "Validators<M>",
+              "evaluation": "CONFIGURATION"
+            }
+          ],
+          "output": "V | Null"
+        },
+        "projection_applicability": [
+          "typescript"
+        ]
+      },
+      "refineVariantMap": {
+        "contract_ref": "urn:uuid:01a01af6-3c32-7b98-974f-9709543db4cb",
+        "classification": "TYPESCRIPT_EXTENSION",
+        "form": "OPERATION_ENTITY",
+        "entity_key": "refine-variant-map",
+        "projection_applicability": [
+          "typescript"
+        ]
+      }
+    }
+  }
+}

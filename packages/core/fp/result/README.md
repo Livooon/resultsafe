@@ -66,7 +66,7 @@ The goal is not to imitate Rust mechanically, but to bring the same clarity of i
 
 `@resultsafe/core-fp-result` is the TypeScript/JavaScript package inside the multilingual `resultsafe/monorepo`.
 
-The monorepo applies shared Rust-inspired design concepts across language-specific packages. TypeScript/JavaScript is the current production package track, while Python is planned as a separate package track with the same conceptual model.
+The monorepo applies one language-neutral Contract IR across language-specific projections. TypeScript/JavaScript is the production package track; a Python runtime is implemented and staged rather than merely planned. Implementation and passing tests are evidence, not conformance: cross-language operations correspond by `operation_key`, and a conforming language must expose every applicable operation through both module-callable and instance-method surfaces. See the root [`CANON.md`](../../../../CANON.md).
 
 ---
 
@@ -79,8 +79,72 @@ The monorepo applies shared Rust-inspired design concepts across language-specif
 - Controlled extraction with `unwrap`, `unwrapOr`, `unwrapErr`, `expect`, and `expectErr`.
 - Advanced refinement layer for typed variants, strict matching, and result narrowing.
 - Coherent module structure instead of a flat utility dump.
+- Optional portable `Failure` payload with stable URI codes; generic `E` remains unrestricted.
+- Optional six-variant `Cause<E>` and two-variant `Exit<T, E>` models with explicit Result conversions.
 - Type output for TypeScript users for better DX and safer integrations.
 - Flexible distribution formats with Types, ESM, CJS, and UMD builds.
+
+### Optional structured Failure
+
+Use `Failure` only when a boundary needs stable machine identity, portable JSON
+facets, bounded validation, and explicit causes:
+
+```ts
+const result = Err(Failure({
+  schema_version: '1.0.0',
+  code: 'https://errors.example/not-found',
+  message_key: 'errors.not_found',
+}));
+```
+
+`Result<T, E>` is unchanged: strings, domain objects, and other error payloads
+remain valid. No arbitrary `E` is converted implicitly. See
+[`docs/result-data.md`](docs/result-data.md) for the transport branch and the
+canonical `FAILURE-MODEL.json` for structured payload semantics.
+
+### Optional Cause and Exit
+
+`Cause<E>` retains expected failures, portable defects, portable interruptions,
+and binary composition without changing generic `Result<T, E>`. Its exact
+variants are `Empty`, `Fail`, `Die`, `Interrupt`, `Sequential`, and `Parallel`.
+`Exit<T, E>` has `Success` and `Failure`; `Exit.Failure(Cause.Empty())` is valid.
+
+```ts
+import {
+  Cause,
+  Err,
+  Exit,
+  Failure,
+  exitToResult,
+  exitToResultCollapsed,
+  resultToExit,
+} from '@resultsafe/core-fp-result';
+
+const interrupted = Failure({
+  schema_version: '1.0.0',
+  code: 'urn:example:interrupted',
+});
+const cause = Cause.Sequential(
+  Cause.Fail('write-failed'),
+  Cause.Interrupt(interrupted),
+);
+const exit = Exit.Failure(cause);
+
+const complete = exitToResult(exit);
+const collapsed = exitToResultCollapsed(exit, () => 'operation-failed');
+const projected = resultToExit(Err('write-failed'));
+```
+
+The TypeScript Cause/Exit constructors shallow-freeze their wrappers and retain
+arbitrary payload and child references. `resultToExit` preserves `T`/`E` by
+identity; `exitToResult` keeps the complete Cause; `exitToResultCollapsed`
+requires an explicit collapse policy. `Failure.causes` is diagnostic ancestry,
+not Cause topology.
+
+ResultSafe core has no Effect runtime dependency. Effect interoperability means
+explicit semantic adapters only, not direct API, runtime type, representation,
+wire-format, identity, release, or security compatibility. See the
+[Cause and Exit guide](../../../../docs/docs/guides/03-cause-exit.md).
 
 ---
 
@@ -89,6 +153,18 @@ The monorepo applies shared Rust-inspired design concepts across language-specif
 ### `@resultsafe/core-fp-result`
 
 A focused Result library for explicit error handling and FP-style composition.
+
+Every neutral Result operation is available in two equivalent forms:
+
+```ts
+map(result, transform);
+result.map(transform);
+```
+
+The canonical identity is the Contract IR `operation_key`, not either spelling.
+The `success-option` operation is exposed as `ok(result)` and
+`result.toOption()` because `result.ok` is the required boolean discriminator.
+See [`CANON.md`](../../../../CANON.md) for the complete cross-language rule.
 
 It is designed for developers who want:
 
@@ -177,6 +253,19 @@ console.log(message);
 | `tapErr`    | `(r, fn) => Result<T, E>`     | Side effect on error                | [🔗](https://github.com/Livooon/resultsafe/blob/main/packages/core/fp/result/src/methods/tapErr.ts)    | [📄](https://raw.githubusercontent.com/Livooon/resultsafe/main/packages/core/fp/result/src/methods/tapErr.ts)    |
 | `transpose` | `(r) => Option<Result<T, E>>` | Result<Option> to Option<Result>    | [🔗](https://github.com/Livooon/resultsafe/blob/main/packages/core/fp/result/src/methods/transpose.ts) | [📄](https://raw.githubusercontent.com/Livooon/resultsafe/main/packages/core/fp/result/src/methods/transpose.ts) |
 | `flatten`   | `(r) => Result<T, E>`         | Flatten nested Result               | [🔗](https://github.com/Livooon/resultsafe/blob/main/packages/core/fp/result/src/methods/flatten.ts)   | [📄](https://raw.githubusercontent.com/Livooon/resultsafe/main/packages/core/fp/result/src/methods/flatten.ts)   |
+
+### Cause and Exit API
+
+| API | Purpose |
+| --- | --- |
+| `Cause.Empty`, `Cause.Fail`, `Cause.Die`, `Cause.Interrupt` | Construct Cause leaves |
+| `Cause.Sequential`, `Cause.Parallel` | Construct exact binary composition |
+| `Exit.Success`, `Exit.Failure` | Construct an Exit, including failure with Empty Cause |
+| `matchCause`, `matchExit` | Exhaustively match the variants |
+| `isCause`, `isExit` | Validate unknown wrappers with bounded Cause traversal |
+| `resultToExit` | Convert Result explicitly; `Err(E)` becomes `Failure(Fail(E))` |
+| `exitToResult` | Convert without loss to `Result<T, Cause<E>>` |
+| `exitToResultCollapsed` | Convert with a mandatory caller-supplied collapse policy |
 
 ### Advanced: Refiners
 

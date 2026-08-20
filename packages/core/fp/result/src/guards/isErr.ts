@@ -1,4 +1,5 @@
-import type { Result } from '../types/core/index.js';
+import type { Err } from '../constructors/Err.js';
+import type { ErrLike, Result, ResultLike } from '../types/core/index.js';
 
 /**
  * Checks whether the `Result` is in the error branch.
@@ -18,6 +19,8 @@ import type { Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const isErr = <T, E>(
-  result: Result<T, E>,
-): result is { ok: false; error: E } => result.ok === false;
+export function isErr<T, E>(result: Result<T, E>): result is Err<E>;
+export function isErr<T, E>(result: ResultLike<T, E>): result is ErrLike<E>;
+export function isErr<T, E>(result: ResultLike<T, E>): result is ErrLike<E> {
+  return result.ok === false;
+}

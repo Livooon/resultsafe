@@ -1,0 +1,563 @@
+{
+  "document_id": "01a01f0b-0001-7000-8000-000000000001",
+  "document_ref": "urn:uuid:01a01f0b-0001-7000-8000-000000000001",
+  "document_key": "cause-exit-conformance-matrix",
+  "document_type": "cause_exit_conformance_matrix",
+  "document_revision": 5,
+  "schema_ref": "urn:uuid:01a01f0b-0000-7000-8000-000000000001",
+  "title": "Cause and Exit conformance matrix",
+  "summary": "Executable Cause/Exit evidence for exact installed TypeScript and Python artifacts; aggregate PASS is derived from 16/16 cells.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T12:00:00Z",
+  "updated_at": "2026-08-20T12:00:00.002Z",
+  "payload": {
+    "matrix_version": "2.0.0",
+    "cause_model_ref": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+    "cause_model_revision": 2,
+    "exit_model_ref": "urn:uuid:01a01f0a-da02-77d4-982f-7251ea78e989",
+    "exit_model_revision": 2,
+    "projection_catalog_ref": "urn:uuid:01a01af6-3bbc-74ee-afde-135b2665411e",
+    "projection_catalog_revision": 10,
+    "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+    "cells": [
+      {
+        "cell_key": "typescript:Empty",
+        "target_key": "typescript",
+        "model_key": "cause",
+        "variant": "Empty",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0100-7000-8000-000000000235",
+          "urn:uuid:01a01f0b-010d-7000-8000-000000000248"
+        ],
+        "expected_semantic_outcome": {
+          "exact_variant": true,
+          "malformed_tag_rejected": true
+        },
+        "actual_semantic_outcome": {
+          "exact_variant": true,
+          "malformed_tag_rejected": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Fail",
+        "target_key": "typescript",
+        "model_key": "cause",
+        "variant": "Fail",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0102-7000-8000-000000000237",
+          "urn:uuid:01a01f0b-010e-7000-8000-000000000249"
+        ],
+        "expected_semantic_outcome": {
+          "payload_identity": true,
+          "malformed_fields_rejected": true
+        },
+        "actual_semantic_outcome": {
+          "payload_identity": true,
+          "malformed_fields_rejected": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Die",
+        "target_key": "typescript",
+        "model_key": "cause",
+        "variant": "Die",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0104-7000-8000-000000000239",
+          "urn:uuid:01a01f0b-0105-7000-8000-000000000240"
+        ],
+        "expected_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "actual_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Interrupt",
+        "target_key": "typescript",
+        "model_key": "cause",
+        "variant": "Interrupt",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0106-7000-8000-000000000241"
+        ],
+        "expected_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "actual_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Sequential",
+        "target_key": "typescript",
+        "model_key": "cause",
+        "variant": "Sequential",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0107-7000-8000-000000000242",
+          "urn:uuid:01a01f0b-0108-7000-8000-000000000243",
+          "urn:uuid:01a01f0b-010f-7000-8000-000000000250",
+          "urn:uuid:01a01f0b-0110-7000-8000-000000000251"
+        ],
+        "expected_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "cycle_rejected": true,
+          "depth_limit_enforced": true
+        },
+        "actual_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "cycle_rejected": true,
+          "depth_limit_enforced": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Parallel",
+        "target_key": "typescript",
+        "model_key": "cause",
+        "variant": "Parallel",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0109-7000-8000-000000000244",
+          "urn:uuid:01a01f0b-010a-7000-8000-000000000245",
+          "urn:uuid:01a01f0b-0111-7000-8000-000000000252"
+        ],
+        "expected_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "node_limit_enforced": true
+        },
+        "actual_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "node_limit_enforced": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Success",
+        "target_key": "typescript",
+        "model_key": "exit",
+        "variant": "Success",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-011a-7000-8000-000000000261",
+          "urn:uuid:01a01f0b-0121-7000-8000-000000000268",
+          "urn:uuid:01a01f0b-0125-7000-8000-000000000272",
+          "urn:uuid:01a01f0b-0127-7000-8000-000000000274"
+        ],
+        "expected_semantic_outcome": {
+          "value_identity": true,
+          "malformed_fields_rejected": true,
+          "conversions_preserve_value": true
+        },
+        "actual_semantic_outcome": {
+          "value_identity": true,
+          "malformed_fields_rejected": true,
+          "conversions_preserve_value": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "typescript:Failure",
+        "target_key": "typescript",
+        "model_key": "exit",
+        "variant": "Failure",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "typescript-tarball",
+          "sha256": "bf0ae7bc2c30c4faac90dc00857ccabf93d0b14439f0f74f51113c291ad8faa1"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-011c-7000-8000-000000000263",
+          "urn:uuid:01a01f0b-0120-7000-8000-000000000267",
+          "urn:uuid:01a01f0b-0122-7000-8000-000000000269",
+          "urn:uuid:01a01f0b-0126-7000-8000-000000000273",
+          "urn:uuid:01a01f0b-0128-7000-8000-000000000275",
+          "urn:uuid:01a01f0b-0129-7000-8000-000000000276"
+        ],
+        "expected_semantic_outcome": {
+          "empty_cause_valid": true,
+          "complete_cause_preserved": true,
+          "conversions_preserve_or_explicitly_collapse": true
+        },
+        "actual_semantic_outcome": {
+          "empty_cause_valid": true,
+          "complete_cause_preserved": true,
+          "conversions_preserve_or_explicitly_collapse": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict TypeScript narrowing probe compiled against the installed tarball declarations.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Empty",
+        "target_key": "python",
+        "model_key": "cause",
+        "variant": "Empty",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0100-7000-8000-000000000235",
+          "urn:uuid:01a01f0b-010d-7000-8000-000000000248"
+        ],
+        "expected_semantic_outcome": {
+          "exact_variant": true,
+          "malformed_tag_rejected": true
+        },
+        "actual_semantic_outcome": {
+          "exact_variant": true,
+          "malformed_tag_rejected": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Fail",
+        "target_key": "python",
+        "model_key": "cause",
+        "variant": "Fail",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0102-7000-8000-000000000237",
+          "urn:uuid:01a01f0b-010e-7000-8000-000000000249"
+        ],
+        "expected_semantic_outcome": {
+          "payload_identity": true,
+          "malformed_fields_rejected": true
+        },
+        "actual_semantic_outcome": {
+          "payload_identity": true,
+          "malformed_fields_rejected": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Die",
+        "target_key": "python",
+        "model_key": "cause",
+        "variant": "Die",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0104-7000-8000-000000000239",
+          "urn:uuid:01a01f0b-0105-7000-8000-000000000240"
+        ],
+        "expected_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "actual_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Interrupt",
+        "target_key": "python",
+        "model_key": "cause",
+        "variant": "Interrupt",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0106-7000-8000-000000000241"
+        ],
+        "expected_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "actual_semantic_outcome": {
+          "exact_variant": true,
+          "failure_identity": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Sequential",
+        "target_key": "python",
+        "model_key": "cause",
+        "variant": "Sequential",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0107-7000-8000-000000000242",
+          "urn:uuid:01a01f0b-0108-7000-8000-000000000243",
+          "urn:uuid:01a01f0b-010f-7000-8000-000000000250",
+          "urn:uuid:01a01f0b-0110-7000-8000-000000000251"
+        ],
+        "expected_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "cycle_rejected": true,
+          "depth_limit_enforced": true
+        },
+        "actual_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "cycle_rejected": true,
+          "depth_limit_enforced": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Parallel",
+        "target_key": "python",
+        "model_key": "cause",
+        "variant": "Parallel",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-0109-7000-8000-000000000244",
+          "urn:uuid:01a01f0b-010a-7000-8000-000000000245",
+          "urn:uuid:01a01f0b-0111-7000-8000-000000000252"
+        ],
+        "expected_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "node_limit_enforced": true
+        },
+        "actual_semantic_outcome": {
+          "binary_grouping": true,
+          "child_order": true,
+          "node_limit_enforced": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Success",
+        "target_key": "python",
+        "model_key": "exit",
+        "variant": "Success",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-011a-7000-8000-000000000261",
+          "urn:uuid:01a01f0b-0121-7000-8000-000000000268",
+          "urn:uuid:01a01f0b-0125-7000-8000-000000000272",
+          "urn:uuid:01a01f0b-0127-7000-8000-000000000274"
+        ],
+        "expected_semantic_outcome": {
+          "value_identity": true,
+          "malformed_fields_rejected": true,
+          "conversions_preserve_value": true
+        },
+        "actual_semantic_outcome": {
+          "value_identity": true,
+          "malformed_fields_rejected": true,
+          "conversions_preserve_value": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      },
+      {
+        "cell_key": "python:Failure",
+        "target_key": "python",
+        "model_key": "exit",
+        "variant": "Failure",
+        "cause_model_revision": 2,
+        "exit_model_revision": 2,
+        "projection_catalog_revision": 10,
+        "projection_revision": 4,
+        "artifact": {
+          "kind": "python-wheel",
+          "sha256": "910b417baf9ca53846025c6eda3fcb667f95d6dcf84a6c96c9dc7f2b46ec4abe"
+        },
+        "run_id": "01a01db5-815e-71fd-8559-4b674b8a2f56",
+        "scenario_refs": [
+          "urn:uuid:01a01f0b-011c-7000-8000-000000000263",
+          "urn:uuid:01a01f0b-0120-7000-8000-000000000267",
+          "urn:uuid:01a01f0b-0122-7000-8000-000000000269",
+          "urn:uuid:01a01f0b-0126-7000-8000-000000000273",
+          "urn:uuid:01a01f0b-0128-7000-8000-000000000275",
+          "urn:uuid:01a01f0b-0129-7000-8000-000000000276"
+        ],
+        "expected_semantic_outcome": {
+          "empty_cause_valid": true,
+          "complete_cause_preserved": true,
+          "conversions_preserve_or_explicitly_collapse": true
+        },
+        "actual_semantic_outcome": {
+          "empty_cause_valid": true,
+          "complete_cause_preserved": true,
+          "conversions_preserve_or_explicitly_collapse": true
+        },
+        "runtime_disposition": "PASS",
+        "type_disposition": "PASS",
+        "type_evidence": "Strict mypy narrowing probe passed against the installed wheel.",
+        "status": "PASS"
+      }
+    ],
+    "aggregate": {
+      "total": 16,
+      "passed": 16,
+      "failed": 0,
+      "status": "PASS"
+    }
+  }
+}

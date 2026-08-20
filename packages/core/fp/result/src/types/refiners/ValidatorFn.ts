@@ -19,4 +19,6 @@
  * @since 0.1.8
  * @public
  */
-export type ValidatorFn<T = unknown> = (x: unknown) => x is T;
+export type ValidatorFn<T = unknown> =
+  | ((x: unknown) => x is T)
+  | ((x: unknown) => boolean);

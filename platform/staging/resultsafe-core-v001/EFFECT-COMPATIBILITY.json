@@ -1,0 +1,101 @@
+{
+  "document_id": "01a01f0a-da03-7cbe-94a8-23bc96826838",
+  "document_ref": "urn:uuid:01a01f0a-da03-7cbe-94a8-23bc96826838",
+  "document_key": "effect-compatibility",
+  "document_type": "compatibility_catalog",
+  "document_revision": 4,
+  "schema_ref": "urn:uuid:01a01f0a-da07-7b11-8d9f-0e89386c0772",
+  "title": "Effect semantic compatibility",
+  "summary": "Normative semantic adapter boundary between ResultSafe Cause and Exit concepts and Effect concepts.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T12:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "compatibility_version": "1.0.0",
+    "compatibility_kind": "SEMANTIC_ADAPTERS_ONLY",
+    "cause_model_ref": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+    "exit_model_ref": "urn:uuid:01a01f0a-da02-77d4-982f-7251ea78e989",
+    "mapping_authority": {
+      "package_name": "@resultsafe/adapter-core-fp-effect",
+      "package_path": "packages/adapter/core/fp/effect",
+      "package_version": "0.1.0",
+      "effect_supported_version": "3.22.1",
+      "optional_integration_ref": "urn:uuid:01a01f50-0061-7000-8000-000000000061"
+    },
+    "scope": [
+      "Compatibility describes adapter meanings only and does not assert shared code, runtime types, constructors, wire formats, branding, equality, hashing, or release compatibility",
+      "Adapters are explicit opt-in integration code and MUST NOT alter Result<T,E> or introduce an Effect runtime dependency into the core model"
+    ],
+    "cause_mappings": [
+      {
+        "resultsafe_tag": "Empty",
+        "effect_concept": "Cause Empty",
+        "fidelity": "EXACT_SEMANTICS",
+        "requirement": "Map absence of cause without synthesizing a failure."
+      },
+      {
+        "resultsafe_tag": "Fail",
+        "effect_concept": "Cause Fail",
+        "fidelity": "CODEC_DEPENDENT",
+        "requirement": "Preserve E through the explicitly supplied E adapter or codec."
+      },
+      {
+        "resultsafe_tag": "Die",
+        "effect_concept": "Cause Die",
+        "fidelity": "ADAPTER_DEFINED",
+        "requirement": "Convert between an Effect defect and portable Failure explicitly; runtime defect identity is not portable."
+      },
+      {
+        "resultsafe_tag": "Interrupt",
+        "effect_concept": "Cause Interrupt",
+        "fidelity": "ADAPTER_DEFINED",
+        "requirement": "Convert interruption context to portable Failure explicitly; runtime fiber identity is not portable."
+      },
+      {
+        "resultsafe_tag": "Sequential",
+        "effect_concept": "Cause Sequential",
+        "fidelity": "EXACT_SEMANTICS",
+        "requirement": "Preserve binary grouping and left-to-right order."
+      },
+      {
+        "resultsafe_tag": "Parallel",
+        "effect_concept": "Cause Parallel",
+        "fidelity": "EXACT_SEMANTICS",
+        "requirement": "Preserve binary grouping and deterministic child order without claiming temporal ordering."
+      }
+    ],
+    "exit_mappings": [
+      {
+        "resultsafe_tag": "Success",
+        "effect_concept": "Exit Success",
+        "fidelity": "CODEC_DEPENDENT",
+        "requirement": "Preserve T through the explicitly supplied T adapter or codec."
+      },
+      {
+        "resultsafe_tag": "Failure",
+        "effect_concept": "Exit Failure",
+        "fidelity": "CAUSE_DEPENDENT",
+        "requirement": "Apply the Cause mapping recursively; Empty remains a valid ResultSafe failure cause even if a target adapter cannot represent it."
+      }
+    ],
+    "loss_policy": [
+      "An adapter MUST report or reject semantic loss and MUST NOT silently flatten, reorder, deduplicate, re-associate, or discard Cause nodes",
+      "If the target version cannot represent Exit.Failure(Empty), conversion MUST fail explicitly rather than inventing a defect or success",
+      "Failure.causes MUST NOT be consulted as a substitute for Effect or ResultSafe Cause topology"
+    ],
+    "resource_limits": {
+      "max_depth": 32,
+      "max_nodes": 1024
+    },
+    "qualification": {
+      "status": "QUALIFIED_LOCAL_SNAPSHOT",
+      "qualification_gate": "PASS_LOCAL_ATOMIC",
+      "claim_scope": "The separate adapter is locally qualified only for exact effect@3.22.1; this is not release approval, promotion, or publication evidence.",
+      "release_approval": "NOT_RELEASE_APPROVED",
+      "executable_evidence_refs": ["urn:uuid:01a01f50-0074-7000-8000-000000000074", "urn:uuid:01a01f50-0075-7000-8000-000000000075"],
+      "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-7fce-9ada-4d2b5888ac21", "child_kind": "effect-adapter", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/EFFECT-ADAPTER-EVIDENCE.json", "evidence_artifact_sha256": "2b68d39c05829ad8475cb911120d650686359c670772cd91d07b52baeeb55185", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" },
+      "remediation_task_ref": "urn:uuid:01a01d86-7c4a-7458-8294-fc686c4b1819"
+    },
+    "scenario_refs": []
+  }
+}

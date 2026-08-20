@@ -1,0 +1,396 @@
+{
+  "document_id": "01a01af6-3bc1-7677-83fa-bbe04fe99a37",
+  "document_ref": "urn:uuid:01a01af6-3bc1-7677-83fa-bbe04fe99a37",
+  "document_key": "integrity-manifest",
+  "document_type": "integrity_manifest",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01af6-980c-7504-bfd0-235440c33890",
+  "title": "ResultSafe staging integrity manifest",
+  "summary": "RFC 8785 canonicalized SHA-256 inventory and deterministic logical tree digest for stable staging inputs, excluding the manifest and governed receipt outputs.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-19T00:00:00Z",
+  "payload": {
+    "digest_algorithm": "SHA-256",
+    "canonicalization": "RFC-8785-JCS",
+    "scope": "Every JSON file below the staging root except INTEGRITY-MANIFEST.json and QUALIFICATION-RECEIPT.json",
+    "files": [
+      {
+        "path": "AI-ENTRYPOINT.json",
+        "sha256_digest": "339657a28a1965d0a8513b407fb26cfa3237b3f5a53077046bdc03daa752ea1b",
+        "size": 4010
+      },
+      {
+        "path": "CAUSE-AUDIT.json",
+        "sha256_digest": "8cdb9bf7b19fe3d685be5652c3b358de715ce047276c4e9a034adc743193693a",
+        "size": 10831
+      },
+      {
+        "path": "CAUSE-EXIT-CONFORMANCE-MATRIX.json",
+        "sha256_digest": "c6421427821c471b2b545ca3396463d5680c141aa09251138d30f55ecb7f1fc8",
+        "size": 15205
+      },
+      {
+        "path": "CAUSE-MODEL.json",
+        "sha256_digest": "c5f5c7946cd8ce6865b6368ecaa8daf8d22bb4752986e03b0411f70e0db1adec",
+        "size": 3959
+      },
+      {
+        "path": "COMPATIBILITY-MIGRATIONS.json",
+        "sha256_digest": "b6c262b01f7c154f3b09c6361290866df743fa52933fdd8cb1a67b530227d4e2",
+        "size": 28782
+      },
+      {
+        "path": "CONFORMANCE-MATRIX.json",
+        "sha256_digest": "8026f5c9ce3f4e48aab9f1ad11f6528065fe10214c5bbfd04b98f202f949fb31",
+        "size": 160432
+      },
+      {
+        "path": "CONTRACT-IR.json",
+        "sha256_digest": "41bfde330d5f2843072759d84eb525a06c37f4b570310854eb36b433a467a0b2",
+        "size": 56817
+      },
+      {
+        "path": "CONTRACTS.json",
+        "sha256_digest": "30b686d7fe6f923490a1277a61f1bf1a2094c6140b993635fb72500affb162c5",
+        "size": 45084
+      },
+      {
+        "path": "CORE-MODULARITY-POLICY.json",
+        "sha256_digest": "1abe6ccf1a1147214bb270c28e7684270d7489b6ee00c46b1908ce11952a1ae8",
+        "size": 8669
+      },
+      {
+        "path": "DECISIONS.json",
+        "sha256_digest": "2334ae5ccc14978804c09b27bac4cc42095f459ae3db9c092b0d3c8cc868a2c0",
+        "size": 15630
+      },
+      {
+        "path": "DOCUMENT-GRAPH.json",
+        "sha256_digest": "793bb1e7f1e3530d8736e06d9688df8b8339733a205a83d5683f054699c559db",
+        "size": 9398
+      },
+      {
+        "path": "DOCUMENT-REGISTRY.json",
+        "sha256_digest": "37bc6bcf1d686f11d8d04326445de7fb4b83fd1f5f84f18302e452b3c358320f",
+        "size": 11066
+      },
+      {
+        "path": "EFFECT-COMPATIBILITY.json",
+        "sha256_digest": "55faa9d2007d7629377602f8578a64ffba250c80fb6fcea919ff07969cef978b",
+        "size": 4261
+      },
+      {
+        "path": "EXIT-MODEL.json",
+        "sha256_digest": "2964fdcaa552c70355229071c0d59e7efc4072c89b353b13831ece3d2d7caa8d",
+        "size": 2713
+      },
+      {
+        "path": "FAILURE-AUDIT.json",
+        "sha256_digest": "994ccc8b68fafd1e0f14bb504f6316bfd89a0e96d33b61020f6e38341708893b",
+        "size": 13815
+      },
+      {
+        "path": "FAILURE-MODEL.json",
+        "sha256_digest": "24601b613541a2ebde6f38fabea37c7255dde72d2fda27971944a4816ddd1cd5",
+        "size": 6747
+      },
+      {
+        "path": "FINDINGS.json",
+        "sha256_digest": "9623e617fbc60acdf08d6f97de6db1e57c5aa0f03f9627808059ba8804ed47e2",
+        "size": 13008
+      },
+      {
+        "path": "ID-ALLOCATION-REGISTRY.json",
+        "sha256_digest": "1524b911945c8ac77c2f3bd03825fd65b37267579c423f9d863c45b65bd37259",
+        "size": 16757
+      },
+      {
+        "path": "IDENTITY-POLICY.json",
+        "sha256_digest": "5a81b25e45327b40dadf06290e1b4d2138b2cd080a3323bb5af754e4a4386f2f",
+        "size": 2148
+      },
+      {
+        "path": "OPTIONAL-INTEGRATIONS.json",
+        "sha256_digest": "d54d98172ac57accc4b61d50ef26179156ff0ad4df479cfe66bda148fea51b42",
+        "size": 4975
+      },
+      {
+        "path": "PACKAGE-FAMILIES.json",
+        "sha256_digest": "a6b39f7619da1eadde64863ab49b9183f8a9038d0ec12f071c67679a3a2c6b06",
+        "size": 5254
+      },
+      {
+        "path": "PROJECTION-CATALOG.json",
+        "sha256_digest": "c9be9c7d8a11176658f47f19c14b0c83418afc8a1333378c0777c4a50becdb59",
+        "size": 14219
+      },
+      {
+        "path": "PUBLIC-MODULE-REGISTRY.json",
+        "sha256_digest": "9ef56f50210b04405b391aa8b61b85c28bfde4410b53b329202da45f2906a7d3",
+        "size": 20767
+      },
+      {
+        "path": "RELATIONAL-SCHEMA.json",
+        "sha256_digest": "d09c87e4a759af4d870a0bc897904e445bf9ac4685b02114ce989caf3a4b1979",
+        "size": 19033
+      },
+      {
+        "path": "REMEDIATION-PLAN.json",
+        "sha256_digest": "544f4a3c75eb908d5468313258642d563a349cfae8fe2604d8b0d7109559cdb8",
+        "size": 22744
+      },
+      {
+        "path": "REQUIREMENTS.json",
+        "sha256_digest": "52bc01e9cb09af789a696db91a7aea3bc7a03c974a3cab16cddcad8b2ac4b9cb",
+        "size": 17103
+      },
+      {
+        "path": "RISKS.json",
+        "sha256_digest": "d4adfcf21f2b235d0f345d035f4dd5af966f4e9935bab0560d9c331ab7ddc315",
+        "size": 8747
+      },
+      {
+        "path": "SCENARIO-CATALOG.json",
+        "sha256_digest": "25ee040568506e305804f016cf649c9a5b6b0d75b233f5436038f3ae167382c9",
+        "size": 318955
+      },
+      {
+        "path": "SCHEMA-INDEX.json",
+        "sha256_digest": "1efb73350ce390992fa10f6cc0cdf3772654d8ba67c356c7027e1a78be06cbea",
+        "size": 8639
+      },
+      {
+        "path": "SOURCE-EVIDENCE.json",
+        "sha256_digest": "c98f7592695bce326b0117d879eb220be1b2386bdbc42831a6ee60331fbcfa37",
+        "size": 3801
+      },
+      {
+        "path": "SQLITE-PROFILE.json",
+        "sha256_digest": "828e5edca93ce8f100cf46a655e6ae2746ad7fbb83376cfb3a0b1c4b124b7e6f",
+        "size": 10978
+      },
+      {
+        "path": "STANDARDS-CATALOG.json",
+        "sha256_digest": "d8a3d7643ad0f0c69127de595902bc25ffb134547f806dbbd9ca8002a1686d14",
+        "size": 4040
+      },
+      {
+        "path": "TRACEABILITY-MATRIX.json",
+        "sha256_digest": "19f514d63725f3bf5b0444cadaaeb3d47a32c45e02f21ebaba26acc311076949",
+        "size": 112478
+      },
+      {
+        "path": "VALIDATION-PLAN.json",
+        "sha256_digest": "55d3c16b31a81aad0dc697875a90cf6075db3cd4a6c2dcf86124c862fb0fb00d",
+        "size": 3075
+      },
+      {
+        "path": "WAVE-PLAN.json",
+        "sha256_digest": "d6c68264d40ee7d2366f63f28652bad80baae5cb4f0b91f83cc360e3ef74ebcb",
+        "size": 12735
+      },
+      {
+        "path": "WORK.json",
+        "sha256_digest": "eaecdac5ba45587289d3f00b6bfd61292b66145fc6b3b911b3db52df32e1d4dc",
+        "size": 3654
+      },
+      {
+        "path": "schemas/allocation-registry.schema.json",
+        "sha256_digest": "0a5c7185b0d9d4542395a5d61aa23b93e2f1c2287d51885517380ef65293d229",
+        "size": 874
+      },
+      {
+        "path": "schemas/canonical-document.schema.json",
+        "sha256_digest": "613e38c57cad65f8239c7edae089cfe2eb1faa670d1164ef716b1e035bda0da9",
+        "size": 1605
+      },
+      {
+        "path": "schemas/catalog-record.schema.json",
+        "sha256_digest": "5da31125c020f33922a787babca3b25bbd2820fbcf91dd39d7f9b4a239389842",
+        "size": 7710
+      },
+      {
+        "path": "schemas/catalog.schema.json",
+        "sha256_digest": "f7965a03615ab67396a4a2ea4bfb0bbe7f37c16f824c763746a0f02378600166",
+        "size": 498
+      },
+      {
+        "path": "schemas/cause-audit.schema.json",
+        "sha256_digest": "b5359da3ef8de5af536a4b53e4f98c9b87880bc3254bf184e170aa8b3d5d538a",
+        "size": 4755
+      },
+      {
+        "path": "schemas/cause-exit-conformance-matrix.schema.json",
+        "sha256_digest": "b5654dfa0b144132eab36c858442d1ca98338cd7ace40b9bdb67b6eb45b3cca9",
+        "size": 3384
+      },
+      {
+        "path": "schemas/cause-model.schema.json",
+        "sha256_digest": "25e3704fd55fa0f4c73fc55a1015d94feb9c7456c64668731ed85e486bd8f837",
+        "size": 2804
+      },
+      {
+        "path": "schemas/cause.schema.json",
+        "sha256_digest": "feef9ccf9e4e80b63b5193f2d09ece4000653c389aabf1d3a4d4a30312c04855",
+        "size": 1794
+      },
+      {
+        "path": "schemas/compatibility-migration.schema.json",
+        "sha256_digest": "b03cdab8810490fde112710d30a8e5be150dedbfaa017b59734705e0f728b784",
+        "size": 3421
+      },
+      {
+        "path": "schemas/conformance-matrix.schema.json",
+        "sha256_digest": "c33c2f521ad0a011f82147b990f53eb81d75e10d47349185d4066199881804ff",
+        "size": 7499
+      },
+      {
+        "path": "schemas/contract-ir.schema.json",
+        "sha256_digest": "89cfdb023b4653c4f4b31a397ed6610a3c53e8206b9e18de087b7a21a534a77d",
+        "size": 14869
+      },
+      {
+        "path": "schemas/core-modularity-policy.schema.json",
+        "sha256_digest": "49abfa6000ffaa445740dd15ad23ed69c0f9a8e70ad14d82bfeca32b9eee838e",
+        "size": 5256
+      },
+      {
+        "path": "schemas/document-graph.schema.json",
+        "sha256_digest": "f641e2318cce81efbf23a8a2463583e1d55d446526fbb3aa3544144128148388",
+        "size": 896
+      },
+      {
+        "path": "schemas/document-registry.schema.json",
+        "sha256_digest": "bc758af73ed3569153c5993872afb64459250cf9d9dd68667c9ebf288075eb23",
+        "size": 1003
+      },
+      {
+        "path": "schemas/effect-compatibility.schema.json",
+        "sha256_digest": "bd1b79836364e4358c534cacbb3d7eb32abdc1fdf6a17189c5731d6cccf7c833",
+        "size": 5338
+      },
+      {
+        "path": "schemas/entrypoint.schema.json",
+        "sha256_digest": "6e6394f627d5d4d7401aa2b31768389c53c04ad94b53db5ec3fe50b153671eb8",
+        "size": 997
+      },
+      {
+        "path": "schemas/evidence-catalog.schema.json",
+        "sha256_digest": "9efa4b0910cce187c73e37b25623b648451b25089742c9b4daa178b077d26a0a",
+        "size": 1190
+      },
+      {
+        "path": "schemas/exit-model.schema.json",
+        "sha256_digest": "24cf0ea9a5e88b55af37fc07dc63ea4aa4e4f7c885f819204ba6a2ce8dd3b8ef",
+        "size": 2161
+      },
+      {
+        "path": "schemas/exit.schema.json",
+        "sha256_digest": "7891684471bc23624f56a1662840d55eef76ab5a8fe42a04b5fcf0262916a0e5",
+        "size": 847
+      },
+      {
+        "path": "schemas/failure-audit.schema.json",
+        "sha256_digest": "91159552845e5b97b9140d33f1404bd7f6e672a73500734eb19e7c7d72e76670",
+        "size": 3221
+      },
+      {
+        "path": "schemas/failure-model.schema.json",
+        "sha256_digest": "b58540ad83a5a65039f3e662d5a035999829217461a8479c0da53bc28a94a3f5",
+        "size": 2703
+      },
+      {
+        "path": "schemas/failure.schema.json",
+        "sha256_digest": "8ca3da1095dc7c4364e44bc8faf91e0d91a7be1951f714aff891b784d02646ad",
+        "size": 1388
+      },
+      {
+        "path": "schemas/identity-policy.schema.json",
+        "sha256_digest": "66d432bda44fd6e9ad20856a2f0aa5b68dcfdf8ef0e4d80b88352750da9cde06",
+        "size": 1229
+      },
+      {
+        "path": "schemas/integrity-manifest.schema.json",
+        "sha256_digest": "746cc212f82692874d06161a63bce2d7ee410af6e5f616a2afb2a41b9900e869",
+        "size": 1030
+      },
+      {
+        "path": "schemas/optional-integrations.schema.json",
+        "sha256_digest": "85fb06514d0587bce41bf2f678f3fc6d280fe51fcbc847af85b8518e9f7981da",
+        "size": 5585
+      },
+      {
+        "path": "schemas/public-module-registry.schema.json",
+        "sha256_digest": "f62a6886ddbe8f941b94c4e8726a288b4df6998b2426ff84463339cf4b8cfb6e",
+        "size": 1723
+      },
+      {
+        "path": "schemas/qualification.schema.json",
+        "sha256_digest": "91b5f96247c9b1129e2a416b2fd0b906f144688e8471335ba25b8590235a5117",
+        "size": 10499
+      },
+      {
+        "path": "schemas/reference.schema.json",
+        "sha256_digest": "b2125d224e55196026a15dc2b1cb032c3a70777a0e7efa8bae323f8ce28f7578",
+        "size": 212
+      },
+      {
+        "path": "schemas/relational-schema.schema.json",
+        "sha256_digest": "db9de581628b3b0fa88a8a603cb76d210965bc936c0856cc6f8914e7ba6383dc",
+        "size": 4961
+      },
+      {
+        "path": "schemas/remediation-plan.schema.json",
+        "sha256_digest": "aa55746fe31c5f89b2c1572d7f84c70c9fd45672dad269f02eef10456ea2951f",
+        "size": 3312
+      },
+      {
+        "path": "schemas/scenario-catalog.schema.json",
+        "sha256_digest": "62114b147882bd942eb4861e228bba6ffef270b8e17d91bf740d0c703ffa11a3",
+        "size": 592
+      },
+      {
+        "path": "schemas/scenario.schema.json",
+        "sha256_digest": "a0adf705aaa54194211947d86ce83d76a903bbd6e7bbcdc578bb60ed60952e63",
+        "size": 3897
+      },
+      {
+        "path": "schemas/schema-index.schema.json",
+        "sha256_digest": "068d5bbc98c42a6b241d4508aadc6bb821dc2caea459c67ebca3fdf00a943bed",
+        "size": 786
+      },
+      {
+        "path": "schemas/sqlite-profile.schema.json",
+        "sha256_digest": "69f6aec3f7d59eb157a554b8d874cf1905a3ea0224bad6e13e89da22cd25101f",
+        "size": 2733
+      },
+      {
+        "path": "schemas/traceability.schema.json",
+        "sha256_digest": "4763a49ae306081b4d7dd0a7a3db9c667232ae2b191bbc6268cced45a288f777",
+        "size": 889
+      },
+      {
+        "path": "schemas/uuidv7.schema.json",
+        "sha256_digest": "ae271dca26ea7eb3f9c75afacd956ed7a4e282ab7ed3c58e9fff437e45e4125b",
+        "size": 236
+      },
+      {
+        "path": "schemas/validation-plan.schema.json",
+        "sha256_digest": "0b263c6637ac2ce2d08399223f111f58d0c592bf09db6fb6c5050bb7b82a414b",
+        "size": 1170
+      },
+      {
+        "path": "schemas/wave-plan.schema.json",
+        "sha256_digest": "37f6127ba233221586567dd335bce53e1867a252a31f48b470b7c2ac501f853a",
+        "size": 6661
+      },
+      {
+        "path": "schemas/work.schema.json",
+        "sha256_digest": "3ed1ae82805fe4a229096356eb5d535356fccdc7454bbc92cde020dcd25ea0f3",
+        "size": 1608
+      }
+    ],
+    "tree_digest": "42bb67e1b640548f16fb5d951bca128cc24faabb04f734a7ff62240a33d2eb63"
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01c00-1000-7000-8000-000000000001",
+  "title": "ResultSafe language and vendor neutral relational schema",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema_version", "authority", "scalar_types", "equivalence_policy", "relations", "optional_profiles", "rebuild", "ownership_rules", "tenant_overlay_rules", "coverage"],
+          "properties": {
+            "schema_version": { "const": 1 },
+            "authority": { "const": "DERIVED_READ_MODEL_CANONICAL_JSON_AUTHORITATIVE" },
+            "scalar_types": { "type": "array", "const": ["STRING", "INTEGER", "BOOLEAN", "JSON"] },
+            "equivalence_policy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["metadata_coverage", "prose_checks"],
+              "properties": {
+                "metadata_coverage": { "type": "array", "const": ["relations", "columns", "column_order", "nullability", "primary_keys", "foreign_keys", "on_delete", "physical_types"] },
+                "prose_checks": { "const": "RUNTIME_CONSTRAINTS_NOT_SQL_EQUIVALENCE" }
+              }
+            },
+            "relations": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "ownership", "columns", "primary_key", "foreign_keys", "checks"],
+                "properties": {
+                  "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+                  "ownership": { "enum": ["DERIVED_CANONICAL", "PROJECTION_METADATA", "TENANT_OVERLAY", "OPERATIONAL_PROFILE"] },
+                  "columns": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["name", "type", "nullable", "source"],
+                      "properties": {
+                        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+                        "type": { "enum": ["STRING", "INTEGER", "BOOLEAN", "JSON"] },
+                        "nullable": { "type": "boolean" },
+                        "source": { "type": "string", "minLength": 1 }
+                      }
+                    }
+                  },
+                  "primary_key": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true },
+                  "foreign_keys": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["columns", "target_relation", "target_columns", "on_delete"],
+                      "properties": {
+                        "columns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+                        "target_relation": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+                        "target_columns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+                        "on_delete": { "enum": ["RESTRICT", "CASCADE"] }
+                      }
+                    }
+                  },
+                  "checks": { "type": "array", "items": { "type": "string", "minLength": 3 }, "uniqueItems": true }
+                }
+              }
+            },
+            "optional_profiles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["profile_key", "layout_version", "authority", "requires_profiles", "runtime_constraints", "relations"],
+                "properties": {
+                  "profile_key": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+                  "layout_version": { "type": "integer", "minimum": 1 },
+                  "authority": { "const": "OPTIONAL_DERIVED_STORAGE_CONTRACT" },
+                  "requires_profiles": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }, "uniqueItems": true },
+                  "runtime_constraints": { "type": "array", "items": { "type": "string", "minLength": 10 }, "uniqueItems": true },
+                  "relations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/relation" } }
+                }
+              }
+            },
+            "rebuild": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "identity_allocation", "reverse_projection", "publication"],
+              "properties": {
+                "mode": { "const": "FULL_FROM_VALIDATED_CANONICAL_CORPUS" },
+                "identity_allocation": { "const": "PROHIBITED" },
+                "reverse_projection": { "const": "PROHIBITED" },
+                "publication": { "const": "STAGED_VALIDATE_THEN_ATOMIC_REPLACE" }
+              }
+            },
+            "ownership_rules": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 10 }, "uniqueItems": true },
+            "tenant_overlay_rules": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 10 }, "uniqueItems": true },
+            "coverage": { "type": "array", "minItems": 5, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "ownership", "columns", "primary_key", "foreign_keys", "checks"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "ownership": { "const": "OPERATIONAL_PROFILE" },
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "type", "nullable", "source"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+              "type": { "enum": ["STRING", "INTEGER", "BOOLEAN", "JSON"] },
+              "nullable": { "type": "boolean" },
+              "source": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "primary_key": { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true },
+        "foreign_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["columns", "target_relation", "target_columns", "on_delete"],
+            "properties": {
+              "columns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+              "target_relation": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+              "target_columns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+              "on_delete": { "enum": ["RESTRICT", "CASCADE"] }
+            }
+          }
+        },
+        "checks": { "type": "array", "items": { "type": "string", "minLength": 3 }, "uniqueItems": true }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

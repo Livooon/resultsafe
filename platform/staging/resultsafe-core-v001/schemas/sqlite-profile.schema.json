@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01c00-1000-7000-8000-000000000002",
+  "title": "ResultSafe SQLite projection profile",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["profile_version", "relational_schema_ref", "application_id", "user_version", "minimum_sqlite_version", "table_mode", "foreign_keys", "identity_allocation", "reverse_projection", "publication", "verification", "qualification_fixture", "ddl", "optional_profiles"],
+          "properties": {
+            "profile_version": { "const": 1 },
+            "relational_schema_ref": { "const": "urn:uuid:01a01c00-1000-7000-8000-000000000003" },
+            "application_id": { "const": 1381192787 },
+            "user_version": { "const": 1 },
+            "minimum_sqlite_version": { "type": "string", "pattern": "^3\\.[0-9]+\\.[0-9]+$" },
+            "table_mode": { "const": "STRICT" },
+            "foreign_keys": { "const": "REQUIRED" },
+            "identity_allocation": { "const": "PROHIBITED" },
+            "reverse_projection": { "const": "PROHIBITED" },
+            "publication": { "const": "SAME_DIRECTORY_STAGED_ATOMIC_RENAME_EXPLICIT_ONLY" },
+            "verification": { "type": "array", "const": ["integrity_check", "foreign_key_check", "metadata", "relational_metadata_equivalence", "runtime_constraints", "deterministic_logical_dump", "constraint_tests", "semantic_fixture_roundtrip", "read_only_open"] },
+            "qualification_fixture": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["codec_identifier", "codec_version", "json_schema_ref", "scope", "claim"],
+              "properties": {
+                "codec_identifier": { "const": "resultsafe.sqlite-projection.fixture-json" },
+                "codec_version": { "const": 1 },
+                "json_schema_ref": { "type": "string", "format": "uri", "pattern": "^https://resultsafe\\.dev/schemas/.+\\.schema\\.json$" },
+                "scope": { "const": "TEST_FIXTURE_ONLY" },
+                "claim": { "const": "QUALIFIES_ONLY_VALUES_ENCODED_BY_THIS_EXPLICIT_FIXTURE_CODEC" }
+              }
+            },
+            "ddl": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 20 }, "uniqueItems": true },
+            "optional_profiles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["profile_key", "layout_version", "user_version", "requires_profiles", "dependency_resolution", "runtime_verification", "ddl"],
+                "properties": {
+                  "profile_key": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+                  "layout_version": { "type": "integer", "minimum": 1 },
+                  "user_version": { "type": "integer", "minimum": 2 },
+                  "requires_profiles": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }, "uniqueItems": true },
+                  "dependency_resolution": { "const": "AUTO_INCLUDE_TRANSITIVE_OR_REJECT_MISSING" },
+                  "runtime_verification": { "type": "array", "items": { "type": "string", "minLength": 10 }, "uniqueItems": true },
+                  "ddl": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 20 }, "uniqueItems": true }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

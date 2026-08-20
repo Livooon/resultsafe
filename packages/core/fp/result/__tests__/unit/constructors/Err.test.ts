@@ -15,4 +15,12 @@ describe('constructors/Err', () => {
       expect(result.error).toBe(error);
     }
   });
+
+  it('shallow-freezes the wrapper without freezing the payload', () => {
+    const error = { code: 'E_FAIL' };
+    const result = Err(error);
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(error)).toBe(false);
+  });
 });

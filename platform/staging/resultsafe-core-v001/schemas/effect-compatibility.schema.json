@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0a-da07-7b11-8d9f-0e89386c0772",
+  "title": "ResultSafe Effect semantic compatibility",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "document_key": { "const": "effect-compatibility" },
+        "document_type": { "const": "compatibility_catalog" },
+        "schema_ref": { "const": "urn:uuid:01a01f0a-da07-7b11-8d9f-0e89386c0772" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["compatibility_version", "compatibility_kind", "cause_model_ref", "exit_model_ref", "mapping_authority", "scope", "cause_mappings", "exit_mappings", "loss_policy", "resource_limits", "qualification", "scenario_refs"],
+          "properties": {
+            "compatibility_version": { "const": "1.0.0" },
+            "compatibility_kind": { "const": "SEMANTIC_ADAPTERS_ONLY" },
+            "cause_model_ref": { "const": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4" },
+            "exit_model_ref": { "const": "urn:uuid:01a01f0a-da02-77d4-982f-7251ea78e989" },
+            "mapping_authority": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["package_name", "package_path", "package_version", "effect_supported_version", "optional_integration_ref"],
+              "properties": {
+                "package_name": { "const": "@resultsafe/adapter-core-fp-effect" },
+                "package_path": { "const": "packages/adapter/core/fp/effect" },
+                "package_version": { "const": "0.1.0" },
+                "effect_supported_version": { "const": "3.22.1" },
+                "optional_integration_ref": { "const": "urn:uuid:01a01f50-0061-7000-8000-000000000061" }
+              }
+            },
+            "scope": { "$ref": "#/$defs/statements" },
+            "cause_mappings": { "type": "array", "prefixItems": [
+              { "$ref": "#/$defs/empty" }, { "$ref": "#/$defs/fail" }, { "$ref": "#/$defs/die" },
+              { "$ref": "#/$defs/interrupt" }, { "$ref": "#/$defs/sequential" }, { "$ref": "#/$defs/parallel" }
+            ], "items": false, "minItems": 6, "maxItems": 6 },
+            "exit_mappings": { "type": "array", "prefixItems": [{ "$ref": "#/$defs/success" }, { "$ref": "#/$defs/exitFailure" }], "items": false, "minItems": 2, "maxItems": 2 },
+            "loss_policy": { "$ref": "#/$defs/statements" },
+            "resource_limits": { "$ref": "#/$defs/limits" },
+            "qualification": {
+              "type": "object",
+              "additionalProperties": false,
+               "required": ["status", "qualification_gate", "claim_scope", "release_approval", "executable_evidence_refs", "atomic_evidence", "remediation_task_ref"],
+              "properties": {
+                 "status": { "const": "QUALIFIED_LOCAL_SNAPSHOT" },
+                 "qualification_gate": { "const": "PASS_LOCAL_ATOMIC" },
+                 "claim_scope": { "type": "string", "minLength": 20 },
+                 "release_approval": { "const": "NOT_RELEASE_APPROVED" },
+                 "executable_evidence_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 2, "uniqueItems": true },
+                 "atomic_evidence": { "$ref": "#/$defs/atomicEvidence" },
+                "remediation_task_ref": { "const": "urn:uuid:01a01d86-7c4a-7458-8294-fc686c4b1819" }
+              }
+            },
+            "scenario_refs": { "type": "array", "maxItems": 0 }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "statements": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true },
+    "mapping": { "type": "object", "additionalProperties": false, "required": ["resultsafe_tag", "effect_concept", "fidelity", "requirement"], "properties": { "resultsafe_tag": { "type": "string" }, "effect_concept": { "type": "string", "minLength": 3 }, "fidelity": { "enum": ["EXACT_SEMANTICS", "CODEC_DEPENDENT", "ADAPTER_DEFINED", "CAUSE_DEPENDENT"] }, "requirement": { "type": "string", "minLength": 10 } } },
+    "empty": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Empty" }, "fidelity": { "const": "EXACT_SEMANTICS" } } }] },
+    "fail": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Fail" }, "fidelity": { "const": "CODEC_DEPENDENT" } } }] },
+    "die": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Die" }, "fidelity": { "const": "ADAPTER_DEFINED" } } }] },
+    "interrupt": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Interrupt" }, "fidelity": { "const": "ADAPTER_DEFINED" } } }] },
+    "sequential": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Sequential" }, "fidelity": { "const": "EXACT_SEMANTICS" } } }] },
+    "parallel": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Parallel" }, "fidelity": { "const": "EXACT_SEMANTICS" } } }] },
+    "success": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Success" }, "fidelity": { "const": "CODEC_DEPENDENT" } } }] },
+    "exitFailure": { "allOf": [{ "$ref": "#/$defs/mapping" }, { "type": "object", "properties": { "resultsafe_tag": { "const": "Failure" }, "fidelity": { "const": "CAUSE_DEPENDENT" } } }] },
+    "limits": { "type": "object", "additionalProperties": false, "required": ["max_depth", "max_nodes"], "properties": { "max_depth": { "const": 32 }, "max_nodes": { "const": 1024 } } },
+    "atomicEvidence": { "type": "object", "additionalProperties": false, "required": ["parent_run_id", "child_run_id", "child_kind", "child_status", "evidence_artifact_path", "evidence_artifact_sha256", "promotion_blocker"], "properties": { "parent_run_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "child_run_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "child_kind": { "const": "effect-adapter" }, "child_status": { "const": "PASS" }, "evidence_artifact_path": { "type": "string", "pattern": "^\\.resultsafe-candidates/.+/EFFECT-ADAPTER-EVIDENCE\\.json$" }, "evidence_artifact_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "promotion_blocker": { "const": "DIRTY_OR_UNCOMMITTED_SOURCE" } } }
+  },
+  "unevaluatedProperties": false
+}

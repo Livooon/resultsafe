@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0a-da08-7b85-87bc-dea758e0db27",
+  "title": "ResultSafe portable Cause 1.0.0",
+  "$comment": "E is represented by its explicit caller-supplied portable codec. Decoders additionally enforce acyclicity, max_depth 32, and max_nodes 1024.",
+  "$ref": "#/$defs/cause",
+  "$defs": {
+    "jsonValue": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string" },
+        { "type": "array", "items": { "$ref": "#/$defs/jsonValue" } },
+        { "type": "object", "additionalProperties": { "$ref": "#/$defs/jsonValue" } }
+      ]
+    },
+    "empty": { "type": "object", "additionalProperties": false, "required": ["tag"], "properties": { "tag": { "const": "Empty" } } },
+    "fail": { "type": "object", "additionalProperties": false, "required": ["tag", "error"], "properties": { "tag": { "const": "Fail" }, "error": { "$ref": "#/$defs/jsonValue" } } },
+    "die": { "type": "object", "additionalProperties": false, "required": ["tag", "failure"], "properties": { "tag": { "const": "Die" }, "failure": { "$ref": "urn:uuid:01a01d13-3258-7290-918b-58b436a80180" } } },
+    "interrupt": { "type": "object", "additionalProperties": false, "required": ["tag", "failure"], "properties": { "tag": { "const": "Interrupt" }, "failure": { "$ref": "urn:uuid:01a01d13-3258-7290-918b-58b436a80180" } } },
+    "sequential": { "type": "object", "additionalProperties": false, "required": ["tag", "left", "right"], "properties": { "tag": { "const": "Sequential" }, "left": { "$ref": "#/$defs/cause" }, "right": { "$ref": "#/$defs/cause" } } },
+    "parallel": { "type": "object", "additionalProperties": false, "required": ["tag", "left", "right"], "properties": { "tag": { "const": "Parallel" }, "left": { "$ref": "#/$defs/cause" }, "right": { "$ref": "#/$defs/cause" } } },
+    "cause": { "oneOf": [{ "$ref": "#/$defs/empty" }, { "$ref": "#/$defs/fail" }, { "$ref": "#/$defs/die" }, { "$ref": "#/$defs/interrupt" }, { "$ref": "#/$defs/sequential" }, { "$ref": "#/$defs/parallel" }] }
+  }
+}

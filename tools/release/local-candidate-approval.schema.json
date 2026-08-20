@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResultSafe local candidate approval state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["candidateId", "state", "promotionBlockers"],
+  "properties": {
+    "candidateId": { "type": "string", "format": "uuid" },
+    "state": { "const": "NOT_APPROVED" },
+    "promotionBlockers": {
+      "type": "array",
+      "const": ["COMMIT_BOUND_REQUALIFICATION", "OWNER_RELEASE_APPROVAL", "GITHUB_ENVIRONMENT_CONFIGURATION"]
+    }
+  }
+}

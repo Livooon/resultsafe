@@ -1,5 +1,6 @@
 import { isErr } from '../guards/isErr.js';
-import { type Result } from '../types/core/index.js';
+import { hydrateResultValue } from '../internal/resultValue.js';
+import { type Result, type ResultLike } from '../types/core/index.js';
 
 /**
  * Performs a side effect for the `Err` value and returns the input `Result`.
@@ -21,11 +22,11 @@ import { type Result } from '../types/core/index.js';
  * @public
  */
 export const tapErr = <T, E>(
-  result: Result<T, E>,
+  result: ResultLike<T, E>,
   fn: (error: E) => void,
 ): Result<T, E> => {
   if (isErr(result)) {
     fn(result.error);
   }
-  return result;
+  return hydrateResultValue(result);
 };

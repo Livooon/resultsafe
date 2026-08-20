@@ -1,11 +1,12 @@
-import { type Result } from '../types/core/index.js';
+import { type ResultLike } from '../types/core/index.js';
 
 /**
  * Pattern matches the `Result` into a single output value.
  *
  * @typeParam T - The success value type.
  * @typeParam E - The error value type.
- * @typeParam U - The output type returned by both handlers.
+ * @typeParam A - The success handler output type.
+ * @typeParam B - The error handler output type.
  * @param result - The source `Result`.
  * @param okFn - The handler for the success branch.
  * @param errFn - The handler for the error branch.
@@ -21,12 +22,12 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const match = <T, E, U>(
-  result: Result<T, E>,
-  okFn: (value: T) => U,
-  errFn: (error: E) => U,
-): U => {
-  if (result.ok) {
+export const match = <T, E, A, B>(
+  result: ResultLike<T, E>,
+  okFn: (value: T) => A,
+  errFn: (error: E) => B,
+): A | B => {
+  if (result.ok === true) {
     return okFn(result.value);
   } else {
     const { error } = result;

@@ -9,26 +9,34 @@ import { tapErr } from '../../../src/methods/tapErr.js';
 import { transpose } from '../../../src/methods/transpose.js';
 
 describe('methods/inspect', () => {
-  it('runs effect only for Ok and returns the same reference', () => {
+  it('is the tap function', () => {
+    expect(inspect).toBe(tap);
+  });
+
+  it('runs effect only for Ok and hydrates ResultData', () => {
     const onValue = vi.fn();
     const okValue = { ok: true as const, value: 5 };
     const errValue = { ok: false as const, error: 'boom' };
 
-    expect(inspect(okValue, onValue)).toBe(okValue);
-    expect(inspect(errValue, onValue)).toBe(errValue);
+    expect(inspect(okValue, onValue)).not.toBe(okValue);
+    expect(inspect(errValue, onValue)).not.toBe(errValue);
     expect(onValue).toHaveBeenCalledTimes(1);
     expect(onValue).toHaveBeenCalledWith(5);
   });
 });
 
 describe('methods/inspectErr', () => {
-  it('runs effect only for Err and returns the same reference', () => {
+  it('is the tapErr function', () => {
+    expect(inspectErr).toBe(tapErr);
+  });
+
+  it('runs effect only for Err and hydrates ResultData', () => {
     const onError = vi.fn();
     const okValue = { ok: true as const, value: 5 };
     const errValue = { ok: false as const, error: 'boom' };
 
-    expect(inspectErr(okValue, onError)).toBe(okValue);
-    expect(inspectErr(errValue, onError)).toBe(errValue);
+    expect(inspectErr(okValue, onError)).not.toBe(okValue);
+    expect(inspectErr(errValue, onError)).not.toBe(errValue);
     expect(onError).toHaveBeenCalledTimes(1);
     expect(onError).toHaveBeenCalledWith('boom');
   });
@@ -58,6 +66,14 @@ describe('methods/ok', () => {
   it('converts Ok to Some and Err to None', () => {
     expect(ok({ ok: true, value: 3 })).toEqual({ some: true, value: 3 });
     expect(ok({ ok: false, error: 'x' })).toEqual({ some: false });
+  });
+
+  it('returns a frozen None singleton', () => {
+    const first = ok({ ok: false, error: 'x' });
+    const second = ok({ ok: false, error: 'y' });
+
+    expect(first).toBe(second);
+    expect(Object.isFrozen(first)).toBe(true);
   });
 });
 

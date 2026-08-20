@@ -8,6 +8,8 @@ export { inspectErr } from './inspectErr.js';
 export { map } from './map.js';
 export { mapErr } from './mapErr.js';
 export { match } from './match.js';
+export { matchCause } from './matchCause.js';
+export { matchExit } from './matchExit.js';
 export { ok } from './ok.js';
 export { orElse } from './orElse.js';
 export { tap } from './tap.js';

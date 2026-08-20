@@ -1,0 +1,143 @@
+{
+  "document_id": "01a01af6-3bb4-790e-ad67-7a81944f4998",
+  "document_ref": "urn:uuid:01a01af6-3bb4-790e-ad67-7a81944f4998",
+  "document_key": "findings",
+  "document_type": "finding_catalog",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "Independent TypeScript readiness findings",
+  "summary": "Machine-readable findings from the independent runtime, type-system, refiner, packaging, release, and cross-language readiness audit.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-19T00:00:00Z",
+  "payload": {
+    "items": [
+      {
+        "record_id": "01a01af6-3be3-7ef6-8be2-b56e02c823a1", "record_ref": "urn:uuid:01a01af6-3be3-7ef6-8be2-b56e02c823a1", "record_key": "inconsistent-result-discriminator", "record_revision": 0, "kind": "finding", "code": "RS-FND-001", "title": "Inconsistent Result discriminator", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Guards require exact booleans while match, flatten, transpose, tap, and unwrapOrElse use JavaScript truthiness.",
+        "impact": "Malformed JavaScript or decoded cross-language values can be classified differently by different public operations.",
+        "remediation": "Define exact boolean discrimination and apply it consistently, with an explicit trusted versus decoded input boundary.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3be4-7bad-b8da-1636da6bbdd1", "record_ref": "urn:uuid:01a01af6-3be4-7bad-b8da-1636da6bbdd1", "record_key": "mutable-none-singleton", "record_revision": 0, "kind": "finding", "code": "RS-FND-002", "title": "Mutable None singleton", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "The shared internal None object is returned to consumers without runtime freezing.",
+        "impact": "A JavaScript caller can globally corrupt future Option conversion results.",
+        "remediation": "Use one canonical immutable None representation and verify mutation resistance.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3be5-7bfa-9453-29f7299d221a", "record_ref": "urn:uuid:01a01af6-3be5-7bfa-9453-29f7299d221a", "record_key": "duplicated-result-option-types", "record_revision": 0, "kind": "finding", "code": "RS-FND-003", "title": "Duplicated core types", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Result and Option definitions are duplicated across public and shared packages with manual synchronization comments.",
+        "impact": "Competing type authorities can drift while tests validate a sibling type instead of the public package type.",
+        "remediation": "Project all duplicate declarations from one canonical contract and add declaration equivalence checks.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3be6-737c-98b7-9e97d125268a", "record_ref": "urn:uuid:01a01af6-3be6-737c-98b7-9e97d125268a", "record_key": "constructors-return-wide-union", "record_revision": 0, "kind": "finding", "code": "RS-FND-004", "title": "Constructors return wide union", "status": "DRAFT", "severity": "MEDIUM",
+        "observed_behavior": "Ok and Err constructors return the full Result union rather than their concrete branch types.",
+        "impact": "Branch certainty is discarded and impossible branches remain visible to TypeScript consumers.",
+        "remediation": "Export named branch types and return the concrete branch from each constructor.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3be7-78e2-b638-75141f101134", "record_ref": "urn:uuid:01a01af6-3be7-78e2-b638-75141f101134", "record_key": "underspecified-extraction-errors", "record_revision": 0, "kind": "finding", "code": "RS-FND-005", "title": "Underspecified extraction errors", "status": "DRAFT", "severity": "MEDIUM",
+        "observed_behavior": "Extraction operations throw generic JavaScript Error values and unwrap discards the rejected error payload.",
+        "impact": "Cross-language exception mapping and diagnostics are unstable.",
+        "remediation": "Define a stable extraction failure category and preserve diagnostic cause where supported.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3be8-7cf7-91c3-24699b162038", "record_ref": "urn:uuid:01a01af6-3be8-7cf7-91c3-24699b162038", "record_key": "unsound-is-typed-variant-of", "record_revision": 0, "kind": "finding", "code": "RS-FND-006", "title": "Unsound isTypedVariantOf", "status": "DRAFT", "severity": "CRITICAL",
+        "observed_behavior": "Object.keys on an erased generic always produces an empty key list while the guard asserts the complete caller-selected payload type.",
+        "impact": "Missing and incorrectly typed payload fields are accepted as type-safe.",
+        "remediation": "Require explicit runtime validators or keys and limit inferred output to facts established at runtime.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3be9-7189-89b6-5428521ae821", "record_ref": "urn:uuid:01a01af6-3be9-7189-89b6-5428521ae821", "record_key": "refiners-accept-missing-payload", "record_revision": 0, "kind": "finding", "code": "RS-FND-007", "title": "Refiners accept missing payload", "status": "DRAFT", "severity": "CRITICAL",
+        "observed_behavior": "Configured payload keys are skipped when validators are absent and their presence is never independently checked.",
+        "impact": "Returned types claim required fields that do not exist at runtime.",
+        "remediation": "Require own-property presence for every configured payload and infer concrete types only from validators.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bea-7dc7-9eb5-6e0ba033b301", "record_ref": "urn:uuid:01a01af6-3bea-7dc7-9eb5-6e0ba033b301", "record_key": "variant-config-controls-ignored", "record_revision": 0, "kind": "finding", "code": "RS-FND-008", "title": "Variant controls are ignored", "status": "DRAFT", "severity": "CRITICAL",
+        "observed_behavior": "Public strictFields and forbidden configuration fields are not read by any refiner implementation.",
+        "impact": "Consumers can mistake successful refinement for strict schema or security-boundary validation.",
+        "remediation": "Define and implement own-field strictness and forbidden-field semantics in a shared validation kernel.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3beb-7389-8892-e3671bfbc8a9", "record_ref": "urn:uuid:01a01af6-3beb-7389-8892-e3671bfbc8a9", "record_key": "variant-matchers-lose-handlers", "record_revision": 0, "kind": "finding", "code": "RS-FND-009", "title": "Variant matchers lose handlers", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Strict matcher resets on every subsequent handler and non-strict matcher resets after the second handler.",
+        "impact": "Apparently registered branches fall through or throw at runtime.",
+        "remediation": "Use a builder factory that closes over the complete immutable accumulated handler list.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bec-7370-aba3-53a3feac8bfc", "record_ref": "urn:uuid:01a01af6-3bec-7370-aba3-53a3feac8bfc", "record_key": "strict-exhaustiveness-reversed", "record_revision": 0, "kind": "finding", "code": "RS-FND-010", "title": "Strict exhaustiveness is reversed", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Handled extends all variants becomes true after any one valid branch instead of when no variants remain.",
+        "impact": "Strict run is available before exhaustive handling.",
+        "remediation": "Enable run only when Exclude of all variants by handled variants is never.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bed-7f43-b5f5-3b79986f3461", "record_ref": "urn:uuid:01a01af6-3bed-7f43-b5f5-3b79986f3461", "record_key": "matcher-output-unknown", "record_revision": 0, "kind": "finding", "code": "RS-FND-011", "title": "Matcher output is unknown", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Both matcher factories fix their return type to unknown and discard handler result inference.",
+        "impact": "Consumers lose useful static types after a fully typed match.",
+        "remediation": "Accumulate handler output types and narrow fallback input to unhandled variants.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bee-7a0d-add4-a8e33aea1875", "record_ref": "urn:uuid:01a01af6-3bee-7a0d-add4-a8e33aea1875", "record_key": "inconsistent-property-ownership", "record_revision": 0, "kind": "finding", "code": "RS-FND-012", "title": "Inconsistent property ownership", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Some refiners require own type fields while others accept inherited discriminators, variants, payloads, and validators.",
+        "impact": "Prototype properties can be treated as schema members and invoked as validators.",
+        "remediation": "Use own-property checks for discriminators, payloads, configuration variants, and validators.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bef-778c-9a38-2ee449d378bd", "record_ref": "urn:uuid:01a01af6-3bef-778c-9a38-2ee449d378bd", "record_key": "validator-output-erased", "record_revision": 0, "kind": "finding", "code": "RS-FND-013", "title": "Validator output types are erased", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "ValidatorFn carries a predicate target but refined result aliases ignore it and emit unknown fields.",
+        "impact": "Runtime validation provides no corresponding developer type benefit.",
+        "remediation": "Derive synchronous payload types from predicate targets and explicitly model asynchronous validator output.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bf0-78ef-962e-1f029be7d452", "record_ref": "urn:uuid:01a01af6-3bf0-78ef-962e-1f029be7d452", "record_key": "never-sentinel-collision", "record_revision": 0, "kind": "finding", "code": "RS-FND-014", "title": "Never sentinel collision", "status": "DRAFT", "severity": "MEDIUM",
+        "observed_behavior": "The payload string never is indistinguishable from an ordinary string field after widening and collides with a real field named never.",
+        "impact": "Configuration inference and cross-language representation are fragile.",
+        "remediation": "Use an empty payload-key list in the canonical model and retain the string only as a deprecated projection input.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bf1-708b-827f-deacc6551816", "record_ref": "urn:uuid:01a01af6-3bf1-708b-827f-deacc6551816", "record_key": "sync-async-refiner-drift", "record_revision": 0, "kind": "finding", "code": "RS-FND-015", "title": "Sync and async refiner drift", "status": "DRAFT", "severity": "MEDIUM",
+        "observed_behavior": "Sync and async variants have duplicated implementations, different output precision, and no async full-map counterpart.",
+        "impact": "Behavior and declarations can diverge across equivalent entry points.",
+        "remediation": "Use a shared validation model and document intentional capability differences.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bf2-7bd9-9709-abd49de34c47", "record_ref": "urn:uuid:01a01af6-3bf2-7bd9-9709-abd49de34c47", "record_key": "clean-release-build-broken", "record_revision": 0, "kind": "finding", "code": "RS-FND-016", "title": "Clean release build is broken", "status": "DRAFT", "severity": "CRITICAL",
+        "observed_behavior": "Package and root release commands reference local build and release scripts that are ignored or absent from tracked files.",
+        "impact": "CI and release verification cannot succeed from a clean checkout.",
+        "remediation": "Track required release tooling and add packed-package consumer tests from a clean environment.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bf3-7160-af99-bcec806b5a6c", "record_ref": "urn:uuid:01a01af6-3bf3-7160-af99-bcec806b5a6c", "record_key": "canonical-contract-layer-absent", "record_revision": 0, "kind": "finding", "code": "RS-FND-017", "title": "Canonical contract layer is absent", "status": "DRAFT", "severity": "CRITICAL",
+        "observed_behavior": "The documentation framework references language-neutral contracts, registries, and core governance files that do not exist.",
+        "impact": "No auditable source of truth or cross-language conformance baseline exists.",
+        "remediation": "Create this strict machine-readable Contract IR corpus and bind implementations through projections and evidence.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      },
+      {
+        "record_id": "01a01af6-3bf4-7747-974b-30aedd5758a8", "record_ref": "urn:uuid:01a01af6-3bf4-7747-974b-30aedd5758a8", "record_key": "type-contract-tests-absent", "record_revision": 0, "kind": "finding", "code": "RS-FND-018", "title": "Type contract tests are absent", "status": "DRAFT", "severity": "HIGH",
+        "observed_behavior": "Runtime Vitest tests do not provide compile-negative declaration conformance and often import the sibling shared type.",
+        "impact": "Unsound guards, exhaustiveness failures, and inference regressions can ship undetected.",
+        "remediation": "Add package-root positive and expected-error compile fixtures against packed declarations.",
+        "evidence_refs": ["urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"]
+      }
+    ]
+  }
+}

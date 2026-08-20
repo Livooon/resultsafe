@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b58-c2d2-7f3a-80af-8b61fc9dcaf5",
+  "title": "ResultSafe compatibility and migration catalog",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "document_type": { "const": "compatibility_catalog" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source_baseline", "target_baseline", "approval_state", "review_state", "release_approval_state", "promotion_state", "records"],
+          "properties": {
+            "source_baseline": { "type": "string", "minLength": 3 },
+            "target_baseline": { "type": "string", "minLength": 3 },
+            "approval_state": { "const": "ARCHITECTURE_APPROVED" },
+            "review_state": { "const": "ARCHITECTURE_REVIEWED" },
+            "release_approval_state": { "const": "NOT_APPROVED" },
+            "promotion_state": { "const": "NOT_PROMOTED" },
+            "records": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/migration" }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "record_ref", "record_key", "record_revision", "kind", "code", "title", "status", "change_area", "observed_behavior", "target_behavior", "old_signatures", "new_signatures", "runtime_impact", "release_class", "migration_examples", "temporary_compatibility", "contract_refs", "finding_refs", "evidence_refs"],
+      "properties": {
+        "record_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+        "record_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+        "record_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "record_revision": { "type": "integer", "minimum": 0 },
+        "kind": { "const": "migration" },
+        "code": { "type": "string", "pattern": "^RS-MIG-[0-9]{3}$" },
+        "title": { "type": "string", "minLength": 3 },
+        "status": { "const": "DRAFT" },
+        "change_area": { "enum": ["BRANCH_TYPES", "IMMUTABILITY", "VALIDATORS", "VARIANT_CONFIG", "VARIANT_DISTRIBUTION", "MATCHERS", "FALLBACK_GENERICS", "EXTRACTION_ERRORS", "PROPERTY_OWNERSHIP", "VALIDATED_VARIANT_GUARD", "REFINER_OUTPUTS", "INSPECT_ALIASES", "TRANSPORT_BOUNDARY", "SCENARIO_OWNERSHIP", "CAUSE_EXIT_MODELS"] },
+        "observed_behavior": { "type": "string", "minLength": 20 },
+        "target_behavior": { "type": "string", "minLength": 20 },
+        "old_signatures": { "type": "array", "items": { "type": "string", "minLength": 3 }, "minItems": 1, "uniqueItems": true },
+        "new_signatures": { "type": "array", "items": { "type": "string", "minLength": 3 }, "minItems": 1, "uniqueItems": true },
+        "runtime_impact": { "type": "string", "minLength": 20 },
+        "release_class": { "const": "BREAKING" },
+        "migration_examples": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["language", "before", "after"],
+            "properties": {
+              "language": { "const": "typescript" },
+              "before": { "type": "string", "minLength": 3 },
+              "after": { "type": "string", "minLength": 3 }
+            }
+          }
+        },
+        "temporary_compatibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "scope", "removal_release"],
+          "properties": {
+            "mode": { "enum": ["NONE", "DEPRECATED_INPUT", "PHANTOM_GENERIC", "ALIAS_ONLY"] },
+            "scope": { "type": "string", "minLength": 10 },
+            "removal_release": { "enum": ["NEXT_MAJOR", "NOT_APPLICABLE"] }
+          }
+        },
+        "contract_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 1, "uniqueItems": true },
+        "finding_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 1, "uniqueItems": true },
+        "evidence_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 1, "uniqueItems": true }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

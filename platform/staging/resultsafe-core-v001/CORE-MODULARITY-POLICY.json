@@ -1,0 +1,54 @@
+{
+  "document_id": "01a01d86-7c23-71f6-96f1-14a59676157d",
+  "document_ref": "urn:uuid:01a01d86-7c23-71f6-96f1-14a59676157d",
+  "document_key": "core-modularity-policy",
+  "document_type": "policy",
+  "document_revision": 2,
+  "schema_ref": "urn:uuid:01a01d86-7c24-7a3e-8f7c-a367ff5ffdc8",
+  "title": "ResultSafe Core modularity policy",
+  "summary": "Normative package-boundary, source-hygiene, direct-import, dependency, side-effect, integration, and packed-artifact requirements for the TypeScript core Result package.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-20T14:00:00Z",
+  "updated_at": "2026-08-20T20:00:00Z",
+  "payload": {
+    "package_name": "@resultsafe/core-fp-result",
+    "source_hygiene": {
+      "governed_roots": ["packages/core/fp/result/src"],
+      "forbidden_colocated_generated_suffixes": [".js", ".d.ts", ".d.ts.map"],
+      "ignored_local_only_paths": ["notes/", "platform/candidates/", ".resultsafe-candidates/"],
+      "required_gitignore_rules": [
+        { "owning_file": "packages/core/fp/result/.gitignore", "rule": "src/**/*.js" },
+        { "owning_file": "packages/core/fp/result/.gitignore", "rule": "src/**/*.d.ts" },
+        { "owning_file": "packages/core/fp/result/.gitignore", "rule": "src/**/*.d.ts.map" },
+        { "owning_file": ".gitignore", "rule": "notes/" },
+        { "owning_file": ".gitignore", "rule": "platform/candidates/" },
+        { "owning_file": ".gitignore", "rule": ".resultsafe-candidates/" }
+      ],
+      "source_snapshot_rule": {
+        "forbidden_generated_outputs": "MUST_NOT_CONTAIN",
+        "local_only_paths": "MUST_NOT_CONTAIN"
+      },
+      "enforcement": "NORMATIVE_PRE_SOURCE_SNAPSHOT",
+      "qualification_gate": "core-modularity",
+      "evidence_owner": "core-modularity"
+    },
+    "invariants": [
+      { "invariant_key": "zero-runtime-dependencies", "requirement": "The package MUST declare and resolve zero runtime dependencies.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed core artifact resolved zero runtime dependencies in the local atomic modularity gate.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "every-public-module-direct-import", "requirement": "Every intended public source module MUST have a stable direct package subpath.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed artifact passed all 66 declaration subpaths and all 45 runtime subpaths.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "root-plus-subpaths", "requirement": "Every intended public export MUST remain available from the root and its owning direct subpath.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed artifact passed root parity and all 66 registered direct subpaths.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "no-mandatory-codecs-adapters-storage-runtime-registry", "requirement": "Importing or using core MUST NOT require codecs, adapters, storage, or a runtime registry.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed core passed dependency isolation with no mandatory integration path.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "no-import-side-effects", "requirement": "Root and direct imports MUST perform no observable import-time side effects.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed artifact passed import-side-effect probes across its runtime surface.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "optional-integrations-separate-packages", "requirement": "Optional integrations MUST be published as separate packages and MUST NOT enter the core dependency graph.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed core passed dependency isolation from the separately packed codec and Effect adapter.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "packed-artifact-proof", "requirement": "All modularity claims MUST be proven against the exact packed artifact in isolated ESM, CJS, and declaration consumers.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The exact packed artifact passed isolated ESM, CJS, declaration, closure, dependency, and side-effect checks.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } },
+      { "invariant_key": "preserve-result-surface", "requirement": "Modularity remediation MUST preserve exactly 23 neutral Result operations and 88 Result conformance cells.", "current_status": "QUALIFIED_LOCAL_SNAPSHOT", "observation": "The local atomic run preserved the 23-operation surface and exact 88-cell matrix while qualifying the packed core.", "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-761c-a706-53ba4914b19f", "child_kind": "core-modularity", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/CORE-MODULARITY-EVIDENCE.json", "evidence_artifact_sha256": "74fda7b354602f17b451602b6fcec102b699e9f71badfab8a51c899607ba8be6", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" } }
+    ],
+    "artifact_path_derivation": {
+      "source_rule": "For source path packages/core/fp/result/src/<relative>.ts, remove src/ and the .ts suffix to obtain <module>.",
+      "source_manifest_rule": "For runtime modules derive types ./dist/types/<module>.d.ts, import ./dist/esm/<module>.js, and require ./dist/cjs/<module>.js; type-only modules derive only the types target.",
+      "packed_manifest_rule": "The packed dist manifest removes exactly the leading ./dist/ segment from every source-manifest target and preserves the remaining path and condition unchanged.",
+      "root_exception": "The root subpath uses <module> index and the existing root conditions; module records do not duplicate generated target strings.",
+      "umd_rule": "UMD is a root browser bundle only and is not a direct-subpath format or proof of direct module importability."
+    },
+    "qualification_rule": "A modularity invariant may be marked verified only after the exact tarball proves manifest closure, every registered root and direct import, declaration resolution, zero runtime dependencies, and no import-time side effects."
+  }
+}

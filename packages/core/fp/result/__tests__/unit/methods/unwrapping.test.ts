@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { ResultExtractionError } from '../../../src/errors/ResultExtractionError.js';
 import { expect as expectValue } from '../../../src/methods/expect.js';
 import { expectErr } from '../../../src/methods/expectErr.js';
 import { unwrap } from '../../../src/methods/unwrap.js';
@@ -14,6 +15,18 @@ describe('methods/expect', () => {
       expectValue({ ok: false, error: 'boom' }, 'custom'),
     ).toThrowError('custom');
   });
+
+  it('preserves the Err payload as the extraction error cause', () => {
+    const payload = { code: 'E_FAIL' };
+
+    try {
+      expectValue({ ok: false, error: payload }, 'custom');
+      throw new Error('Expected extraction to throw');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ResultExtractionError);
+      expect((error as ResultExtractionError).cause).toBe(payload);
+    }
+  });
 });
 
 describe('methods/expectErr', () => {
@@ -22,6 +35,18 @@ describe('methods/expectErr', () => {
     expect(() => expectErr({ ok: true, value: 1 }, 'custom')).toThrowError(
       'custom',
     );
+  });
+
+  it('preserves the Ok payload as the extraction error cause', () => {
+    const payload = { id: '1' };
+
+    try {
+      expectErr({ ok: true, value: payload }, 'custom');
+      throw new Error('Expected extraction to throw');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ResultExtractionError);
+      expect((error as ResultExtractionError).cause).toBe(payload);
+    }
   });
 });
 
@@ -32,6 +57,18 @@ describe('methods/unwrap', () => {
       'Called unwrap on an Err value',
     );
   });
+
+  it('throws the stable extraction error with the Err payload as cause', () => {
+    const payload = { code: 'E_FAIL' };
+
+    expect.assertions(2);
+    try {
+      unwrap({ ok: false, error: payload });
+    } catch (error) {
+      expect(error).toBeInstanceOf(ResultExtractionError);
+      expect((error as ResultExtractionError).cause).toBe(payload);
+    }
+  });
 });
 
 describe('methods/unwrapErr', () => {
@@ -40,6 +77,18 @@ describe('methods/unwrapErr', () => {
     expect(() => unwrapErr({ ok: true, value: 1 })).toThrowError(
       'Called unwrapErr on an Ok value',
     );
+  });
+
+  it('throws the stable extraction error with the Ok payload as cause', () => {
+    const payload = { id: '1' };
+
+    expect.assertions(2);
+    try {
+      unwrapErr({ ok: true, value: payload });
+    } catch (error) {
+      expect(error).toBeInstanceOf(ResultExtractionError);
+      expect((error as ResultExtractionError).cause).toBe(payload);
+    }
   });
 });
 

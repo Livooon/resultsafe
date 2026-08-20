@@ -84,6 +84,6 @@ if (result.ok) {
 
 ## Next Steps
 
-- [Basic Usage](../guides/basic-usage.md) - Deep dive
-- [Error Handling](../guides/error-handling.md) - Advanced patterns
-- [API Reference](../api/core-fp-result/index.md) - Full API docs
+- [Basic Usage](../../guides/01-basic-usage.md) - Deep dive
+- [Structured Failure](../../guides/02-structured-failure.md) - Portable error payloads
+- [Package Documentation](./00-package-readme.md) - API summary and examples

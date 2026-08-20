@@ -1,95 +1,46 @@
 import type { Handler, Matcher, VariantOf } from './types/index.js';
 
+const runHandlers = <T extends VariantOf>(
+  value: T,
+  handlers: readonly Handler<string, T, unknown>[],
+):
+  | { readonly matched: true; readonly value: unknown }
+  | { readonly matched: false } => {
+  for (const handler of handlers) {
+    if (value.type === handler.variant) {
+      return {
+        matched: true,
+        value: (handler.fn as (input: T) => unknown)(value),
+      };
+    }
+  }
+  return { matched: false };
+};
+
 /**
- * Creates a chained matcher for a discriminated union value.
+ * Creates an immutable chained matcher for a discriminated union value.
  *
- * @typeParam T - The discriminated union type.
- * @param value - The union value to match.
- * @returns A fluent matcher with `with` and `otherwise` branches.
+ * Each `with` returns a new builder, excludes that branch from later handlers,
+ * and accumulates its output type. `otherwise` receives only the remaining
+ * union members.
+ *
  * @since 0.1.0
- * @see {@link matchVariantStrict} - Requires exhaustive matching at runtime.
- * @example
- * ```ts
- * import { matchVariant } from '@resultsafe/core-fp-result';
- *
- * const out = matchVariant<{ type: 'ok'; value: number } | { type: 'err'; error: string }>({
- *   type: 'ok',
- *   value: 1,
- * })
- *   .with('ok', (v) => `ok:${v.value}`)
- *   .otherwise(() => 'fallback')
- *   .run();
- *
- * console.log(out); // ok:1
- * ```
  * @public
  */
-export const matchVariant = <T extends VariantOf>(
-  value: T,
-): Matcher<T, unknown> => {
-  const handlers: readonly Handler<T['type'], T, unknown>[] = [];
-
-  const withHandler = <K extends T['type']>(
-    variant: K,
-    fn: (value: Extract<T, { type: K }>) => unknown,
-  ): Matcher<T, unknown> => {
-    const newHandlers = [...handlers, { variant, fn }] as const;
-
-    return {
-      with: <K2 extends T['type']>(
-        variant2: K2,
-        fn2: (value: Extract<T, { type: K2 }>) => unknown,
-      ): Matcher<T, unknown> => {
-        const newerHandlers = [
-          ...newHandlers,
-          { variant: variant2, fn: fn2 },
-        ] as const;
-
-        return {
-          with: withHandler,
-          otherwise: (fallback: (value: T) => unknown) => ({
-            run: (): unknown => {
-              for (const h of newerHandlers) {
-                if (value.type === h.variant) {
-                  const fn = h.fn as (input: T) => unknown;
-                  return fn(value);
-                }
-              }
-              return fallback(value);
-            },
-          }),
-        } as Matcher<T, unknown>;
-      },
-      otherwise: (fallback: (value: T) => unknown) => ({
-        run: (): unknown => {
-          for (const h of newHandlers) {
-            if (value.type === h.variant) {
-              const fn = h.fn as (input: T) => unknown;
-              return fn(value);
-            }
-          }
-          return fallback(value);
+export const matchVariant = <T extends VariantOf>(value: T): Matcher<T> => {
+  const build = (
+    handlers: readonly Handler<string, T, unknown>[],
+  ): Matcher<T, never, T> =>
+    ({
+      with: (variant: string, fn: (input: T) => unknown) =>
+        build([...handlers, { variant, fn }]),
+      otherwise: (fallback: (input: T) => unknown) => ({
+        run: () => {
+          const result = runHandlers(value, handlers);
+          return result.matched ? result.value : fallback(value);
         },
       }),
-    } as Matcher<T, unknown>;
-  };
+    }) as Matcher<T, never, T>;
 
-  const matcher: Matcher<T, unknown> = {
-    with: withHandler,
-    otherwise: (fallback: (value: T) => unknown) => ({
-      run: (): unknown => {
-        /* v8 ignore start -- unreachable with current immutable root handler list */
-        for (const h of handlers) {
-          if (value.type === h.variant) {
-            const fn = h.fn as (input: T) => unknown;
-            return fn(value);
-          }
-        }
-        /* v8 ignore stop */
-        return fallback(value);
-      },
-    }),
-  };
-
-  return matcher;
+  return build([]);
 };

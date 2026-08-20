@@ -1,0 +1,45 @@
+{
+  "document_id": "01a01af6-3bbe-7d7c-a9e9-d465db98989a",
+  "document_ref": "urn:uuid:01a01af6-3bbe-7d7c-a9e9-d465db98989a",
+  "document_key": "validation-plan",
+  "document_type": "validation_plan",
+  "document_revision": 3,
+  "schema_ref": "urn:uuid:01a01b11-f183-79da-8834-4e2a3809068e",
+  "title": "ResultSafe staged qualification plan",
+  "summary": "Ordered validation gates separating structural, semantic, behavioral, package, projection, security, and long-running evidence.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T14:00:00Z",
+  "payload": {
+    "gates": [
+      { "position": 1, "gate_key": "json-and-duplicate-keys", "class": "FAST_STRUCTURAL", "required": true },
+      { "position": 2, "gate_key": "json-schema-2020-12", "class": "FAST_STRUCTURAL", "required": true },
+      { "position": 3, "gate_key": "identity-and-reference-integrity", "class": "FAST_SEMANTIC", "required": true },
+      { "position": 4, "gate_key": "document-registry-and-graph-closure", "class": "FAST_SEMANTIC", "required": true },
+      { "position": 5, "gate_key": "traceability-closure", "class": "FAST_SEMANTIC", "required": true },
+      { "position": 6, "gate_key": "typescript-source-and-export-inventory", "class": "FAST_SEMANTIC", "required": true },
+      { "position": 7, "gate_key": "language-operation-surface-conformance", "class": "FAST_BEHAVIORAL", "required": true },
+      { "position": 8, "gate_key": "runtime-conformance", "class": "FAST_BEHAVIORAL", "required": true },
+      { "position": 9, "gate_key": "compile-time-conformance", "class": "FAST_BEHAVIORAL", "required": true },
+      { "position": 10, "gate_key": "packed-package-consumer-matrix", "class": "FAST_PACKAGE", "required": true },
+      { "position": 11, "gate_key": "python-runtime-and-laws", "class": "FAST_BEHAVIORAL", "required": true },
+      { "position": 12, "gate_key": "python-strict-typing", "class": "FAST_BEHAVIORAL", "required": true },
+      { "position": 13, "gate_key": "python-wheel-consumer", "class": "FAST_PACKAGE", "required": true },
+      { "position": 14, "gate_key": "relational-and-sqlite-logical-equivalence", "class": "FAST_PROJECTION", "required": true },
+      { "position": 15, "gate_key": "integrity-manifest", "class": "FAST_INTEGRITY", "required": true },
+      { "position": 16, "gate_key": "public-module-registry-conformance", "class": "FAST_SEMANTIC", "required": true },
+      { "position": 17, "gate_key": "packed-core-modularity", "class": "FAST_PACKAGE", "required": true },
+      { "position": 18, "gate_key": "effect-compatibility-executable-evidence", "class": "FAST_PACKAGE", "required": true },
+      { "position": 19, "gate_key": "cause-exit-matrix-executable-evidence", "class": "FAST_BEHAVIORAL", "required": true },
+      { "position": 20, "gate_key": "security-hardening", "class": "SECURITY_HARDENING", "required": false },
+      { "position": 21, "gate_key": "long-running-reliability", "class": "LONG_RUNNING_TESTS", "required": false }
+    ],
+    "standing_constraints": [
+      {
+        "decision_key": "AASDV-OWNER-STANDING-DECISION-DEFER-SECURITY-LONG-TESTS-001",
+        "effect": "Gates classified SECURITY_HARDENING or LONG_RUNNING_TESTS remain DEFERRED until an explicit owner command."
+      }
+    ],
+    "promotion_rule": "A staging corpus may enter review after every required structural gate passes. Contract release promotion additionally requires approved requirements and executed required behavioral and package gates."
+  }
+}

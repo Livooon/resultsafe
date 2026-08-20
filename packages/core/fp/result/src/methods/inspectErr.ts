@@ -1,5 +1,4 @@
-import { isErr } from '../guards/isErr.js';
-import { type Result } from '../types/core/index.js';
+import { tapErr } from './tapErr.js';
 
 /**
  * Performs a side effect for the error value and returns the original `Result`.
@@ -20,12 +19,4 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const inspectErr = <T, E>(
-  result: Result<T, E>,
-  fn: (error: E) => void,
-): Result<T, E> => {
-  if (isErr(result)) {
-    fn(result.error);
-  }
-  return result;
-};
+export const inspectErr = tapErr;

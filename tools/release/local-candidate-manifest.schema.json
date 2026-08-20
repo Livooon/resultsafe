@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResultSafe immutable local release candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "candidateId", "candidatePath", "status", "versions", "source", "artifacts", "qualification", "approval", "files", "treeSha256"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "candidateId": { "type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "candidatePath": { "type": "string", "pattern": "^platform/candidates/resultsafe-core-fp-result/0\\.3\\.0/" },
+    "status": { "const": "QUALIFIED_LOCAL_RC" },
+    "versions": { "type": "object", "additionalProperties": false, "required": ["npm", "option", "python"], "properties": { "npm": { "const": "0.3.0" }, "option": { "const": "1.0.1" }, "python": { "const": "0.1.0" } } },
+    "source": { "type": "object" },
+    "artifacts": { "type": "object" },
+    "qualification": { "type": "object" },
+    "approval": { "type": "object" },
+    "files": { "type": "array", "minItems": 1 },
+    "treeSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

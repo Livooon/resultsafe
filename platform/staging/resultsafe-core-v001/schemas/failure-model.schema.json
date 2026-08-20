@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01d13-0738-7414-bd8b-f0b3802a56ab",
+  "title": "ResultSafe optional structured Failure model",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["model_version", "adoption_model", "result_compatibility", "instance_schema_ref", "fields", "code_policy", "version_policy", "cause_policy", "security_policy", "resource_profiles", "projections", "scenario_refs"],
+          "properties": {
+            "model_version": { "const": "1.0.0" },
+            "adoption_model": { "const": "OPTIONAL_STRUCTURED_FAILURE" },
+            "result_compatibility": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 3, "uniqueItems": true },
+            "instance_schema_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+            "fields": { "type": "array", "items": { "$ref": "#/$defs/field" }, "minItems": 2 },
+            "code_policy": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 3, "uniqueItems": true },
+            "version_policy": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 3, "uniqueItems": true },
+            "cause_policy": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 3, "uniqueItems": true },
+            "security_policy": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 4, "uniqueItems": true },
+            "resource_profiles": { "type": "array", "items": { "$ref": "#/$defs/profile" }, "minItems": 1 },
+            "projections": { "type": "array", "items": { "$ref": "#/$defs/projection" }, "minItems": 5 },
+            "scenario_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 20, "uniqueItems": true }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_key", "presence", "value_model", "semantics"],
+      "properties": {
+        "field_key": { "enum": ["schema_version", "code", "message", "message_key", "message_args", "details", "causes", "classification", "metadata", "extensions"] },
+        "presence": { "enum": ["REQUIRED", "OPTIONAL"] },
+        "value_model": { "type": "string", "minLength": 2 },
+        "semantics": { "type": "string", "minLength": 10 }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile_key", "max_depth", "max_causes", "max_nodes"],
+      "properties": {
+        "profile_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "max_depth": { "type": "integer", "minimum": 1 },
+        "max_causes": { "type": "integer", "minimum": 1 },
+        "max_nodes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "binding", "authority"],
+      "properties": {
+        "target": { "enum": ["typescript", "python", "relational", "sqlite", "aasdvgs"] },
+        "binding": { "type": "string", "minLength": 5 },
+        "authority": { "enum": ["DERIVED", "EXTERNAL_ADMISSION"] }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b11-f181-7081-aec1-5d267223c734",
+  "title": "ResultSafe identity allocation registry",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["allocation_policy", "allocations", "record_allocation_rule"],
+          "properties": {
+            "allocation_policy": { "const": "APPEND_ONLY_REUSE_BY_ALLOCATION_KEY" },
+            "allocations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["allocation_key", "entity_id"],
+                "properties": {
+                  "allocation_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*$" },
+                  "entity_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }
+                }
+              },
+              "minItems": 1
+            },
+            "record_allocation_rule": { "type": "string", "minLength": 20 }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -104,15 +104,9 @@ describe('unwrapOr', () => {
     const result3 = unwrapOr(noneOption, Some('fallback'));
 
     // Простая и надежная проверка через прямое сравнение структуры
-    expect(result1).toEqual({
-      some: true,
-      value: { some: true, value: 'nested' },
-    });
-    expect(result2).toEqual({ some: true, value: { some: false } });
-    expect(result3).toEqual({
-      some: true,
-      value: { some: true, value: 'fallback' },
-    });
+    expect(result1).toEqual({ some: true, value: 'nested' });
+    expect(result2).toEqual({ some: false });
+    expect(result3).toEqual({ some: true, value: 'fallback' });
   });
 
   // ---------------------
@@ -125,5 +119,3 @@ describe('unwrapOr', () => {
     expect(result).toBe(123);
   });
 });
-
-

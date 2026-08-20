@@ -1,4 +1,5 @@
-import type { Result } from '../types/core/index.js';
+import type { Ok } from '../constructors/Ok.js';
+import type { OkLike, Result, ResultLike } from '../types/core/index.js';
 
 /**
  * Checks whether a `Result` is in the success branch.
@@ -18,6 +19,8 @@ import type { Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const isOk = <T, E>(
-  result: Result<T, E>,
-): result is { ok: true; value: T } => result.ok === true;
+export function isOk<T, E>(result: Result<T, E>): result is Ok<T>;
+export function isOk<T, E>(result: ResultLike<T, E>): result is OkLike<T>;
+export function isOk<T, E>(result: ResultLike<T, E>): result is OkLike<T> {
+  return result.ok === true;
+}

@@ -1,0 +1,99 @@
+{
+  "document_id": "01a01af6-3bad-74da-86b7-f6dfc9462b0e",
+  "document_ref": "urn:uuid:01a01af6-3bad-74da-86b7-f6dfc9462b0e",
+  "document_key": "resultsafe-core-stabilization-work",
+  "document_type": "work",
+  "document_revision": 3,
+  "schema_ref": "urn:uuid:01a01af6-9803-7bb0-9bbe-c71dfd3912fb",
+  "title": "ResultSafe Core contracts and projection stabilization",
+  "summary": "Governed staging work reached QUALIFIED_LOCAL_SNAPSHOT through PASS_LOCAL_ATOMIC evidence; clean commit-bound promotion remains incomplete and unauthorized.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T00:58:49.852Z",
+  "payload": {
+    "work_id": "01a01af6-78a2-7086-b4f2-462704704610",
+    "work_ref": "urn:uuid:01a01af6-78a2-7086-b4f2-462704704610",
+    "work_key": "resultsafe-core-v001",
+    "work_revision": 3,
+    "state": "READY_FOR_REVIEW",
+    "scope": [
+      "Create a strict machine-readable canonical Result Contract IR",
+      "Stabilize the complete public TypeScript Result API against the contracts",
+      "Define independent language, relational, SQLite, and AASDVGS projections",
+      "Produce traceable conformance and integrity evidence"
+    ],
+    "constraints": [
+      "Do not simplify the public API or omit known findings",
+      "Do not represent NOT_EXECUTED as PASS",
+      "Do not run security or long-running tests without an explicit owner command",
+      "Do not write to AASDVGS authority or transaction staging from this work",
+      "Do not treat SQLite or any language runtime as canonical authority"
+    ],
+    "steps": [
+      {
+        "step_id": "01a01af9-9f6d-7e88-9577-032c7ad90f98",
+        "step_key": "establish-identity",
+        "position": 1,
+        "state": "COMPLETED",
+        "description": "Establish UUIDv7 allocation, reference, key, digest, and revision policies.",
+        "depends_on_step_ids": []
+      },
+      {
+        "step_id": "01a01af9-9f6e-7327-8715-95499fb45b1d",
+        "step_key": "establish-schemas",
+        "position": 2,
+        "state": "COMPLETED",
+        "description": "Define strict Draft 2020-12 schemas for every canonical document class.",
+        "depends_on_step_ids": ["01a01af9-9f6d-7e88-9577-032c7ad90f98"]
+      },
+      {
+        "step_id": "01a01af9-9f6f-76ea-a479-7306e37f89ae",
+        "step_key": "encode-audits",
+        "position": 3,
+        "state": "COMPLETED",
+        "description": "Encode independent TypeScript and external AASDVGS audit evidence and findings.",
+        "depends_on_step_ids": ["01a01af9-9f6e-7327-8715-95499fb45b1d"]
+      },
+      {
+        "step_id": "01a01af9-9f70-7079-864e-27f28a95cef0",
+        "step_key": "encode-contracts",
+        "position": 4,
+        "state": "COMPLETED",
+        "description": "Encode every public Result symbol and semantic boundary as a canonical contract record.",
+        "depends_on_step_ids": ["01a01af9-9f6f-76ea-a479-7306e37f89ae"]
+      },
+      {
+        "step_id": "01a01af9-9f71-79b4-8674-16fb0fa19c2d",
+        "step_key": "encode-scenarios",
+        "position": 5,
+        "state": "COMPLETED",
+        "description": "Encode positive, opposite-branch, negative, type-level, and projection conformance scenarios.",
+        "depends_on_step_ids": ["01a01af9-9f70-7079-864e-27f28a95cef0"]
+      },
+      {
+        "step_id": "01a01af9-9f72-71b0-a9cf-296c5e4c3537",
+        "step_key": "stabilize-typescript",
+        "position": 6,
+        "state": "COMPLETED",
+        "description": "Implement the reviewed TypeScript projection and execute fast conformance checks.",
+        "depends_on_step_ids": ["01a01af9-9f71-79b4-8674-16fb0fa19c2d"]
+      },
+      {
+        "step_id": "01a01af9-9f73-7b90-8406-d4df5666ee04",
+        "step_key": "build-storage-projections",
+        "position": 7,
+        "state": "COMPLETED",
+        "description": "Implement language-neutral relational mapping and its derived SQLite profile and compiler.",
+        "depends_on_step_ids": ["01a01af9-9f71-79b4-8674-16fb0fa19c2d"]
+      },
+      {
+        "step_id": "01a01af9-9f74-762a-9b9f-dea53dad56b8",
+        "step_key": "qualify-release",
+        "position": 8,
+        "state": "COMPLETED",
+        "description": "Local candidate qualification complete; final promotion is not complete or authorized.",
+        "depends_on_step_ids": ["01a01af9-9f72-71b0-a9cf-296c5e4c3537", "01a01af9-9f73-7b90-8406-d4df5666ee04"]
+      }
+    ]
+  }
+}

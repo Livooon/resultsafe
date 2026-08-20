@@ -1,0 +1,71 @@
+{
+  "document_id": "01a01d13-0738-76c5-83ab-907b36ad856e",
+  "document_ref": "urn:uuid:01a01d13-0738-76c5-83ab-907b36ad856e",
+  "document_key": "failure-model",
+  "document_type": "failure_model",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01d13-0738-7414-bd8b-f0b3802a56ab",
+  "title": "Optional structured Failure model",
+  "summary": "Normative portable Failure payload model that remains optional inside the unconstrained generic Result failure channel.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T00:00:00Z",
+  "updated_at": "2026-08-20T00:00:00Z",
+  "payload": {
+    "model_version": "1.0.0",
+    "adoption_model": "OPTIONAL_STRUCTURED_FAILURE",
+    "result_compatibility": [
+      "Result<T,E> and Err<E> continue to accept every previously valid E",
+      "Failure is selected explicitly as an error payload by writing Err<Failure>",
+      "FailureData<E> remains the canonical name of the ResultData failure branch and is not redefined",
+      "No automatic coercion from arbitrary E, exception, HTTP response, or RPC status is permitted"
+    ],
+    "instance_schema_ref": "urn:uuid:01a01d13-3258-7290-918b-58b436a80180",
+    "fields": [
+      { "field_key": "schema_version", "presence": "REQUIRED", "value_model": "semantic-version 1.0.0", "semantics": "Selects decoding and compatibility rules for the portable payload." },
+      { "field_key": "code", "presence": "REQUIRED", "value_model": "absolute URI", "semantics": "Stable machine identity owned by its URI namespace rather than presentation text." },
+      { "field_key": "message", "presence": "OPTIONAL", "value_model": "public-safe string", "semantics": "Fallback presentation only; never identity and never an authorization input." },
+      { "field_key": "message_key", "presence": "OPTIONAL", "value_model": "string", "semantics": "Localization lookup key that does not change failure identity." },
+      { "field_key": "message_args", "presence": "OPTIONAL", "value_model": "JSON object", "semantics": "Public-safe localization arguments with JSON-only values." },
+      { "field_key": "details", "presence": "OPTIONAL", "value_model": "JSON value", "semantics": "Domain detail whose interpretation is governed by code ownership." },
+      { "field_key": "causes", "presence": "OPTIONAL", "value_model": "ordered Failure array", "semantics": "Direct causes in deterministic order; cycles are forbidden." },
+      { "field_key": "classification", "presence": "OPTIONAL", "value_model": "category/severity/retryability", "semantics": "Operational hints that never replace code or define transport mappings implicitly." },
+      { "field_key": "metadata", "presence": "OPTIONAL", "value_model": "JSON object", "semantics": "Public portable metadata subject to boundary redaction policy." },
+      { "field_key": "extensions", "presence": "OPTIONAL", "value_model": "URI-keyed JSON object", "semantics": "Namespaced extension bag; unknown top-level fields remain forbidden." }
+    ],
+    "code_policy": [
+      "Code MUST be an absolute RFC 3986 URI and MUST NOT depend on localized presentation",
+      "The URI namespace owner governs code meaning and detail schema without a global hardcoded registry",
+      "HTTP status, RPC status, exception class, and UI copy MUST NOT be inferred unless an explicit adapter maps the code"
+    ],
+    "version_policy": [
+      "Major version changes may remove fields or alter field semantics and require explicit migration",
+      "Minor-compatible readers ignore only namespaced extension keys and reject unknown top-level fields",
+      "A reader MUST reject an unsupported major version rather than silently reinterpret the payload"
+    ],
+    "cause_policy": [
+      "Causes are ordered direct causes and may represent one causal predecessor or an aggregate",
+      "Cause graphs MUST be acyclic and bounded by a selected resource profile",
+      "Runtime exception objects and stack traces are diagnostic sidecars and MUST NOT appear in portable causes"
+    ],
+    "security_policy": [
+      "Message, message arguments, details, metadata, and extensions are public-boundary data unless a stricter profile rejects them",
+      "Secrets, credentials, stack traces, process paths, and raw exception objects MUST NOT be serialized into portable Failure",
+      "Redaction MUST preserve schema_version and code so identity survives presentation removal",
+      "Validators MUST bound depth, direct cause count, and total traversed nodes before accepting untrusted input",
+      "Failure code and classification MUST NOT independently authorize retries, disclosure, access, or tenant selection"
+    ],
+    "resource_profiles": [
+      { "profile_key": "portable-default", "max_depth": 32, "max_causes": 64, "max_nodes": 1024 }
+    ],
+    "projections": [
+      { "target": "typescript", "binding": "Failure type and Failure(input, limits) constructor with isFailure guard", "authority": "DERIVED" },
+      { "target": "python", "binding": "Frozen Failure dataclass and explicit to_failure_data mapping", "authority": "DERIVED" },
+      { "target": "relational", "binding": "Optional structured-failure relation group; generic Result storage remains unchanged", "authority": "DERIVED" },
+      { "target": "sqlite", "binding": "Explicit optional profile with STRICT tables and no reverse authority", "authority": "DERIVED" },
+      { "target": "aasdvgs", "binding": "No mutation; admission and stricter boundary mapping require external authority", "authority": "EXTERNAL_ADMISSION" }
+    ],
+    "scenario_refs": [
+      "urn:uuid:01a01d13-0738-7b15-a94e-244a4b00d3f0", "urn:uuid:01a01d13-0738-7d22-9040-e50dce33db5f", "urn:uuid:01a01d13-0738-7e2b-82bf-0080dcfb4f0f", "urn:uuid:01a01d13-0738-75ff-a855-2adadd47fc07", "urn:uuid:01a01d13-0738-7b6d-b0c6-a717f99cebfb", "urn:uuid:01a01d13-0738-7042-ac80-4e13e53734e6", "urn:uuid:01a01d13-0739-76ff-aa2a-a9970da02d87", "urn:uuid:01a01d13-0739-76c9-8f0e-bbb7c5523f92", "urn:uuid:01a01d13-0739-7dde-b31d-39af6ab8aa23", "urn:uuid:01a01d13-0739-700c-b49b-ebcceb524567", "urn:uuid:01a01d13-0739-7f5a-9d7a-60e61367f786", "urn:uuid:01a01d13-0739-7383-a6e5-9553d2884ea6", "urn:uuid:01a01d13-0739-7799-9c94-7efbc2a2acac", "urn:uuid:01a01d13-0739-7ea8-aa83-e8b533748650", "urn:uuid:01a01d13-0739-7685-a2be-06fdca005e36", "urn:uuid:01a01d13-0739-77f1-8a07-877c6b3cbe6b", "urn:uuid:01a01d13-0739-71b3-a539-ca0eea490910", "urn:uuid:01a01d13-0739-7d23-862c-06d10ad42a86", "urn:uuid:01a01d13-0739-7944-b991-fb5c197a8382", "urn:uuid:01a01d13-0739-7fc9-87fb-a3d94678302a", "urn:uuid:01a01d13-0739-705f-9f3c-d8aba7be22a3", "urn:uuid:01a01d13-0739-7f8a-ac31-0e53961f7d5a", "urn:uuid:01a01d13-0739-7505-be17-918910103307", "urn:uuid:01a01d13-0739-7dde-8940-bfe2c4358de6", "urn:uuid:01a01d13-0739-76e7-9e10-d432cd4eef66", "urn:uuid:01a01d13-0739-798f-94e0-e6bc54cac269", "urn:uuid:01a01d13-0739-7ce1-bf79-9faeec635b98", "urn:uuid:01a01d13-0739-7dcd-97fc-aac5109bbe32", "urn:uuid:01a01d13-0739-74ee-90e3-37f59b594dac", "urn:uuid:01a01d13-0739-7f31-ae9f-a3627cfb3f5e", "urn:uuid:01a01d13-0739-78df-b56d-b1bad26e8cb8", "urn:uuid:01a01d13-0739-7f3a-aeaf-dfd0c288b4f6", "urn:uuid:01a01d13-0739-7dae-971d-9786a2e729b4", "urn:uuid:01a01d13-0739-7da8-891c-5f76c49699a3", "urn:uuid:01a01d13-0739-7303-aa13-8bf0b00d17a3", "urn:uuid:01a01d13-0739-7892-928b-734508b6f87f"
+    ]
+  }
+}

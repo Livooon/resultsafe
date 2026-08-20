@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9803-7bb0-9bbe-c71dfd3912fb",
+  "title": "ResultSafe governed staging work",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["work_id", "work_ref", "work_key", "work_revision", "state", "scope", "constraints", "steps"],
+          "properties": {
+            "work_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+            "work_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+            "work_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+            "work_revision": { "type": "integer", "minimum": 0 },
+            "state": { "enum": ["DRAFT", "ACTIVE", "READY_FOR_REVIEW", "APPROVED", "COMPLETED", "SUPERSEDED"] },
+            "scope": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1, "uniqueItems": true },
+            "constraints": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1, "uniqueItems": true },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["step_id", "step_key", "position", "state", "description", "depends_on_step_ids"],
+                "properties": {
+                  "step_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+                  "step_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+                  "position": { "type": "integer", "minimum": 1 },
+                  "state": { "enum": ["PENDING", "IN_PROGRESS", "COMPLETED", "BLOCKED"] },
+                  "description": { "type": "string", "minLength": 10 },
+                  "depends_on_step_ids": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" }, "uniqueItems": true }
+                }
+              },
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

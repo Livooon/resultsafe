@@ -10,6 +10,9 @@
  * docs live here.
  */
 
+import type { Err } from '../../constructors/Err.js';
+import type { Ok } from '../../constructors/Ok.js';
+
 /**
  * Represents the result of an operation that can either succeed with a
  * value of type `T` or fail with an error of type `E`.
@@ -49,6 +52,4 @@
  * @since 0.1.8
  * @public
  */
-export type Result<T, E> =
-  | { readonly ok: true; readonly value: T }
-  | { readonly ok: false; readonly error: E };
+export type Result<T, E> = Ok<T> | Err<E>;

@@ -2,7 +2,7 @@
  * An asynchronous validator function that checks if a value is valid.
  *
  * @param value - The value to validate.
- * @returns A promise that resolves to `true` if valid, `false` otherwise.
+ * @returns `true` if valid or `false` otherwise, directly or in a promise.
  *
  * @example
  * ```ts
@@ -17,4 +17,9 @@
  * @since 0.1.8
  * @public
  */
-export type AsyncValidatorFn = (value: unknown) => Promise<boolean>;
+export type AsyncValidatorFn<T = unknown> = ((
+  value: unknown,
+) => boolean | Promise<boolean>) & {
+  /** Carries explicitly declared async schema output without affecting runtime. */
+  readonly __output?: T;
+};

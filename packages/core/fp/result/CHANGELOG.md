@@ -1,57 +1,44 @@
 # Changelog
 
-## 0.2.0
+## 0.3.0
 
 ### Minor Changes
 
-- feat: Add AI-optimized JSDoc standard and CI/CD integration for examples
+- Introduce the breaking 0.3.0 Result runtime: split transport-safe ResultData from methodful Result values; add the complete instance method surface and explicit hydration; preserve failures with ResultExtractionError causes; strengthen refiners and matchers; and document migration for prototypes, serialization, cloning, shared types, Option conversion, and temporary compatibility aliases.
 
-  - Add AI_JSDOC_STANDARD.md with RAG/LLM-optimized documentation spec
-  - Add CI_CD_INTEGRATION.md with GitHub Actions workflow
-  - Add 51 example files with @ai JSON metadata
-  - Add validate-ai-json.js script for AI JSDoc validation
-  - Add ESLint config for examples
-  - Add GitHub workflow (examples.yml) for CI/CD pipeline
-  - Reorganize examples into structured directories
-  - All 119 tests passing, validation passing
+Version `0.3.0` is prepared in the local workspace as an unpublished release candidate.
 
-All notable changes to this project will be documented in this file.
+### Additional release-candidate details
 
-The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
+- Add the optional public `Cause<E>` and `Exit<T, E>` APIs, exhaustive matching,
+  bounded guards, and explicit lossless or policy-driven Result conversions.
+- Add optional structured `Failure`, bounded validation, and `isFailure` while preserving arbitrary generic error payloads.
 
----
+### Breaking changes
 
-## [Unreleased]
+- Split data-only `ResultData<T, E>` and methodful runtime `Result<T, E>`; add `ResultLike`, `fromResultData`, `hydrateResult`, and `toResultData` for explicit transport boundaries.
+- Add the canonical frozen Result prototype and full instance method surface while retaining free-function forms.
+- Hydrate plain or foreign-copy Result data returned through pass-through and chaining operations; local canonical wrappers preserve identity.
+- Throw `ResultExtractionError` with the inactive payload as `cause` from failed extraction methods.
+- Correct matcher accumulation, exhaustiveness, and output unions; enforce own-property, strict-field, forbidden-field, and validator-derived refiner behavior.
+- Make branch constructors concrete, shallow-freeze wrappers, widen fallback output unions, and make `inspect`/`inspectErr` true aliases of `tap`/`tapErr`.
+- Return Option-shaped values from `ok`, `err`, and `toOption`; use the English API spelling `toOption`.
 
-### Added
+### Migration
 
-- EN | RU README with import patterns, ESM/TS-Node integration, supported paths, versioning policy, contributing, release checklist.
-- GitHub issue/PR templates and CI workflow example (types-only tests via tsd).
-- License file guidance and packaging notes.
+- Treat JSON, structured clones, object spreads, and shared-package values as `ResultData`, then call `hydrateResult` before using runtime methods.
+- Replace wrapper mutation with construction of a new `Ok` or `Err` value.
+- Update matcher and extraction error handling for the corrected unions and `ResultExtractionError` subclass.
+- See `platform/staging/resultsafe-core-v001/COMPATIBILITY-MIGRATIONS.json` for canonical compatibility records and temporary aliases.
 
-### Changed
+## [0.2.1]
 
-- Documentation structure for clarity and accessibility (EN | RU switch, Contents).
+- No factual release notes are available in this repository.
 
-### Fixed
+## [0.2.0]
 
-- MIT license wording (“AS IS”).
+- Added the AI-oriented JSDoc standard, examples, validation, and documentation integration.
 
----
+## History correction
 
-## [1.0.0] - 2025-08-30
-
-### Added
-
-- Core types (types-only, no runtime):
-  - Ok<T>
-  - Err<E>
-  - Result<T, E = string>
-- Public entry points (stable):
-  - Index re-export: @resultsafe-crates-core-result-core-types
-  - Subpaths: /Ok, /Err, /Result
-- README: installation (npm, yarn, pnpm), concept mapping Rust → TS, API, usage, import examples.
-- Package configuration:
-  - exports and typesVersions for index and subpaths
-  - files whitelist (dist, README.md, LICENSE)
-  - license: MIT
+- Removed the prior `1.0.0` entry because it named a different package/API and post-dated this package's current `0.2.1` version; it was not factual history for `@resultsafe/core-fp-result`.

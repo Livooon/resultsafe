@@ -1,1 +1,4 @@
-export type Err<E> = { readonly ok: false; readonly error: E };
+import type { ErrData } from './ResultData.js';
+
+/** @deprecated Use ErrData. This package contains transport types only. */
+export type Err<E> = ErrData<E>;

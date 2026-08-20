@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01f0a-da09-7590-9665-b8841a81fe96",
+  "title": "ResultSafe portable Exit 1.0.0",
+  "$comment": "T and Cause E are represented by explicit caller-supplied portable codecs. Failure with Empty cause is valid.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tag", "value"],
+      "properties": {
+        "tag": { "const": "Success" },
+        "value": { "$ref": "#/$defs/jsonValue" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tag", "cause"],
+      "properties": {
+        "tag": { "const": "Failure" },
+        "cause": { "$ref": "urn:uuid:01a01f0a-da08-7b85-87bc-dea758e0db27" }
+      }
+    }
+  ],
+  "$defs": {
+    "jsonValue": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string" },
+        { "type": "array", "items": { "$ref": "#/$defs/jsonValue" } },
+        { "type": "object", "additionalProperties": { "$ref": "#/$defs/jsonValue" } }
+      ]
+    }
+  }
+}

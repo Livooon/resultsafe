@@ -1,5 +1,11 @@
+import { Err } from '../constructors/Err.js';
+import { Ok } from '../constructors/Ok.js';
 import { None, Some } from '../internal/option.js';
-import { type Option, type Result } from '../types/core/index.js';
+import {
+  type Option,
+  type Result,
+  type ResultLike,
+} from '../types/core/index.js';
 
 /**
  * Transforms `Result<Option<T>, E>` into `Option<Result<T, E>>`.
@@ -20,12 +26,12 @@ import { type Option, type Result } from '../types/core/index.js';
  * @public
  */
 export const transpose = <T, E>(
-  result: Result<Option<T>, E>,
+  result: ResultLike<Option<T>, E>,
 ): Option<Result<T, E>> => {
-  if (result.ok) {
+  if (result.ok === true) {
     return result.value.some === true
-      ? Some({ ok: true, value: result.value.value })
+      ? Some(Ok<T, E>(result.value.value))
       : None;
   }
-  return Some({ ok: false, error: result.error });
+  return Some(Err<E, T>(result.error));
 };

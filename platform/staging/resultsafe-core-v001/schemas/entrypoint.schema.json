@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01b11-f17f-7ed0-be65-212275e8e7cc",
+  "title": "ResultSafe AI entrypoint",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["read_order", "interpretation_rules", "semantic_authority_ref", "spelling_authority_ref", "canonical_authority", "staging_warning"],
+          "properties": {
+            "read_order": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 1, "uniqueItems": true },
+            "interpretation_rules": { "type": "array", "items": { "type": "string", "minLength": 10 }, "minItems": 1, "uniqueItems": true },
+            "semantic_authority_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+            "spelling_authority_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+            "canonical_authority": { "type": "string", "minLength": 5 },
+            "staging_warning": { "type": "string", "minLength": 20 }
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

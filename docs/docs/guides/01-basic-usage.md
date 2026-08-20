@@ -77,5 +77,7 @@ match(
 
 ## Next Steps
 
-- [Patterns](../patterns/index.md) - Real-world examples
-- [API Reference](../api/core-fp-result/index.md) - Full API docs
+- [Structured Failure](./02-structured-failure.md) - Add an optional portable error payload
+- [Cause and Exit](./03-cause-exit.md) - Preserve defects, interruptions, and composition
+- [Patterns](../patterns/00-index.md) - Real-world examples
+- [Package Documentation](../introduction/introduction/00-package-readme.md) - API summary

@@ -1,0 +1,471 @@
+{
+  "document_id": "01a01af6-3bb2-7b43-895a-2ba8ce0a4445",
+  "document_ref": "urn:uuid:01a01af6-3bb2-7b43-895a-2ba8ce0a4445",
+  "document_key": "requirements",
+  "document_type": "requirement_catalog",
+  "document_revision": 7,
+  "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+  "title": "ResultSafe Core normative requirements",
+  "summary": "Complete normative requirement baseline for identity, algebra, behavior, projections, implementation, testing, integrity, and release.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "items": [
+      {
+        "record_id": "01a01af6-3bc2-7fde-9c13-4c7bbfbff082",
+        "record_ref": "urn:uuid:01a01af6-3bc2-7fde-9c13-4c7bbfbff082",
+        "record_key": "canonical-identity",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-001",
+        "title": "Canonical identity",
+        "status": "DRAFT",
+        "statement": "Every internal entity and canonical document MUST use a persisted canonical lowercase RFC 9562 UUIDv7 identity and an absolute reference.",
+        "priority": "MUST",
+        "verification": [
+          "Validate UUID version and RFC variant",
+          "Reject uppercase and whitespace",
+          "Resolve every reference"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc3-7dfa-b67d-335a5f0cd5f0",
+        "record_ref": "urn:uuid:01a01af6-3bc3-7dfa-b67d-335a5f0cd5f0",
+        "record_key": "neutral-result-algebra",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-002",
+        "title": "Language-neutral Result algebra",
+        "status": "DRAFT",
+        "statement": "The canonical Result MUST define language-neutral SUCCESS and FAILURE variants without prescribing language-specific field names or runtime classes.",
+        "priority": "MUST",
+        "verification": [
+          "Validate Contract IR algebra",
+          "Validate all language mappings against both variants"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc4-71a5-86c9-41a1296a011e",
+        "record_ref": "urn:uuid:01a01af6-3bc4-71a5-86c9-41a1296a011e",
+        "record_key": "exclusive-result-branch",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-003",
+        "title": "Exclusive Result branch",
+        "status": "DRAFT",
+        "statement": "A valid Result MUST contain exactly one active branch and MUST expose only the payload associated with that active branch.",
+        "priority": "MUST",
+        "verification": [
+          "Execute success branch scenarios",
+          "Execute failure branch scenarios",
+          "Reject malformed dual-branch values"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc5-767e-87cc-81918bd764df",
+        "record_ref": "urn:uuid:01a01af6-3bc5-767e-87cc-81918bd764df",
+        "record_key": "wrapper-immutability",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-004",
+        "title": "Wrapper immutability",
+        "status": "DRAFT",
+        "statement": "Result and Option wrapper state MUST be immutable at runtime while nested payload mutability remains explicitly outside the core guarantee.",
+        "priority": "MUST",
+        "verification": [
+          "Attempt wrapper discriminator mutation",
+          "Attempt wrapper payload-slot replacement",
+          "Confirm payload reference is not deep-frozen"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc6-7280-8151-8b5549e58d30",
+        "record_ref": "urn:uuid:01a01af6-3bc6-7280-8151-8b5549e58d30",
+        "record_key": "callback-determinism",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-005",
+        "title": "Callback determinism",
+        "status": "DRAFT",
+        "statement": "Every operation accepting callbacks MUST define branch eligibility, invocation count, argument order, evaluation order, and exception propagation.",
+        "priority": "MUST",
+        "verification": [
+          "Use call-count spies",
+          "Verify callback arguments",
+          "Verify opposite branch suppression"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc7-75eb-a8ea-62f92f8f72d1",
+        "record_ref": "urn:uuid:01a01af6-3bc7-75eb-a8ea-62f92f8f72d1",
+        "record_key": "exception-contract",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-006",
+        "title": "Explicit exception contract",
+        "status": "DRAFT",
+        "statement": "Extraction failures and callback exceptions MUST have explicit categories, stable mapping rules, and preservation of diagnostic cause where the target language supports it.",
+        "priority": "MUST",
+        "verification": [
+          "Verify extraction error category",
+          "Verify callback exception identity",
+          "Verify cause mapping"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc8-7877-925b-3358e537ded6",
+        "record_ref": "urn:uuid:01a01af6-3bc8-7877-925b-3358e537ded6",
+        "record_key": "sound-type-projection",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-007",
+        "title": "Sound type projection",
+        "status": "DRAFT",
+        "statement": "A language projection MUST NOT assert a type property or branch that its runtime checks cannot establish from available evidence.",
+        "priority": "MUST",
+        "verification": [
+          "Compile positive type fixtures",
+          "Compile expected-error fixtures",
+          "Compare runtime validation with declared output"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bc9-74b6-98c6-6f9d9f086f83",
+        "record_ref": "urn:uuid:01a01af6-3bc9-74b6-98c6-6f9d9f086f83",
+        "record_key": "sound-refinement",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-008",
+        "title": "Sound refinement",
+        "status": "DRAFT",
+        "statement": "Refinement MUST verify configured payload presence, field ownership, validator callability, strict fields, forbidden fields, and validator-derived output types.",
+        "priority": "MUST",
+        "verification": [
+          "Reject missing payload",
+          "Reject inherited discriminator and fields",
+          "Verify strict and forbidden behavior",
+          "Verify inferred validator output"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bca-7f32-8541-4ba6e69cab30",
+        "record_ref": "urn:uuid:01a01af6-3bca-7f32-8541-4ba6e69cab30",
+        "record_key": "complete-variant-matching",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-009",
+        "title": "Complete variant matching",
+        "status": "DRAFT",
+        "statement": "Variant matchers MUST preserve every registered handler, infer result types, and prevent strict execution until all statically known variants are handled.",
+        "priority": "MUST",
+        "verification": [
+          "Execute first handler after a long chain",
+          "Execute last handler after a long chain",
+          "Reject premature strict run at compile time"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bcb-79de-a88e-90513b80735e",
+        "record_ref": "urn:uuid:01a01af6-3bcb-79de-a88e-90513b80735e",
+        "record_key": "async-parity",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-010",
+        "title": "Async semantic parity",
+        "status": "DRAFT",
+        "statement": "Async refinement MUST share validation semantics with synchronous refinement and MUST define ordering, rejection propagation, and cancellation limitations.",
+        "priority": "MUST",
+        "verification": [
+          "Compare sync and async outcomes",
+          "Verify sequential validation order",
+          "Verify rejection propagation"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bcc-777e-965c-7d80519b8fb9",
+        "record_ref": "urn:uuid:01a01af6-3bcc-777e-965c-7d80519b8fb9",
+        "record_key": "projection-separation",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-011",
+        "title": "Projection separation",
+        "status": "DRAFT",
+        "statement": "Language, integration, relational, and database profile projections MUST remain derived and independently versioned from the canonical Contract IR.",
+        "priority": "MUST",
+        "verification": [
+          "Validate projection authority is derived",
+          "Reject reverse projection writes",
+          "Verify independent projection versions"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bcd-7607-8595-34914a264366",
+        "record_ref": "urn:uuid:01a01af6-3bcd-7607-8595-34914a264366",
+        "record_key": "relational-projection",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-012",
+        "title": "Language-neutral relational projection",
+        "status": "DRAFT",
+        "statement": "The relational projection MUST define logical relations, keys, constraints, revisions, ownership, and rebuild semantics without depending on a programming language or database vendor.",
+        "priority": "MUST",
+        "verification": [
+          "Validate relational mapping completeness",
+          "Verify no TypeScript or Python runtime dependency",
+          "Verify tenant key rules for operational overlays"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bce-7dcd-a0ad-ff33d500f058",
+        "record_ref": "urn:uuid:01a01af6-3bce-7dcd-a0ad-ff33d500f058",
+        "record_key": "sqlite-derived-profile",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-013",
+        "title": "Derived SQLite profile",
+        "status": "DRAFT",
+        "statement": "SQLite MUST be a reproducible read-model profile of the relational projection and MUST never allocate canonical identity or become Contract IR authority.",
+        "priority": "MUST",
+        "verification": [
+          "Rebuild from canonical JSON",
+          "Run integrity and foreign-key checks",
+          "Compare deterministic logical dumps",
+          "Reject reverse authority mutation"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bcf-7eec-9f22-531d9b07369c",
+        "record_ref": "urn:uuid:01a01af6-3bcf-7eec-9f22-531d9b07369c",
+        "record_key": "typescript-projection",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-014",
+        "title": "TypeScript projection",
+        "status": "DRAFT",
+        "statement": "The TypeScript runtime MUST project SUCCESS as exact `{ok:true,value}` and FAILURE as exact `{ok:false,error}` while satisfying every applicable canonical scenario.",
+        "priority": "MUST",
+        "verification": [
+          "Run runtime conformance",
+          "Run compile-time conformance",
+          "Test packed ESM and CJS artifacts"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd0-722e-981f-62813120318b",
+        "record_ref": "urn:uuid:01a01af6-3bd0-722e-981f-62813120318b",
+        "record_key": "python-projection",
+        "record_revision": 1,
+        "kind": "requirement",
+        "code": "RS-REQ-015",
+        "title": "Python projection",
+        "status": "DRAFT",
+        "statement": "The `resultsafe` PyPI distribution and `resultsafe` import root MUST expose frozen slotted generic Ok, Err, and Some values, singleton NOTHING, ResultExtractionError with identity-preserving payload, and only canonical snake_case free operations without changing the 25 Python-applicable neutral contracts.",
+        "priority": "MUST",
+        "verification": [
+          "Run Python runtime conformance",
+          "Run strict static typing checks",
+          "Verify package installation"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd1-7b0c-a869-02436ab201e6",
+        "record_ref": "urn:uuid:01a01af6-3bd1-7b0c-a869-02436ab201e6",
+        "record_key": "aasdvgs-admission-boundary",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-016",
+        "title": "AASDVGS admission boundary",
+        "status": "DRAFT",
+        "statement": "AASDVGS integration MUST be an independently governed admission projection and MUST NOT mint or infer AASDVGS package publication authority locally.",
+        "priority": "MUST",
+        "verification": [
+          "Verify no reused external package IDs",
+          "Verify admission evidence is separate",
+          "Verify external authority remains unresolved until approved"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd2-7b04-b4a6-f6fdfe450cbd",
+        "record_ref": "urn:uuid:01a01af6-3bd2-7b04-b4a6-f6fdfe450cbd",
+        "record_key": "complete-traceability",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-017",
+        "title": "Complete traceability",
+        "status": "DRAFT",
+        "statement": "Every implementation change MUST trace from source evidence through finding, decision, requirement, contract, scenario, projection, and verification evidence.",
+        "priority": "MUST",
+        "verification": [
+          "Validate traceability graph closure",
+          "Reject orphan findings",
+          "Reject contracts without scenarios"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd3-7038-9938-4856c182b705",
+        "record_ref": "urn:uuid:01a01af6-3bd3-7038-9938-4856c182b705",
+        "record_key": "package-integrity",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-018",
+        "title": "Package integrity",
+        "status": "DRAFT",
+        "statement": "Every staged and released corpus MUST have canonicalized file digests, a deterministic tree digest, exact inventory, and validation evidence.",
+        "priority": "MUST",
+        "verification": [
+          "Recompute every file digest",
+          "Recompute tree digest",
+          "Reject missing or extra files"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd4-7a1b-9c93-0bbc2a3ea2ab",
+        "record_ref": "urn:uuid:01a01af6-3bd4-7a1b-9c93-0bbc2a3ea2ab",
+        "record_key": "immutable-release",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-019",
+        "title": "Immutable contract release",
+        "status": "DRAFT",
+        "statement": "An approved contract release MUST resolve exact record revisions, carry a digest, remain immutable, and require a successor release for semantic changes.",
+        "priority": "MUST",
+        "verification": [
+          "Resolve every release member",
+          "Reject mutation of released revisions",
+          "Verify successor linkage for changes"
+        ]
+      },
+      {
+        "record_id": "01a01af6-3bd5-7ea8-a72c-f9f579604274",
+        "record_ref": "urn:uuid:01a01af6-3bd5-7ea8-a72c-f9f579604274",
+        "record_key": "truthful-test-status",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-020",
+        "title": "Truthful test status",
+        "status": "DRAFT",
+        "statement": "Validation evidence MUST distinguish structural, behavioral, security, and long-running execution and MUST never report unexecuted scenarios as passing.",
+        "priority": "MUST",
+        "verification": [
+          "Validate status transitions",
+          "Reject NOT_EXECUTED-to-PASS inference",
+          "Enforce explicit command for deferred test classes"
+        ]
+      },
+      {
+        "record_id": "01a01d13-0738-783c-b464-18caa6e24175",
+        "record_ref": "urn:uuid:01a01d13-0738-783c-b464-18caa6e24175",
+        "record_key": "optional-structured-failure",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-021",
+        "title": "Optional structured Failure",
+        "status": "IMPLEMENTED",
+        "statement": "ResultSafe MUST provide a portable structured Failure with required schema_version and qualified code without constraining Result<T,E> or coercing arbitrary E.",
+        "priority": "MUST",
+        "verification": [
+          "Validate the portable Failure schema",
+          "Execute bounded constructor and compatibility scenarios",
+          "Verify TypeScript and Python projections",
+          "Verify generic Err payload regression"
+        ]
+      },
+      {
+        "record_id": "01a01f0b-0010-7000-8000-000000000010",
+        "record_ref": "urn:uuid:01a01f0b-0010-7000-8000-000000000010",
+        "record_key": "optional-binary-cause-model",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-022",
+        "title": "Optional binary Cause model",
+        "status": "DRAFT",
+        "statement": "Cause MUST remain an optional six-variant binary semantic model that preserves arbitrary E identity, exact grouping and order, and bounded acyclic validation.",
+        "priority": "MUST",
+        "verification": [
+          "Validate exact six variants",
+          "Execute topology and bound scenarios",
+          "Confirm generic Result remains unchanged"
+        ]
+      },
+      {
+        "record_id": "01a01f0b-0011-7000-8000-000000000011",
+        "record_ref": "urn:uuid:01a01f0b-0011-7000-8000-000000000011",
+        "record_key": "optional-exit-model",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-023",
+        "title": "Optional Exit model",
+        "status": "DRAFT",
+        "statement": "Exit MUST contain exactly Success or Failure, preserve arbitrary T or complete Cause E identity, and accept Failure with Empty Cause.",
+        "priority": "MUST",
+        "verification": [
+          "Validate exact two variants",
+          "Execute Empty failure and conversion scenarios",
+          "Compile branch narrowing scenarios"
+        ]
+      },
+      {
+        "record_id": "01a01f0b-0012-7000-8000-000000000012",
+        "record_ref": "urn:uuid:01a01f0b-0012-7000-8000-000000000012",
+        "record_key": "cause-exit-semantic-projections",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-024",
+        "title": "Cause and Exit semantic projections",
+        "status": "DRAFT",
+        "statement": "Language projections MUST bind every Cause and Exit semantic variant without changing Result operation bindings or claiming unsupported cross-language implementation.",
+        "priority": "MUST",
+        "verification": [
+          "Validate exact semantic matrix coverage",
+          "Require implemented TypeScript and Python cells after executable APIs qualify",
+          "Preserve 23 Result operations and 88 Result cells"
+        ]
+      },
+      {
+        "record_id": "01a01d86-7c29-7696-afb3-f07cc12198b7",
+        "record_ref": "urn:uuid:01a01d86-7c29-7696-afb3-f07cc12198b7",
+        "record_key": "core-public-modularity",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-025",
+        "title": "Core public modularity",
+        "status": "DRAFT",
+        "statement": "The TypeScript core package MUST have zero runtime dependencies, expose every intended public module from both root and a direct subpath, perform no import-time side effects, require no codecs, adapters, storage, or runtime registry, and keep optional integrations in separate packages.",
+        "priority": "MUST",
+        "verification": [
+          "Validate the public module registry against source exports",
+          "Verify all derived export conditions in the exact packed manifest",
+          "Run isolated ESM, CJS, and declaration consumers",
+          "Prove zero runtime dependencies and no import side effects"
+        ]
+      },
+      {
+        "record_id": "01a01f50-0010-7000-8000-000000000010",
+        "record_ref": "urn:uuid:01a01f50-0010-7000-8000-000000000010",
+        "record_key": "explicit-codec-package-boundary",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-026",
+        "title": "Explicit codec package boundary",
+        "status": "IMPLEMENTED",
+        "statement": "Cause and Exit JSON codecs MUST be explicit operations in @resultsafe/core-fp-codec-json, use governed valid and malformed vectors, and create zero dependency from @resultsafe/core-fp-result.",
+        "priority": "MUST",
+        "verification": ["Validate exact package and peer dependency policy", "Execute all valid and malformed codec vectors", "Prove core has no codec dependency", "Bind exact packed artifacts in final qualification"]
+      },
+      {
+        "record_id": "01a01f50-0011-7000-8000-000000000011",
+        "record_ref": "urn:uuid:01a01f50-0011-7000-8000-000000000011",
+        "record_key": "separate-effect-adapter-boundary",
+        "record_revision": 0,
+        "kind": "requirement",
+        "code": "RS-REQ-027",
+        "title": "Separate Effect adapter boundary",
+        "status": "IMPLEMENTED",
+        "statement": "Effect Cause and Exit interoperability MUST reside in @resultsafe/adapter-core-fp-effect, support Effect 3.22.1 as an exact required peer, report semantic loss explicitly, and create zero dependency from core.",
+        "priority": "MUST",
+        "verification": ["Validate exact package path and peer dependency policy", "Execute Cause and Exit adapter tests against Effect 3.22.1", "Prove no Effect dependency enters core", "Bind QUALIFIED_LOCAL_SNAPSHOT to the PASS_LOCAL_ATOMIC effect-adapter child without claiming release approval"]
+      }
+    ]
+  }
+}

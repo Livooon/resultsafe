@@ -1,4 +1,5 @@
-import { type Result } from '../types/core/index.js';
+import { hydrateResultValue } from '../internal/resultValue.js';
+import { type Result, type ResultLike } from '../types/core/index.js';
 
 /**
  * Collapses a nested `Result<Result<T, E>, E>` one level.
@@ -18,5 +19,9 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const flatten = <T, E>(result: Result<Result<T, E>, E>): Result<T, E> =>
-  result.ok ? result.value : { ok: false, error: result.error };
+export const flatten = <T, E>(
+  result: ResultLike<ResultLike<T, E>, E>,
+): Result<T, E> =>
+  result.ok === true
+    ? hydrateResultValue(result.value)
+    : (hydrateResultValue(result) as unknown as Result<T, E>);

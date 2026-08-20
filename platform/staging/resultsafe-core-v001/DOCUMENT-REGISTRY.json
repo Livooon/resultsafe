@@ -1,0 +1,321 @@
+{
+  "document_id": "01a01af6-3bb7-7799-a3af-44150b984b79",
+  "document_ref": "urn:uuid:01a01af6-3bb7-7799-a3af-44150b984b79",
+  "document_key": "document-registry",
+  "document_type": "registry",
+  "document_revision": 8,
+  "schema_ref": "urn:uuid:01a01af6-9806-7d4a-ae6a-90728c600f68",
+  "title": "ResultSafe canonical document registry",
+  "summary": "Exact identity, key, type, schema, and package-relative path registry for every canonical staging document.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "documents": [
+      {
+        "document_id": "01a01f50-0001-7000-8000-000000000001",
+        "document_ref": "urn:uuid:01a01f50-0001-7000-8000-000000000001",
+        "document_key": "optional-integrations",
+        "document_type": "optional_integration_catalog",
+        "path": "OPTIONAL-INTEGRATIONS.json",
+        "schema_ref": "urn:uuid:01a01f50-0002-7000-8000-000000000002"
+      },
+      {
+        "document_id": "01a01c00-1000-7000-8000-000000000003",
+        "document_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000003",
+        "document_key": "relational-schema",
+        "document_type": "relational_schema",
+        "path": "RELATIONAL-SCHEMA.json",
+        "schema_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000001"
+      },
+      {
+        "document_id": "01a01c00-1000-7000-8000-000000000004",
+        "document_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000004",
+        "document_key": "sqlite-profile",
+        "document_type": "sqlite_profile",
+        "path": "SQLITE-PROFILE.json",
+        "schema_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000002"
+      },
+      {
+        "document_id": "01a01af6-3bae-71ed-801b-4bd818c629dc",
+        "document_ref": "urn:uuid:01a01af6-3bae-71ed-801b-4bd818c629dc",
+        "document_key": "ai-entrypoint",
+        "document_type": "entrypoint",
+        "path": "AI-ENTRYPOINT.json",
+        "schema_ref": "urn:uuid:01a01b11-f17f-7ed0-be65-212275e8e7cc"
+      },
+      {
+        "document_id": "01a01b58-c2d3-7e74-94a2-e6d6d9414d7d",
+        "document_ref": "urn:uuid:01a01b58-c2d3-7e74-94a2-e6d6d9414d7d",
+        "document_key": "compatibility-migrations",
+        "document_type": "compatibility_catalog",
+        "path": "COMPATIBILITY-MIGRATIONS.json",
+        "schema_ref": "urn:uuid:01a01b58-c2d2-7f3a-80af-8b61fc9dcaf5"
+      },
+      {
+        "document_id": "01a01d00-0002-7000-8000-000000000002",
+        "document_ref": "urn:uuid:01a01d00-0002-7000-8000-000000000002",
+        "document_key": "conformance-matrix",
+        "document_type": "conformance_matrix",
+        "path": "CONFORMANCE-MATRIX.json",
+        "schema_ref": "urn:uuid:01a01d00-0001-7000-8000-000000000001"
+      },
+      {
+        "document_id": "01a01af6-3bb1-7002-8958-73436a16f14f",
+        "document_ref": "urn:uuid:01a01af6-3bb1-7002-8958-73436a16f14f",
+        "document_key": "contract-ir",
+        "document_type": "contract_ir",
+        "path": "CONTRACT-IR.json",
+        "schema_ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c"
+      },
+      {
+        "document_id": "01a01b00-fa6d-77e9-9552-fe7f36336ac1",
+        "document_ref": "urn:uuid:01a01b00-fa6d-77e9-9552-fe7f36336ac1",
+        "document_key": "contracts",
+        "document_type": "contract_catalog",
+        "path": "CONTRACTS.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bb3-70c9-87cc-da17cb6c9207",
+        "document_ref": "urn:uuid:01a01af6-3bb3-70c9-87cc-da17cb6c9207",
+        "document_key": "decisions",
+        "document_type": "decision_catalog",
+        "path": "DECISIONS.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bb8-7815-aaac-19967fbde22c",
+        "document_ref": "urn:uuid:01a01af6-3bb8-7815-aaac-19967fbde22c",
+        "document_key": "document-graph",
+        "document_type": "graph",
+        "path": "DOCUMENT-GRAPH.json",
+        "schema_ref": "urn:uuid:01a01af6-9807-7522-b0e8-557d6f1d7bfd"
+      },
+      {
+        "document_id": "01a01af6-3bb7-7799-a3af-44150b984b79",
+        "document_ref": "urn:uuid:01a01af6-3bb7-7799-a3af-44150b984b79",
+        "document_key": "document-registry",
+        "document_type": "registry",
+        "path": "DOCUMENT-REGISTRY.json",
+        "schema_ref": "urn:uuid:01a01af6-9806-7d4a-ae6a-90728c600f68"
+      },
+      {
+        "document_id": "01a01d13-0738-7b88-beee-14e33b781ada",
+        "document_ref": "urn:uuid:01a01d13-0738-7b88-beee-14e33b781ada",
+        "document_key": "failure-audit",
+        "document_type": "architecture_audit",
+        "path": "FAILURE-AUDIT.json",
+        "schema_ref": "urn:uuid:01a01d13-0738-7609-880a-f556df4124ea"
+      },
+      {
+        "document_id": "01a01d13-0738-76c5-83ab-907b36ad856e",
+        "document_ref": "urn:uuid:01a01d13-0738-76c5-83ab-907b36ad856e",
+        "document_key": "failure-model",
+        "document_type": "failure_model",
+        "path": "FAILURE-MODEL.json",
+        "schema_ref": "urn:uuid:01a01d13-0738-7414-bd8b-f0b3802a56ab"
+      },
+      {
+        "document_id": "01a01af6-3bb4-790e-ad67-7a81944f4998",
+        "document_ref": "urn:uuid:01a01af6-3bb4-790e-ad67-7a81944f4998",
+        "document_key": "findings",
+        "document_type": "finding_catalog",
+        "path": "FINDINGS.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bb0-78bf-acbc-166fc7b1ef08",
+        "document_ref": "urn:uuid:01a01af6-3bb0-78bf-acbc-166fc7b1ef08",
+        "document_key": "id-allocation-registry",
+        "document_type": "registry",
+        "path": "ID-ALLOCATION-REGISTRY.json",
+        "schema_ref": "urn:uuid:01a01b11-f181-7081-aec1-5d267223c734"
+      },
+      {
+        "document_id": "01a01af6-3baf-7e93-b8ac-3e6dfb97bed7",
+        "document_ref": "urn:uuid:01a01af6-3baf-7e93-b8ac-3e6dfb97bed7",
+        "document_key": "identity-policy",
+        "document_type": "policy",
+        "path": "IDENTITY-POLICY.json",
+        "schema_ref": "urn:uuid:01a01b11-f180-7185-a968-f99558a3d809"
+      },
+      {
+        "document_id": "01a01af6-3bc1-7677-83fa-bbe04fe99a37",
+        "document_ref": "urn:uuid:01a01af6-3bc1-7677-83fa-bbe04fe99a37",
+        "document_key": "integrity-manifest",
+        "document_type": "integrity_manifest",
+        "path": "INTEGRITY-MANIFEST.json",
+        "schema_ref": "urn:uuid:01a01af6-980c-7504-bfd0-235440c33890"
+      },
+      {
+        "document_id": "01a01af6-3bbb-73b6-b78c-a91ffbd42687",
+        "document_ref": "urn:uuid:01a01af6-3bbb-73b6-b78c-a91ffbd42687",
+        "document_key": "package-families",
+        "document_type": "package_family_catalog",
+        "path": "PACKAGE-FAMILIES.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bbc-74ee-afde-135b2665411e",
+        "document_ref": "urn:uuid:01a01af6-3bbc-74ee-afde-135b2665411e",
+        "document_key": "projection-catalog",
+        "document_type": "projection_catalog",
+        "path": "PROJECTION-CATALOG.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bbf-7cb2-94dd-8f8332eec6e9",
+        "document_ref": "urn:uuid:01a01af6-3bbf-7cb2-94dd-8f8332eec6e9",
+        "document_key": "qualification-receipt",
+        "document_type": "qualification_receipt",
+        "path": "QUALIFICATION-RECEIPT.json",
+        "schema_ref": "urn:uuid:01a01af6-980b-7cfc-a859-bd374f6798a7"
+      },
+      {
+        "document_id": "01a01af6-3bb2-7b43-895a-2ba8ce0a4445",
+        "document_ref": "urn:uuid:01a01af6-3bb2-7b43-895a-2ba8ce0a4445",
+        "document_key": "requirements",
+        "document_type": "requirement_catalog",
+        "path": "REQUIREMENTS.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bb5-76d5-9c65-82b765ba8b8b",
+        "document_ref": "urn:uuid:01a01af6-3bb5-76d5-9c65-82b765ba8b8b",
+        "document_key": "risks",
+        "document_type": "risk_catalog",
+        "path": "RISKS.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bbd-7ddc-8e39-f49b82d35626",
+        "document_ref": "urn:uuid:01a01af6-3bbd-7ddc-8e39-f49b82d35626",
+        "document_key": "scenario-catalog",
+        "document_type": "scenario_catalog",
+        "path": "SCENARIO-CATALOG.json",
+        "schema_ref": "urn:uuid:01a01af6-980a-7f91-a389-50c21e3b041f"
+      },
+      {
+        "document_id": "01a01af6-3bc0-7f48-8923-92bfd8e4fc26",
+        "document_ref": "urn:uuid:01a01af6-3bc0-7f48-8923-92bfd8e4fc26",
+        "document_key": "schema-index",
+        "document_type": "schema_index",
+        "path": "SCHEMA-INDEX.json",
+        "schema_ref": "urn:uuid:01a01b11-f184-71d9-8caa-3534afa944ba"
+      },
+      {
+        "document_id": "01a01af6-3bba-74ba-b091-00cec2cb62e6",
+        "document_ref": "urn:uuid:01a01af6-3bba-74ba-b091-00cec2cb62e6",
+        "document_key": "source-evidence",
+        "document_type": "evidence_catalog",
+        "path": "SOURCE-EVIDENCE.json",
+        "schema_ref": "urn:uuid:01a01b11-f182-7300-b58a-2ed8b611789c"
+      },
+      {
+        "document_id": "01a01af6-3bb6-7131-8d12-a1527f08bbd0",
+        "document_ref": "urn:uuid:01a01af6-3bb6-7131-8d12-a1527f08bbd0",
+        "document_key": "standards-catalog",
+        "document_type": "standards_catalog",
+        "path": "STANDARDS-CATALOG.json",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d"
+      },
+      {
+        "document_id": "01a01af6-3bb9-77a9-bb70-c436e47c72c7",
+        "document_ref": "urn:uuid:01a01af6-3bb9-77a9-bb70-c436e47c72c7",
+        "document_key": "traceability-matrix",
+        "document_type": "traceability",
+        "path": "TRACEABILITY-MATRIX.json",
+        "schema_ref": "urn:uuid:01a01af6-9808-7ece-ac83-2f765ba0b9c3"
+      },
+      {
+        "document_id": "01a01af6-3bbe-7d7c-a9e9-d465db98989a",
+        "document_ref": "urn:uuid:01a01af6-3bbe-7d7c-a9e9-d465db98989a",
+        "document_key": "validation-plan",
+        "document_type": "validation_plan",
+        "path": "VALIDATION-PLAN.json",
+        "schema_ref": "urn:uuid:01a01b11-f183-79da-8834-4e2a3809068e"
+      },
+      {
+        "document_id": "01a01af6-3bad-74da-86b7-f6dfc9462b0e",
+        "document_ref": "urn:uuid:01a01af6-3bad-74da-86b7-f6dfc9462b0e",
+        "document_key": "resultsafe-core-stabilization-work",
+        "document_type": "work",
+        "path": "WORK.json",
+        "schema_ref": "urn:uuid:01a01af6-9803-7bb0-9bbe-c71dfd3912fb"
+      },
+      {
+        "document_id": "01a01c4b-0d18-7835-9930-1128e58833b3",
+        "document_ref": "urn:uuid:01a01c4b-0d18-7835-9930-1128e58833b3",
+        "document_key": "wave-plan",
+        "document_type": "execution_plan",
+        "path": "WAVE-PLAN.json",
+        "schema_ref": "urn:uuid:01a01c4b-0d17-7d5e-ac7b-c0decf1c517a"
+      },
+      {
+        "document_id": "01a01f0a-da00-7b10-9266-a2689c0f75a7",
+        "document_ref": "urn:uuid:01a01f0a-da00-7b10-9266-a2689c0f75a7",
+        "document_key": "cause-audit",
+        "document_type": "architecture_audit",
+        "path": "CAUSE-AUDIT.json",
+        "schema_ref": "urn:uuid:01a01f0a-da04-7b65-91c4-77b96153b6ab"
+      },
+      {
+        "document_id": "01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+        "document_ref": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+        "document_key": "cause-model",
+        "document_type": "cause_model",
+        "path": "CAUSE-MODEL.json",
+        "schema_ref": "urn:uuid:01a01f0a-da05-7919-b410-d32753e67b0c"
+      },
+      {
+        "document_id": "01a01f0a-da02-77d4-982f-7251ea78e989",
+        "document_ref": "urn:uuid:01a01f0a-da02-77d4-982f-7251ea78e989",
+        "document_key": "exit-model",
+        "document_type": "exit_model",
+        "path": "EXIT-MODEL.json",
+        "schema_ref": "urn:uuid:01a01f0a-da06-7930-8f32-7c9e231f3087"
+      },
+      {
+        "document_id": "01a01f0a-da03-7cbe-94a8-23bc96826838",
+        "document_ref": "urn:uuid:01a01f0a-da03-7cbe-94a8-23bc96826838",
+        "document_key": "effect-compatibility",
+        "document_type": "compatibility_catalog",
+        "path": "EFFECT-COMPATIBILITY.json",
+        "schema_ref": "urn:uuid:01a01f0a-da07-7b11-8d9f-0e89386c0772"
+      },
+      {
+        "document_id": "01a01f0b-0001-7000-8000-000000000001",
+        "document_ref": "urn:uuid:01a01f0b-0001-7000-8000-000000000001",
+        "document_key": "cause-exit-conformance-matrix",
+        "document_type": "cause_exit_conformance_matrix",
+        "path": "CAUSE-EXIT-CONFORMANCE-MATRIX.json",
+        "schema_ref": "urn:uuid:01a01f0b-0000-7000-8000-000000000001"
+      },
+      {
+        "document_id": "01a01d86-7c23-71f6-96f1-14a59676157d",
+        "document_ref": "urn:uuid:01a01d86-7c23-71f6-96f1-14a59676157d",
+        "document_key": "core-modularity-policy",
+        "document_type": "policy",
+        "path": "CORE-MODULARITY-POLICY.json",
+        "schema_ref": "urn:uuid:01a01d86-7c24-7a3e-8f7c-a367ff5ffdc8"
+      },
+      {
+        "document_id": "01a01d86-7c25-7c79-9b5c-f4ca873b3ac1",
+        "document_ref": "urn:uuid:01a01d86-7c25-7c79-9b5c-f4ca873b3ac1",
+        "document_key": "public-module-registry",
+        "document_type": "registry",
+        "path": "PUBLIC-MODULE-REGISTRY.json",
+        "schema_ref": "urn:uuid:01a01d86-7c26-7583-97d5-55cd12aaf510"
+      },
+      {
+        "document_id": "01a01d86-7c27-774b-a192-884970b99ad2",
+        "document_ref": "urn:uuid:01a01d86-7c27-774b-a192-884970b99ad2",
+        "document_key": "remediation-plan",
+        "document_type": "execution_plan",
+        "path": "REMEDIATION-PLAN.json",
+        "schema_ref": "urn:uuid:01a01d86-7c28-7c7a-b957-1e84d391418b"
+      }
+    ]
+  }
+}

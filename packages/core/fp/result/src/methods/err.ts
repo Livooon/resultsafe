@@ -1,6 +1,6 @@
 import { isErr } from '../guards/isErr.js';
 import { None, Some } from '../internal/option.js';
-import { type Option, type Result } from '../types/core/index.js';
+import { type Option, type ResultLike } from '../types/core/index.js';
 
 /**
  * Extracts the error branch as an `Option`.
@@ -20,5 +20,5 @@ import { type Option, type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const err = <T, E>(result: Result<T, E>): Option<E> =>
+export const err = <T, E>(result: ResultLike<T, E>): Option<E> =>
   isErr(result) ? Some(result.error) : None;

@@ -13,7 +13,7 @@ description: Introduction to ResultSafe - Functional Result type for TypeScript
 
 - ✅ **Type-safe error handling** - Catch errors at compile time
 - ✅ **Rust-style Result** - Familiar API for Rust developers
-- ✅ **Zero dependencies** - Lightweight and tree-shakable
+- **Zero runtime dependencies** - Lightweight core without integration baggage
 - ✅ **AI-friendly** - Comprehensive documentation for LLMs
 - ✅ **Multi-language** - English and Russian support
 
@@ -43,14 +43,22 @@ match(
 npm install @resultsafe/core-fp-result
 ```
 
+## Lightweight core invariant
+
+Core must retain zero runtime dependencies. Every public module is required to
+be available from both the package root and a direct package subpath, and
+optional integrations such as codecs, Effect adapters, and storage must remain
+separate. Complete generated subpath exports are still pending, so only use a
+direct subpath that is present in the installed package's `exports` map.
+
 ## Next Steps
 
 - [Installation](./02-installation.md) - Setup guide
 - [Quick Start](./03-quick-start.md) - Get started in 5 minutes
-- [API Reference](../api/core-fp-result/index.md) - Full API docs
+- [Package Documentation](./00-package-readme.md) - API summary and examples
 
 ## Learn More
 
-- [Guides](../guides/index.md) - Usage patterns
-- [Patterns](../patterns/index.md) - Real-world examples
+- [Guides](../../guides/00-index.md) - Usage patterns
+- [Patterns](../../patterns/00-index.md) - Real-world examples
 - [GitHub](https://github.com/resultsafe/resultsafe) - Source code

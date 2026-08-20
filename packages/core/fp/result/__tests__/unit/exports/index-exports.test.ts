@@ -31,5 +31,6 @@ describe('module export indexes', () => {
     expect(typeof rootIndex.Ok).toBe('function');
     expect(typeof rootIndex.map).toBe('function');
     expect(typeof rootIndex.refineResult).toBe('function');
+    expect(typeof rootIndex.ResultExtractionError).toBe('function');
   });
 });

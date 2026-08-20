@@ -24,7 +24,7 @@ const umdConfig = defineConfig({
       entry: resolve(__dirname, PATHS.entry),
       name: 'ResultsafeFpResult', // Глобальное имя
       formats: ['umd'],
-      fileName: () => 'resultsafe-monorepo-core-fp-result.umd.js',
+      fileName: () => 'resultsafe-core-fp-result.umd.js',
     },
 
     outDir: resolve(__dirname, '../dist/umd'),

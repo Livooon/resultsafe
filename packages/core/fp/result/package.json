@@ -1,6 +1,6 @@
 {
   "name": "@resultsafe/core-fp-result",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Functional Result type for TypeScript with explicit error handling (Rust-style). Zero dependencies, tree-shakable, AI-friendly.",
   "author": {
     "name": "Denis Savasteev",
@@ -20,27 +20,30 @@
     "directory": "packages/core/fp/result"
   },
   "bugs": {
-    "url": "https://github.com/resultsafe/monorepo/issues"
+    "url": "https://github.com/resultsafe/resultsafe/issues"
   },
-  "homepage": "https://github.com/resultsafe/monorepo#readme",
+  "homepage": "https://github.com/resultsafe/resultsafe/tree/main/packages/core/fp/result#readme",
   "engines": {
-    "node": ">=20.10.0",
+    "node": ">=22.13.0",
     "pnpm": ">=10.0.0"
   },
   "scripts": {
     "clean:dist": "rimraf dist .tsbuildinfo",
+    "generate:exports": "node ./__scripts__/public-module-registry.mjs --write",
+    "check:exports": "node ./__scripts__/public-module-registry.mjs --check",
+    "prebuild:all": "pnpm run check:exports",
     "prebuild:types": "pnpm run validate:ai-json",
     "build:types": "tsc -b ./config/tsconfig.build.types.json --force",
-    "prebuild:all": "pnpm run validate:examples",
     "build:esm": "vite build --config ./config/vite.config.build.esm.ts",
     "build:cjs": "vite build --config ./config/vite.config.build.cjs.ts && node ./__scripts__/build/write-cjs-package-json.mjs",
     "build:umd": "vite build --config ./config/vite.config.build.umd.ts",
     "prepare:dist:publish": "node ./__scripts__/build/prepare-dist-publish.mjs",
     "check:release:artifacts": "node ./__scripts__/build/validate-release-artifacts.mjs",
     "check:release:pack": "npm pack --dry-run ./dist",
+    "check:release:smoke": "node ./__scripts__/build/smoke-packed-package.mjs",
     "build:all": "pnpm run clean:dist && pnpm run build:esm && pnpm run build:cjs && pnpm run build:umd && pnpm run build:types",
     "build:release": "pnpm run build:all && pnpm run prepare:dist:publish",
-    "verify:release": "pnpm run build:release && pnpm run check:release:artifacts && pnpm run test && pnpm run check:release:pack",
+    "verify:release": "pnpm run build:release && pnpm run check:release:artifacts && pnpm run check:release:pack && pnpm run check:release:smoke",
     "docs:api:clean": "rimraf docs/api",
     "docs:api:generate": "typedoc --options typedoc.json --out docs/api",
     "docs:api:mirror": "node ./__scripts__/docs/mirror-typedoc-api.mjs",
@@ -52,6 +55,7 @@
     "test:examples": "vitest run --config ./config/vitest.config.examples.ts",
     "test:examples:watch": "vitest --config ./config/vitest.config.examples.ts",
     "typecheck:examples": "tsc --noEmit -p ./tsconfig.examples.json",
+    "typecheck:contracts": "tsc --noEmit -p ./config/tsconfig.contracts.json",
     "lint": "eslint . --ext .ts,.tsx --config config/eslint.config.mjs",
     "lint:fix": "eslint . --ext .ts,.tsx --config config/eslint.config.mjs --fix",
     "lint:examples": "eslint __examples__/**/*.ts --config config/eslint.config.examples.mjs",
@@ -64,7 +68,7 @@
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "browser": "dist/umd/resultsafe-monorepo-core-fp-result.umd.js",
+  "browser": "dist/umd/resultsafe-core-fp-result.umd.js",
   "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
@@ -72,15 +76,293 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./Ok": {
-      "types": "./dist/types/constructors/Ok.d.ts",
-      "import": "./dist/esm/constructors/Ok.js",
-      "require": "./dist/cjs/constructors/Ok.js"
+    "./Cause": {
+      "types": "./dist/types/constructors/Cause.d.ts",
+      "import": "./dist/esm/constructors/Cause.js",
+      "require": "./dist/cjs/constructors/Cause.js"
     },
     "./Err": {
       "types": "./dist/types/constructors/Err.d.ts",
       "import": "./dist/esm/constructors/Err.js",
       "require": "./dist/cjs/constructors/Err.js"
+    },
+    "./Exit": {
+      "types": "./dist/types/constructors/Exit.d.ts",
+      "import": "./dist/esm/constructors/Exit.js",
+      "require": "./dist/cjs/constructors/Exit.js"
+    },
+    "./Failure": {
+      "types": "./dist/types/constructors/Failure.d.ts",
+      "import": "./dist/esm/constructors/Failure.js",
+      "require": "./dist/cjs/constructors/Failure.js"
+    },
+    "./Ok": {
+      "types": "./dist/types/constructors/Ok.d.ts",
+      "import": "./dist/esm/constructors/Ok.js",
+      "require": "./dist/cjs/constructors/Ok.js"
+    },
+    "./exit": {
+      "types": "./dist/types/conversions/exit.d.ts",
+      "import": "./dist/esm/conversions/exit.js",
+      "require": "./dist/cjs/conversions/exit.js"
+    },
+    "./resultData": {
+      "types": "./dist/types/conversions/resultData.d.ts",
+      "import": "./dist/esm/conversions/resultData.js",
+      "require": "./dist/cjs/conversions/resultData.js"
+    },
+    "./ResultExtractionError": {
+      "types": "./dist/types/errors/ResultExtractionError.d.ts",
+      "import": "./dist/esm/errors/ResultExtractionError.js",
+      "require": "./dist/cjs/errors/ResultExtractionError.js"
+    },
+    "./isCause": {
+      "types": "./dist/types/guards/isCause.d.ts",
+      "import": "./dist/esm/guards/isCause.js",
+      "require": "./dist/cjs/guards/isCause.js"
+    },
+    "./isErr": {
+      "types": "./dist/types/guards/isErr.d.ts",
+      "import": "./dist/esm/guards/isErr.js",
+      "require": "./dist/cjs/guards/isErr.js"
+    },
+    "./isErrAnd": {
+      "types": "./dist/types/guards/isErrAnd.d.ts",
+      "import": "./dist/esm/guards/isErrAnd.js",
+      "require": "./dist/cjs/guards/isErrAnd.js"
+    },
+    "./isExit": {
+      "types": "./dist/types/guards/isExit.d.ts",
+      "import": "./dist/esm/guards/isExit.js",
+      "require": "./dist/cjs/guards/isExit.js"
+    },
+    "./isFailure": {
+      "types": "./dist/types/guards/isFailure.d.ts",
+      "import": "./dist/esm/guards/isFailure.js",
+      "require": "./dist/cjs/guards/isFailure.js"
+    },
+    "./isOk": {
+      "types": "./dist/types/guards/isOk.d.ts",
+      "import": "./dist/esm/guards/isOk.js",
+      "require": "./dist/cjs/guards/isOk.js"
+    },
+    "./isOkAnd": {
+      "types": "./dist/types/guards/isOkAnd.d.ts",
+      "import": "./dist/esm/guards/isOkAnd.js",
+      "require": "./dist/cjs/guards/isOkAnd.js"
+    },
+    "./andThen": {
+      "types": "./dist/types/methods/andThen.d.ts",
+      "import": "./dist/esm/methods/andThen.js",
+      "require": "./dist/cjs/methods/andThen.js"
+    },
+    "./err": {
+      "types": "./dist/types/methods/err.d.ts",
+      "import": "./dist/esm/methods/err.js",
+      "require": "./dist/cjs/methods/err.js"
+    },
+    "./expect": {
+      "types": "./dist/types/methods/expect.d.ts",
+      "import": "./dist/esm/methods/expect.js",
+      "require": "./dist/cjs/methods/expect.js"
+    },
+    "./expectErr": {
+      "types": "./dist/types/methods/expectErr.d.ts",
+      "import": "./dist/esm/methods/expectErr.js",
+      "require": "./dist/cjs/methods/expectErr.js"
+    },
+    "./flatten": {
+      "types": "./dist/types/methods/flatten.d.ts",
+      "import": "./dist/esm/methods/flatten.js",
+      "require": "./dist/cjs/methods/flatten.js"
+    },
+    "./inspect": {
+      "types": "./dist/types/methods/inspect.d.ts",
+      "import": "./dist/esm/methods/inspect.js",
+      "require": "./dist/cjs/methods/inspect.js"
+    },
+    "./inspectErr": {
+      "types": "./dist/types/methods/inspectErr.d.ts",
+      "import": "./dist/esm/methods/inspectErr.js",
+      "require": "./dist/cjs/methods/inspectErr.js"
+    },
+    "./map": {
+      "types": "./dist/types/methods/map.d.ts",
+      "import": "./dist/esm/methods/map.js",
+      "require": "./dist/cjs/methods/map.js"
+    },
+    "./mapErr": {
+      "types": "./dist/types/methods/mapErr.d.ts",
+      "import": "./dist/esm/methods/mapErr.js",
+      "require": "./dist/cjs/methods/mapErr.js"
+    },
+    "./match": {
+      "types": "./dist/types/methods/match.d.ts",
+      "import": "./dist/esm/methods/match.js",
+      "require": "./dist/cjs/methods/match.js"
+    },
+    "./matchCause": {
+      "types": "./dist/types/methods/matchCause.d.ts",
+      "import": "./dist/esm/methods/matchCause.js",
+      "require": "./dist/cjs/methods/matchCause.js"
+    },
+    "./matchExit": {
+      "types": "./dist/types/methods/matchExit.d.ts",
+      "import": "./dist/esm/methods/matchExit.js",
+      "require": "./dist/cjs/methods/matchExit.js"
+    },
+    "./ok": {
+      "types": "./dist/types/methods/ok.d.ts",
+      "import": "./dist/esm/methods/ok.js",
+      "require": "./dist/cjs/methods/ok.js"
+    },
+    "./orElse": {
+      "types": "./dist/types/methods/orElse.d.ts",
+      "import": "./dist/esm/methods/orElse.js",
+      "require": "./dist/cjs/methods/orElse.js"
+    },
+    "./tap": {
+      "types": "./dist/types/methods/tap.d.ts",
+      "import": "./dist/esm/methods/tap.js",
+      "require": "./dist/cjs/methods/tap.js"
+    },
+    "./tapErr": {
+      "types": "./dist/types/methods/tapErr.d.ts",
+      "import": "./dist/esm/methods/tapErr.js",
+      "require": "./dist/cjs/methods/tapErr.js"
+    },
+    "./transpose": {
+      "types": "./dist/types/methods/transpose.d.ts",
+      "import": "./dist/esm/methods/transpose.js",
+      "require": "./dist/cjs/methods/transpose.js"
+    },
+    "./unwrap": {
+      "types": "./dist/types/methods/unwrap.d.ts",
+      "import": "./dist/esm/methods/unwrap.js",
+      "require": "./dist/cjs/methods/unwrap.js"
+    },
+    "./unwrapErr": {
+      "types": "./dist/types/methods/unwrapErr.d.ts",
+      "import": "./dist/esm/methods/unwrapErr.js",
+      "require": "./dist/cjs/methods/unwrapErr.js"
+    },
+    "./unwrapOr": {
+      "types": "./dist/types/methods/unwrapOr.d.ts",
+      "import": "./dist/esm/methods/unwrapOr.js",
+      "require": "./dist/cjs/methods/unwrapOr.js"
+    },
+    "./unwrapOrElse": {
+      "types": "./dist/types/methods/unwrapOrElse.d.ts",
+      "import": "./dist/esm/methods/unwrapOrElse.js",
+      "require": "./dist/cjs/methods/unwrapOrElse.js"
+    },
+    "./isTypedVariant": {
+      "types": "./dist/types/refiners/isTypedVariant.d.ts",
+      "import": "./dist/esm/refiners/isTypedVariant.js",
+      "require": "./dist/cjs/refiners/isTypedVariant.js"
+    },
+    "./isTypedVariantOf": {
+      "types": "./dist/types/refiners/isTypedVariantOf.d.ts",
+      "import": "./dist/esm/refiners/isTypedVariantOf.js",
+      "require": "./dist/cjs/refiners/isTypedVariantOf.js"
+    },
+    "./matchVariant": {
+      "types": "./dist/types/refiners/matchVariant.d.ts",
+      "import": "./dist/esm/refiners/matchVariant.js",
+      "require": "./dist/cjs/refiners/matchVariant.js"
+    },
+    "./matchVariantStrict": {
+      "types": "./dist/types/refiners/matchVariantStrict.d.ts",
+      "import": "./dist/esm/refiners/matchVariantStrict.js",
+      "require": "./dist/cjs/refiners/matchVariantStrict.js"
+    },
+    "./refineAsyncResult": {
+      "types": "./dist/types/refiners/refineAsyncResult.d.ts",
+      "import": "./dist/esm/refiners/refineAsyncResult.js",
+      "require": "./dist/cjs/refiners/refineAsyncResult.js"
+    },
+    "./refineAsyncResultU": {
+      "types": "./dist/types/refiners/refineAsyncResultU.d.ts",
+      "import": "./dist/esm/refiners/refineAsyncResultU.js",
+      "require": "./dist/cjs/refiners/refineAsyncResultU.js"
+    },
+    "./refineResult": {
+      "types": "./dist/types/refiners/refineResult.d.ts",
+      "import": "./dist/esm/refiners/refineResult.js",
+      "require": "./dist/cjs/refiners/refineResult.js"
+    },
+    "./refineResultU": {
+      "types": "./dist/types/refiners/refineResultU.d.ts",
+      "import": "./dist/esm/refiners/refineResultU.js",
+      "require": "./dist/cjs/refiners/refineResultU.js"
+    },
+    "./refineVariantMap": {
+      "types": "./dist/types/refiners/refineVariantMap.d.ts",
+      "import": "./dist/esm/refiners/refineVariantMap.js",
+      "require": "./dist/cjs/refiners/refineVariantMap.js"
+    },
+    "./types/Cause": {
+      "types": "./dist/types/types/core/Cause.d.ts"
+    },
+    "./types/Exit": {
+      "types": "./dist/types/types/core/Exit.d.ts"
+    },
+    "./types/Failure": {
+      "types": "./dist/types/types/core/Failure.d.ts"
+    },
+    "./types/Option": {
+      "types": "./dist/types/types/core/Option.d.ts"
+    },
+    "./types/Result": {
+      "types": "./dist/types/types/core/Result.d.ts"
+    },
+    "./types/ResultData": {
+      "types": "./dist/types/types/core/ResultData.d.ts"
+    },
+    "./types/ResultLike": {
+      "types": "./dist/types/types/core/ResultLike.d.ts"
+    },
+    "./types/ResultMethods": {
+      "types": "./dist/types/types/core/ResultMethods.d.ts"
+    },
+    "./types/AsyncValidatorFn": {
+      "types": "./dist/types/types/refiners/AsyncValidatorFn.d.ts"
+    },
+    "./types/PayloadKeys": {
+      "types": "./dist/types/types/refiners/PayloadKeys.d.ts"
+    },
+    "./types/ValidatorFn": {
+      "types": "./dist/types/types/refiners/ValidatorFn.d.ts"
+    },
+    "./types/VariantConfig": {
+      "types": "./dist/types/types/refiners/VariantConfig.d.ts"
+    },
+    "./types/Handler": {
+      "types": "./dist/types/refiners/types/Handler.d.ts"
+    },
+    "./types/MatchBuilder": {
+      "types": "./dist/types/refiners/types/MatchBuilder.d.ts"
+    },
+    "./types/Matcher": {
+      "types": "./dist/types/refiners/types/Matcher.d.ts"
+    },
+    "./types/SyncRefinedResult": {
+      "types": "./dist/types/refiners/types/SyncRefinedResult.d.ts"
+    },
+    "./types/SyncRefinedResultUnion": {
+      "types": "./dist/types/refiners/types/SyncRefinedResultUnion.d.ts"
+    },
+    "./types/SyncValidatorMap": {
+      "types": "./dist/types/refiners/types/SyncValidatorMap.d.ts"
+    },
+    "./types/UniversalAsyncRefinedResult": {
+      "types": "./dist/types/refiners/types/UniversalAsyncRefinedResult.d.ts"
+    },
+    "./types/UniversalRefinedResult": {
+      "types": "./dist/types/refiners/types/UniversalRefinedResult.d.ts"
+    },
+    "./types/VariantOf": {
+      "types": "./dist/types/refiners/types/VariantOf.d.ts"
     }
   },
   "files": [
@@ -105,6 +387,21 @@
     "explicit-errors"
   ],
   "devDependencies": {
-    "eslint-plugin-jsdoc": "^62.8.1"
+    "@types/node": "^22.10.0",
+    "@typescript-eslint/eslint-plugin": "8.42.0",
+    "@typescript-eslint/parser": "8.42.0",
+    "@vitest/coverage-v8": "3.2.4",
+    "eslint": "9.35.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-alias": "1.1.2",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-jsdoc": "^62.8.1",
+    "eslint-plugin-prettier": "5.5.4",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "prettier": "3.6.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vitest": "3.2.4"
   }
 }

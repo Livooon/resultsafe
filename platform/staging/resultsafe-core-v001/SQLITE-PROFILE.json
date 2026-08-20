@@ -1,0 +1,73 @@
+{
+  "document_id": "01a01c00-1000-7000-8000-000000000004",
+  "document_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000004",
+  "document_key": "sqlite-profile",
+  "document_type": "sqlite_profile",
+  "document_revision": 3,
+  "schema_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000002",
+  "title": "ResultSafe SQLite read-model profile",
+  "summary": "Strict SQLite DDL and fixed metadata for deterministic staged compilation of the vendor-neutral relational projection.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T13:00:00Z",
+  "payload": {
+    "profile_version": 1,
+    "relational_schema_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000003",
+    "application_id": 1381192787,
+    "user_version": 1,
+    "minimum_sqlite_version": "3.45.0",
+    "table_mode": "STRICT",
+    "foreign_keys": "REQUIRED",
+    "identity_allocation": "PROHIBITED",
+    "reverse_projection": "PROHIBITED",
+    "publication": "SAME_DIRECTORY_STAGED_ATOMIC_RENAME_EXPLICIT_ONLY",
+    "verification": ["integrity_check", "foreign_key_check", "metadata", "relational_metadata_equivalence", "runtime_constraints", "deterministic_logical_dump", "constraint_tests", "semantic_fixture_roundtrip", "read_only_open"],
+    "qualification_fixture": { "codec_identifier": "resultsafe.sqlite-projection.fixture-json", "codec_version": 1, "json_schema_ref": "https://resultsafe.dev/schemas/sqlite-projection-fixture-value-v1.schema.json", "scope": "TEST_FIXTURE_ONLY", "claim": "QUALIFIES_ONLY_VALUES_ENCODED_BY_THIS_EXPLICIT_FIXTURE_CODEC" },
+    "ddl": [
+      "CREATE TABLE projection_metadata (metadata_key TEXT PRIMARY KEY CHECK(length(metadata_key) > 0), metadata_value TEXT NOT NULL) STRICT, WITHOUT ROWID",
+      "CREATE TABLE schema_document (schema_ref TEXT PRIMARY KEY CHECK(schema_ref LIKE 'urn:uuid:%'), schema_key TEXT NOT NULL UNIQUE, source_path TEXT NOT NULL UNIQUE, canonical_json TEXT NOT NULL CHECK(json_valid(canonical_json))) STRICT, WITHOUT ROWID",
+      "CREATE TABLE canonical_document (document_id TEXT PRIMARY KEY CHECK(length(document_id) = 36), document_ref TEXT NOT NULL UNIQUE CHECK(document_ref = 'urn:uuid:' || document_id), document_key TEXT NOT NULL UNIQUE, document_type TEXT NOT NULL, schema_ref TEXT NOT NULL REFERENCES schema_document(schema_ref) ON DELETE RESTRICT, source_path TEXT NOT NULL UNIQUE, document_revision INTEGER NOT NULL CHECK(document_revision >= 0), canonical_json TEXT NOT NULL CHECK(json_valid(canonical_json))) STRICT, WITHOUT ROWID",
+      "CREATE TABLE entity (entity_id TEXT PRIMARY KEY CHECK(length(entity_id) = 36), entity_ref TEXT NOT NULL UNIQUE CHECK(entity_ref = 'urn:uuid:' || entity_id), entity_key TEXT NOT NULL UNIQUE, entity_type TEXT NOT NULL, source_document_id TEXT NOT NULL REFERENCES canonical_document(document_id) ON DELETE CASCADE, code TEXT UNIQUE, canonical_json TEXT NOT NULL CHECK(json_valid(canonical_json))) STRICT, WITHOUT ROWID",
+      "CREATE TABLE catalog_record (record_id TEXT PRIMARY KEY REFERENCES entity(entity_id) ON DELETE CASCADE, kind TEXT NOT NULL, status TEXT NOT NULL, record_revision INTEGER NOT NULL CHECK(record_revision >= 0)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE entity_reference (source_entity_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE CASCADE, json_path TEXT NOT NULL CHECK(length(json_path) > 0), target_entity_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE RESTRICT, PRIMARY KEY(source_entity_id, json_path, target_entity_id)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE document_graph_edge (source_document_id TEXT NOT NULL REFERENCES canonical_document(document_id) ON DELETE CASCADE, relation TEXT NOT NULL CHECK(length(relation) > 0), target_document_id TEXT NOT NULL REFERENCES canonical_document(document_id) ON DELETE CASCADE, PRIMARY KEY(source_document_id, relation, target_document_id)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE trace_link (source_entity_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE CASCADE, relation TEXT NOT NULL CHECK(length(relation) > 0), target_entity_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE CASCADE, PRIMARY KEY(source_entity_id, relation, target_entity_id)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE scenario (scenario_id TEXT PRIMARY KEY REFERENCES entity(entity_id) ON DELETE CASCADE, code TEXT NOT NULL UNIQUE, status TEXT NOT NULL, category TEXT NOT NULL, subject_entity_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE RESTRICT, execution_kind TEXT NOT NULL CHECK(execution_kind IN ('RUNTIME', 'COMPILE'))) STRICT, WITHOUT ROWID",
+      "CREATE TABLE scenario_requirement (scenario_id TEXT NOT NULL REFERENCES scenario(scenario_id) ON DELETE CASCADE, requirement_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE RESTRICT, PRIMARY KEY(scenario_id, requirement_id)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE scenario_assertion (scenario_id TEXT NOT NULL REFERENCES scenario(scenario_id) ON DELETE CASCADE, assertion_position INTEGER NOT NULL CHECK(assertion_position >= 0), operator TEXT NOT NULL, actual TEXT, expected TEXT, PRIMARY KEY(scenario_id, assertion_position)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE allocation (allocation_key TEXT PRIMARY KEY, entity_id TEXT NOT NULL UNIQUE CHECK(length(entity_id) = 36)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE work_step (step_id TEXT PRIMARY KEY REFERENCES entity(entity_id) ON DELETE CASCADE, work_id TEXT NOT NULL REFERENCES entity(entity_id) ON DELETE CASCADE, position INTEGER NOT NULL CHECK(position > 0), state TEXT NOT NULL, UNIQUE(work_id, position)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE tenant (tenant_id TEXT PRIMARY KEY CHECK(length(tenant_id) > 0)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE tenant_overlay (tenant_id TEXT NOT NULL REFERENCES tenant(tenant_id) ON DELETE CASCADE, overlay_kind TEXT NOT NULL, overlay_key TEXT NOT NULL, canonical_entity_id TEXT REFERENCES entity(entity_id) ON DELETE RESTRICT, overlay_json TEXT NOT NULL CHECK(json_valid(overlay_json)), PRIMARY KEY(tenant_id, overlay_kind, overlay_key)) STRICT, WITHOUT ROWID",
+      "CREATE TABLE tenant_overlay_link (tenant_id TEXT NOT NULL, source_kind TEXT NOT NULL, source_key TEXT NOT NULL, target_kind TEXT NOT NULL, target_key TEXT NOT NULL, PRIMARY KEY(tenant_id, source_kind, source_key, target_kind, target_key), FOREIGN KEY(tenant_id, source_kind, source_key) REFERENCES tenant_overlay(tenant_id, overlay_kind, overlay_key) ON DELETE CASCADE, FOREIGN KEY(tenant_id, target_kind, target_key) REFERENCES tenant_overlay(tenant_id, overlay_kind, overlay_key) ON DELETE CASCADE) STRICT, WITHOUT ROWID"
+    ],
+    "optional_profiles": [
+      {
+        "profile_key": "structured-failure",
+        "layout_version": 1,
+        "user_version": 2,
+        "requires_profiles": [],
+        "dependency_resolution": "AUTO_INCLUDE_TRANSITIVE_OR_REJECT_MISSING",
+        "runtime_verification": ["Failure cause cycles are rejected by qualification logic."],
+        "ddl": [
+          "CREATE TABLE failure_record (failure_id TEXT PRIMARY KEY CHECK(length(failure_id) > 0), schema_version TEXT NOT NULL CHECK(schema_version = '1.0.0'), code TEXT NOT NULL CHECK(instr(code, ':') > 1 AND instr(code, ' ') = 0), message TEXT, message_key TEXT CHECK(message_key IS NULL OR length(message_key) > 0), message_args_json TEXT CHECK(message_args_json IS NULL OR json_valid(message_args_json)), details_json TEXT CHECK(details_json IS NULL OR json_valid(details_json)), classification_json TEXT CHECK(classification_json IS NULL OR json_valid(classification_json)), metadata_json TEXT CHECK(metadata_json IS NULL OR json_valid(metadata_json)), extensions_json TEXT CHECK(extensions_json IS NULL OR json_valid(extensions_json))) STRICT, WITHOUT ROWID",
+          "CREATE TABLE failure_cause (failure_id TEXT NOT NULL REFERENCES failure_record(failure_id) ON DELETE CASCADE, cause_position INTEGER NOT NULL CHECK(cause_position >= 0), cause_failure_id TEXT NOT NULL REFERENCES failure_record(failure_id) ON DELETE RESTRICT, CHECK(failure_id <> cause_failure_id), PRIMARY KEY(failure_id, cause_position), UNIQUE(failure_id, cause_failure_id)) STRICT, WITHOUT ROWID"
+        ]
+      },
+      {
+        "profile_key": "cause-exit",
+        "layout_version": 1,
+        "user_version": 3,
+        "requires_profiles": ["structured-failure"],
+        "dependency_resolution": "AUTO_INCLUDE_TRANSITIVE_OR_REJECT_MISSING",
+        "runtime_verification": ["Reject cycles and incoming edges to roots.", "Treat root edge depth as 0; accept maximum edge depth 32 and node count 1024, and reject larger values.", "Reject missing or extra LEFT and RIGHT children for every node kind.", "Reject Exit records with invalid branch payloads or invalid referenced Causes.", "Populate and semantically read back Failure, every Cause variant, nested Sequential and Parallel, Exit Success and Failure, and Exit Failure of Empty using only the declared test fixture codec."],
+        "ddl": [
+          "CREATE TABLE cause_record (cause_id TEXT PRIMARY KEY CHECK(length(cause_id) > 0), root_node_id TEXT NOT NULL CHECK(length(root_node_id) > 0), UNIQUE(cause_id, root_node_id), FOREIGN KEY(cause_id, root_node_id) REFERENCES cause_node(cause_id, node_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED) STRICT, WITHOUT ROWID",
+          "CREATE TABLE cause_node (cause_id TEXT NOT NULL REFERENCES cause_record(cause_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, node_id TEXT NOT NULL CHECK(length(node_id) > 0), kind TEXT NOT NULL CHECK(kind IN ('Empty', 'Fail', 'Die', 'Interrupt', 'Sequential', 'Parallel')), error_codec TEXT, error_schema_ref TEXT, error_json TEXT CHECK(error_json IS NULL OR json_valid(error_json)), failure_id TEXT REFERENCES failure_record(failure_id) ON DELETE RESTRICT, CHECK((kind = 'Fail' AND error_codec IS NOT NULL AND length(error_codec) > 0 AND error_schema_ref IS NOT NULL AND length(error_schema_ref) > 0 AND error_json IS NOT NULL AND failure_id IS NULL) OR (kind IN ('Die', 'Interrupt') AND failure_id IS NOT NULL AND error_codec IS NULL AND error_schema_ref IS NULL AND error_json IS NULL) OR (kind IN ('Empty', 'Sequential', 'Parallel') AND failure_id IS NULL AND error_codec IS NULL AND error_schema_ref IS NULL AND error_json IS NULL)), PRIMARY KEY(cause_id, node_id)) STRICT, WITHOUT ROWID",
+          "CREATE TABLE cause_edge (cause_id TEXT NOT NULL, parent_node_id TEXT NOT NULL, position TEXT NOT NULL CHECK(position IN ('LEFT', 'RIGHT')), child_node_id TEXT NOT NULL, CHECK(parent_node_id <> child_node_id), PRIMARY KEY(cause_id, parent_node_id, position), UNIQUE(cause_id, child_node_id), FOREIGN KEY(cause_id, parent_node_id) REFERENCES cause_node(cause_id, node_id) ON DELETE CASCADE, FOREIGN KEY(cause_id, child_node_id) REFERENCES cause_node(cause_id, node_id) ON DELETE CASCADE) STRICT, WITHOUT ROWID",
+          "CREATE TABLE exit_record (exit_id TEXT PRIMARY KEY CHECK(length(exit_id) > 0), kind TEXT NOT NULL CHECK(kind IN ('Success', 'Failure')), cause_id TEXT REFERENCES cause_record(cause_id) ON DELETE RESTRICT, value_codec TEXT, value_schema_ref TEXT, value_json TEXT CHECK(value_json IS NULL OR json_valid(value_json)), CHECK((kind = 'Success' AND cause_id IS NULL AND value_codec IS NOT NULL AND length(value_codec) > 0 AND value_schema_ref IS NOT NULL AND length(value_schema_ref) > 0 AND value_json IS NOT NULL) OR (kind = 'Failure' AND cause_id IS NOT NULL AND value_codec IS NULL AND value_schema_ref IS NULL AND value_json IS NULL))) STRICT, WITHOUT ROWID"
+        ]
+      }
+    ]
+  }
+}

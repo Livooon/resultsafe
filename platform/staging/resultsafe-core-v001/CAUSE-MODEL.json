@@ -1,0 +1,111 @@
+{
+  "document_id": "01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+  "document_ref": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+  "document_key": "cause-model",
+  "document_type": "cause_model",
+  "document_revision": 2,
+  "schema_ref": "urn:uuid:01a01f0a-da05-7919-b410-d32753e67b0c",
+  "title": "Optional portable Cause model",
+  "summary": "Normative binary Cause algebra for typed failure, portable defect, interruption, and semantic composition.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T12:00:00Z",
+  "updated_at": "2026-08-20T12:00:00Z",
+  "payload": {
+    "model_version": "1.0.0",
+    "adoption_model": "OPTIONAL_SEPARATE_MODEL",
+    "instance_schema_ref": "urn:uuid:01a01f0a-da08-7b85-87bc-dea758e0db27",
+    "result_compatibility": [
+      "Result<T,E> and Err<E> remain unchanged and accept every previously valid E",
+      "Cause<E> is separate and opt-in; no Result operation implicitly constructs or unwraps Cause",
+      "Arbitrary E is preserved in Fail and becomes portable only through a caller-selected explicit codec"
+    ],
+    "variants": [
+      {
+        "tag": "Empty",
+        "fields": [],
+        "semantics": "Absence of a cause; it is a valid Cause value."
+      },
+      {
+        "tag": "Fail",
+        "fields": [
+          "error"
+        ],
+        "semantics": "Expected typed failure carrying exactly one E value."
+      },
+      {
+        "tag": "Die",
+        "fields": [
+          "failure"
+        ],
+        "semantics": "Unexpected defect represented by a portable structured Failure, never a runtime exception object."
+      },
+      {
+        "tag": "Interrupt",
+        "fields": [
+          "failure"
+        ],
+        "semantics": "Interruption represented by a portable structured Failure, never a runtime fiber, thread, or process identity."
+      },
+      {
+        "tag": "Sequential",
+        "fields": [
+          "left",
+          "right"
+        ],
+        "semantics": "Ordered binary composition: left occurred before right; grouping is significant and preserved."
+      },
+      {
+        "tag": "Parallel",
+        "fields": [
+          "left",
+          "right"
+        ],
+        "semantics": "Binary concurrent composition; grouping is significant and child order is preserved for deterministic transport."
+      }
+    ],
+    "topology_policy": [
+      "The variant set is exactly Empty, Fail, Die, Interrupt, Sequential, and Parallel",
+      "Sequential and Parallel are binary nodes and MUST NOT be flattened, reordered, deduplicated, or re-associated by a lossless codec",
+      "Cycles are forbidden in source object graphs and portable representations",
+      "Failure.causes is diagnostic ancestry only and MUST NOT encode, reconstruct, or substitute for Cause topology"
+    ],
+    "codec_policy": [
+      "A portable Cause codec MUST receive an explicit codec for E; no universal serialization of arbitrary E is implied",
+      "Encoding and decoding MUST preserve each tag, binary grouping, child order, and every codec-preserved E value",
+      "A decoder MUST reject unknown tags, unknown fields, unsupported Failure versions, cycles, and resource-limit violations"
+    ],
+    "resource_limits": {
+      "max_depth": 32,
+      "max_nodes": 1024
+    },
+    "scenario_refs": [
+      "urn:uuid:01a01f0b-0100-7000-8000-000000000235",
+      "urn:uuid:01a01f0b-0101-7000-8000-000000000236",
+      "urn:uuid:01a01f0b-0102-7000-8000-000000000237",
+      "urn:uuid:01a01f0b-0103-7000-8000-000000000238",
+      "urn:uuid:01a01f0b-0104-7000-8000-000000000239",
+      "urn:uuid:01a01f0b-0105-7000-8000-000000000240",
+      "urn:uuid:01a01f0b-0106-7000-8000-000000000241",
+      "urn:uuid:01a01f0b-0107-7000-8000-000000000242",
+      "urn:uuid:01a01f0b-0108-7000-8000-000000000243",
+      "urn:uuid:01a01f0b-0109-7000-8000-000000000244",
+      "urn:uuid:01a01f0b-010a-7000-8000-000000000245",
+      "urn:uuid:01a01f0b-010b-7000-8000-000000000246",
+      "urn:uuid:01a01f0b-010c-7000-8000-000000000247",
+      "urn:uuid:01a01f0b-010d-7000-8000-000000000248",
+      "urn:uuid:01a01f0b-010e-7000-8000-000000000249",
+      "urn:uuid:01a01f0b-010f-7000-8000-000000000250",
+      "urn:uuid:01a01f0b-0110-7000-8000-000000000251",
+      "urn:uuid:01a01f0b-0111-7000-8000-000000000252",
+      "urn:uuid:01a01f0b-0112-7000-8000-000000000253",
+      "urn:uuid:01a01f0b-0113-7000-8000-000000000254",
+      "urn:uuid:01a01f0b-0114-7000-8000-000000000255",
+      "urn:uuid:01a01f0b-0115-7000-8000-000000000256",
+      "urn:uuid:01a01f0b-0116-7000-8000-000000000257",
+      "urn:uuid:01a01f0b-0117-7000-8000-000000000258",
+      "urn:uuid:01a01f0b-0118-7000-8000-000000000259",
+      "urn:uuid:01a01f0b-0119-7000-8000-000000000260",
+      "urn:uuid:01a01f0b-012a-7000-8000-000000000277"
+    ]
+  }
+}

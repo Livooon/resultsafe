@@ -28,7 +28,13 @@ import type { VariantConfig } from '../../types/refiners/VariantConfig.js';
 export type SyncRefinedResult<
   K extends keyof TMap & string,
   TMap extends Record<string, VariantConfig>,
-  _TValidators extends Partial<Record<PayloadKeys<TMap[K]>, ValidatorFn>>,
+  TValidators extends Partial<Record<PayloadKeys<TMap[K]>, ValidatorFn>>,
 > = {
   type: K;
-} & Record<PayloadKeys<TMap[K]>, unknown>;
+} & {
+  [P in PayloadKeys<TMap[K]>]: P extends keyof TValidators
+    ? TValidators[P] extends (value: unknown) => value is infer T
+      ? T
+      : unknown
+    : unknown;
+};

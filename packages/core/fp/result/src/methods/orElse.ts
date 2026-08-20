@@ -1,5 +1,6 @@
 import { isErr } from '../guards/isErr.js';
-import { type Result } from '../types/core/index.js';
+import { hydrateResultValue } from '../internal/resultValue.js';
+import { type Result, type ResultLike } from '../types/core/index.js';
 
 /**
  * Recovers from an error by transforming `Err` into another `Result`.
@@ -22,7 +23,9 @@ import { type Result } from '../types/core/index.js';
  * @public
  */
 export const orElse = <T, E, F>(
-  result: Result<T, E>,
-  fn: (error: E) => Result<T, F>,
+  result: ResultLike<T, E>,
+  fn: (error: E) => ResultLike<T, F>,
 ): Result<T, F> =>
-  isErr(result) ? fn(result.error) : (result as Result<T, F>);
+  isErr(result)
+    ? hydrateResultValue(fn(result.error))
+    : (hydrateResultValue(result) as unknown as Result<T, F>);

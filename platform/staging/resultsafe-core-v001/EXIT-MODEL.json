@@ -1,0 +1,74 @@
+{
+  "document_id": "01a01f0a-da02-77d4-982f-7251ea78e989",
+  "document_ref": "urn:uuid:01a01f0a-da02-77d4-982f-7251ea78e989",
+  "document_key": "exit-model",
+  "document_type": "exit_model",
+  "document_revision": 2,
+  "schema_ref": "urn:uuid:01a01f0a-da06-7930-8f32-7c9e231f3087",
+  "title": "Optional portable Exit model",
+  "summary": "Normative Exit<T,E> union preserving successful T values or complete Cause<E> failure semantics.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T12:00:00Z",
+  "updated_at": "2026-08-20T12:00:00Z",
+  "payload": {
+    "model_version": "1.0.0",
+    "adoption_model": "OPTIONAL_SEPARATE_MODEL",
+    "instance_schema_ref": "urn:uuid:01a01f0a-da09-7590-9665-b8841a81fe96",
+    "cause_model_ref": "urn:uuid:01a01f0a-da01-72ee-9c1b-8d0ba8c40bc4",
+    "result_compatibility": [
+      "Result<T,E> is unchanged and Exit<T,E> is an optional separate model",
+      "No implicit conversion between Result and Exit is normative",
+      "Arbitrary T and E are preserved and portable encoding requires explicit codecs for both"
+    ],
+    "variants": [
+      {
+        "tag": "Success",
+        "fields": [
+          "value"
+        ],
+        "semantics": "Successful completion carrying exactly one T value."
+      },
+      {
+        "tag": "Failure",
+        "fields": [
+          "cause"
+        ],
+        "semantics": "Non-successful completion carrying exactly one Cause<E>; Cause Empty is valid."
+      }
+    ],
+    "invariants": [
+      "The variant set is exactly Success and Failure",
+      "Success and Failure are mutually exclusive and unknown fields are forbidden",
+      "Exit.Failure(Empty) is valid and MUST NOT be rewritten as Success, rejected, or assigned an inferred error",
+      "All Cause cycle and resource limits apply transitively to Exit.Failure"
+    ],
+    "codec_policy": [
+      "A portable Exit codec MUST receive explicit codecs for T and E",
+      "Encoding and decoding MUST preserve the Exit tag, every codec-preserved T or E value, and complete Cause topology",
+      "A decoder MUST reject unknown tags, unknown fields, cycles, and Cause resource-limit violations"
+    ],
+    "resource_limits": {
+      "max_depth": 32,
+      "max_nodes": 1024
+    },
+    "scenario_refs": [
+      "urn:uuid:01a01f0b-011a-7000-8000-000000000261",
+      "urn:uuid:01a01f0b-011b-7000-8000-000000000262",
+      "urn:uuid:01a01f0b-011c-7000-8000-000000000263",
+      "urn:uuid:01a01f0b-011d-7000-8000-000000000264",
+      "urn:uuid:01a01f0b-011e-7000-8000-000000000265",
+      "urn:uuid:01a01f0b-011f-7000-8000-000000000266",
+      "urn:uuid:01a01f0b-0120-7000-8000-000000000267",
+      "urn:uuid:01a01f0b-0121-7000-8000-000000000268",
+      "urn:uuid:01a01f0b-0122-7000-8000-000000000269",
+      "urn:uuid:01a01f0b-0123-7000-8000-000000000270",
+      "urn:uuid:01a01f0b-0124-7000-8000-000000000271",
+      "urn:uuid:01a01f0b-0125-7000-8000-000000000272",
+      "urn:uuid:01a01f0b-0126-7000-8000-000000000273",
+      "urn:uuid:01a01f0b-0127-7000-8000-000000000274",
+      "urn:uuid:01a01f0b-0128-7000-8000-000000000275",
+      "urn:uuid:01a01f0b-0129-7000-8000-000000000276",
+      "urn:uuid:01a01f0b-012b-7000-8000-000000000278"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "document_id": "01a01d13-0738-7b88-beee-14e33b781ada",
+  "document_ref": "urn:uuid:01a01d13-0738-7b88-beee-14e33b781ada",
+  "document_key": "failure-audit",
+  "document_type": "architecture_audit",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01d13-0738-7609-880a-f556df4124ea",
+  "title": "Structured Failure architecture audit",
+  "summary": "Evidence-separated comparative audit deciding whether ResultSafe Core should provide an optional or mandatory structured failure payload.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T00:00:00Z",
+  "updated_at": "2026-08-20T00:00:00Z",
+  "payload": {
+    "audit_version": "1.0.0",
+    "question": "Should ResultSafe Core define a portable structured Failure, and if so may it constrain the generic Result error parameter E?",
+    "methodology": [
+      "Inspect public declarations and official project documentation rather than inferred implementation internals",
+      "Record directly supported observations separately from ResultSafe architectural interpretation",
+      "Score four explicit options with published criteria and weights totaling one hundred",
+      "Treat weighted scoring as decision support rather than mathematical proof of a normative choice"
+    ],
+    "sources": [
+      { "source_key": "rust-result", "product": "Rust Result", "language": "Rust", "official_url": "https://doc.rust-lang.org/std/result/enum.Result.html", "source_kind": "FORMAL_API", "error_shape": "Result<T,E> = Ok(T) | Err(E)", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The standard enum carries an independently selected E value in its Err variant." },
+      { "source_key": "cpp-expected", "product": "C++ std::expected", "language": "C++", "official_url": "https://eel.is/c++draft/expected", "source_kind": "PUBLIC_DRAFT", "error_shape": "expected<T,E> contains T or E", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The public working draft defines error_type as E and stores a T or E object." },
+      { "source_key": "swift-result", "product": "Swift Result", "language": "Swift", "official_url": "https://developer.apple.com/documentation/swift/result", "source_kind": "FORMAL_API", "error_shape": "Result<Success,Failure> where Failure: Error", "generic_error": "CONSTRAINED", "mandatory_structure": "MARKER", "observation": "Failure is caller-selected but must conform to the Swift Error protocol." },
+      { "source_key": "kotlin-result", "product": "Kotlin Result", "language": "Kotlin", "official_url": "https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/", "source_kind": "FORMAL_API", "error_shape": "Result<T> contains T or Throwable", "generic_error": "FIXED", "mandatory_structure": "THROWABLE", "observation": "The failure channel is fixed to Throwable rather than a separate generic error parameter." },
+      { "source_key": "scala-either", "product": "Scala Either", "language": "Scala", "official_url": "https://www.scala-lang.org/api/current/scala/util/Either.html", "source_kind": "FORMAL_API", "error_shape": "Either<A,B> = Left(A) | Right(B)", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "Left conventionally represents failure while its A payload remains arbitrary." },
+      { "source_key": "haskell-either", "product": "Haskell Either", "language": "Haskell", "official_url": "https://hackage.haskell.org/package/base/docs/Data-Either.html", "source_kind": "FORMAL_API", "error_shape": "Either a b = Left a | Right b", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "Left conventionally stores an error value without requiring a prescribed record." },
+      { "source_key": "fsharp-result", "product": "FSharp Result", "language": "F#", "official_url": "https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2.html", "source_kind": "FORMAL_API", "error_shape": "Result<'T,'TError> = Ok 'T | Error 'TError", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The Error union case carries the independently selected TError value." },
+      { "source_key": "neverthrow", "product": "neverthrow", "language": "TypeScript", "official_url": "https://github.com/supermacro/neverthrow", "source_kind": "PROJECT_README", "error_shape": "Result<T,E> = Ok<T,E> | Err<T,E>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The public README documents an arbitrary E and mapErr changing that error type." },
+      { "source_key": "fp-ts-either", "product": "fp-ts Either", "language": "TypeScript", "official_url": "https://gcanti.github.io/fp-ts/modules/Either.ts.html", "source_kind": "FORMAL_API", "error_shape": "Either<E,A> = Left<E> | Right<A>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The API exposes an unconstrained generic E in the Left branch." },
+      { "source_key": "effect-cause", "product": "Effect Cause", "language": "TypeScript", "official_url": "https://effect.website/docs/data-types/cause/", "source_kind": "FORMAL_GUIDE", "error_shape": "Cause<E> tree around expected E and runtime causes", "generic_error": "PRESERVED", "mandatory_structure": "CAUSE_TREE", "observation": "Effect retains polymorphic E while Cause adds defects, interruption, and composition context." },
+      { "source_key": "ts-results", "product": "ts-results", "language": "TypeScript", "official_url": "https://github.com/vultix/ts-results", "source_kind": "PROJECT_README", "error_shape": "Result<T,E> = Ok<T> | Err<E>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "Examples use both string literals and Error objects as independently selected E values." },
+      { "source_key": "oxide-ts", "product": "oxide.ts", "language": "TypeScript", "official_url": "https://github.com/traverse1984/oxide.ts", "source_kind": "PROJECT_README", "error_shape": "Result<T,E> = Ok<T> | Err<E>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The README declares arbitrary E and an operation that maps it to a different type." },
+      { "source_key": "true-myth", "product": "True Myth", "language": "TypeScript", "official_url": "https://true-myth.dev/api/result/", "source_kind": "FORMAL_API", "error_shape": "Result<T,E> = Ok(T) | Err(E)", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The documented Result preserves an independently selected error reason E." },
+      { "source_key": "purify-either", "product": "Purify Either", "language": "TypeScript", "official_url": "https://gigobyte.github.io/purify/adts/Either", "source_kind": "FORMAL_API", "error_shape": "Either<L,R> = Left<L> | Right<R>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "Left carries an arbitrary generic L conventionally used for failure." },
+      { "source_key": "folktale-result", "product": "Folktale Result", "language": "JavaScript", "official_url": "https://folktale.origamitower.com/api/v2.3.0/en/folktale.result.html", "source_kind": "FORMAL_API", "error_shape": "Result.Error(value) | Result.Ok(value)", "generic_error": "UNTYPED", "mandatory_structure": "NONE", "observation": "The dynamic API stores arbitrary values in either variant without a fixed error record." },
+      { "source_key": "python-returns", "product": "returns", "language": "Python", "official_url": "https://returns.readthedocs.io/en/latest/pages/result.html", "source_kind": "FORMAL_GUIDE", "error_shape": "Result[ValueType,ErrorType]", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "Failure has a separate covariant error type; exception specialization is only an alias." },
+      { "source_key": "rustedpy-result", "product": "rustedpy result", "language": "Python", "official_url": "https://github.com/rustedpy/result", "source_kind": "PROJECT_README", "error_shape": "Result[T,E] = Ok[T] | Err[E]", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The archived project README declares arbitrary values in generic Ok and Err variants." },
+      { "source_key": "vavr-either", "product": "Vavr Either", "language": "Java", "official_url": "https://docs.vavr.io/#_either", "source_kind": "FORMAL_GUIDE", "error_shape": "Either<L,R> = Left<L> | Right<R>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "Left is conventionally failure and preserves a caller-selected generic L." },
+      { "source_key": "arrow-either", "product": "Arrow Either", "language": "Kotlin", "official_url": "https://apidocs.arrow-kt.io/arrow-core/arrow.core/-either/index.html", "source_kind": "FORMAL_API", "error_shape": "Either<A,B> = Left<A> | Right<B>", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "The sealed generic API supports arbitrary typed logical errors in Left." },
+      { "source_key": "language-ext-either", "product": "LanguageExt Either", "language": "C#", "official_url": "https://louthy.github.io/language-ext/LanguageExt.Core/Monads/Alternative%20Monads/Either/index.html", "source_kind": "FORMAL_API", "error_shape": "Either<L,R> = Left(L) | Right(R)", "generic_error": "PRESERVED", "mandatory_structure": "NONE", "observation": "L is traditionally an error carrier but remains a caller-selected generic type." },
+      { "source_key": "fluent-results", "product": "FluentResults", "language": "C#", "official_url": "https://github.com/altmann/FluentResults", "source_kind": "PROJECT_README", "error_shape": "Result<T> with one or more IError reasons", "generic_error": "FIXED", "mandatory_structure": "FIXED_ERROR", "observation": "Failures use prescribed IError reason objects and may aggregate multiple errors." },
+      { "source_key": "error-or", "product": "ErrorOr", "language": "C#", "official_url": "https://github.com/error-or/error-or", "source_kind": "PROJECT_README", "error_shape": "ErrorOr<T> contains T or List<Error>", "generic_error": "FIXED", "mandatory_structure": "FIXED_ERROR", "observation": "The failure representation is a library-defined list of Error records with categories." },
+      { "source_key": "ardalis-result", "product": "Ardalis.Result", "language": "C#", "official_url": "https://github.com/ardalis/Result", "source_kind": "PROJECT_README", "error_shape": "Result<T> with ResultStatus and status-specific data", "generic_error": "FIXED", "mandatory_structure": "STATUS_MODEL", "observation": "Non-success is classified by a fixed status with optional status-specific payloads." },
+      { "source_key": "one-of", "product": "OneOf", "language": "C#", "official_url": "https://github.com/mcintyre321/OneOf", "source_kind": "PROJECT_README", "error_shape": "OneOf<T0,...,Tn>", "generic_error": "NOT_APPLICABLE", "mandatory_structure": "NONE", "observation": "The general union has no designated error channel and preserves arbitrary alternatives." }
+    ],
+    "criteria": [
+      { "criterion_key": "compatibility", "weight": 25, "measurement": "Preserves existing generic Result and shipped error payload behavior" },
+      { "criterion_key": "interoperability", "weight": 20, "measurement": "Provides stable language-neutral identity and transport semantics" },
+      { "criterion_key": "evolution", "weight": 15, "measurement": "Supports versioning and namespaced extension without central application-code ownership" },
+      { "criterion_key": "security", "weight": 15, "measurement": "Supports bounded validation, redaction rules, and diagnostic separation" },
+      { "criterion_key": "ergonomics", "weight": 10, "measurement": "Remains usable for small domain errors and explicit integrations" },
+      { "criterion_key": "cross-language", "weight": 10, "measurement": "Projects consistently to TypeScript, Python, relational data, and SQLite" },
+      { "criterion_key": "evidence-alignment", "weight": 5, "measurement": "Aligns with directly observed practices without treating popularity as authority" }
+    ],
+    "options": [
+      { "option_key": "NO_BASE", "scores": { "compatibility": 100, "interoperability": 20, "evolution": 75, "security": 15, "ergonomics": 40, "cross-language": 30, "evidence-alignment": 50 }, "weighted_total": 52, "benefits": ["No API expansion"], "costs": ["No shared codes, validation, redaction, or storage contract"] },
+      { "option_key": "MARKER_PROTOCOL", "scores": { "compatibility": 95, "interoperability": 35, "evolution": 80, "security": 25, "ergonomics": 45, "cross-language": 30, "evidence-alignment": 40 }, "weighted_total": 56, "benefits": ["Minimal structural commitment"], "costs": ["Marker cannot establish portable fields or storage semantics"] },
+      { "option_key": "OPTIONAL_STRUCTURED_FAILURE", "scores": { "compatibility": 92, "interoperability": 90, "evolution": 94.67, "security": 90, "ergonomics": 90, "cross-language": 95, "evidence-alignment": 100 }, "weighted_total": 92.2, "benefits": ["Adds portable structure without constraining E", "Allows strict opt-in integration profiles"], "costs": ["Requires explicit adoption and maintained projections"] },
+      { "option_key": "MANDATORY_STRUCTURED_FAILURE", "scores": { "compatibility": 30, "interoperability": 95, "evolution": 55, "security": 95, "ergonomics": 70, "cross-language": 90, "evidence-alignment": 72 }, "weighted_total": 68.6, "benefits": ["Uniform failure envelope everywhere"], "costs": ["Breaking replacement of arbitrary domain E", "Couples simple domain errors to platform structure"] }
+    ],
+    "observations": [
+      "Sixteen typed Result or Either APIs in the audited set directly preserve a caller-selected generic error type",
+      "Effect demonstrates that structured cause context can wrap and retain generic E instead of replacing it",
+      "Fixed structured systems disagree on required fields, multiplicity, categories, status, and exception semantics",
+      "Message is presentation data and is not a stable failure identity across localization or redaction",
+      "Absolute URI codes provide decentralized qualification without a hardcoded global application error registry",
+      "The existing ResultSafe FailureData name already denotes the generic ResultData failure branch and cannot be reused safely"
+    ],
+    "conclusion": {
+      "selected_option": "OPTIONAL_STRUCTURED_FAILURE",
+      "required_fields": ["schema_version", "code"],
+      "compatibility_rule": "Result<T,E>, Err<E>, and transport FailureData<E> remain generic; structured Failure is an explicit payload selected by a caller or strict profile.",
+      "status": "ACCEPTED_FOR_IMPLEMENTATION"
+    },
+    "limitations": [
+      "Public documentation can change after retrieval and this corpus does not mirror third-party pages",
+      "Weighted criteria encode ResultSafe priorities and are decision support rather than universal proof",
+      "README sources are identified separately from formal API and language documentation"
+    ]
+  }
+}

@@ -62,7 +62,7 @@ Rust-inspired Result-пакет для явных, композиционных 
 
 `@resultsafe/core-fp-result` — это пакет TypeScript/JavaScript внутри мультиязычного `resultsafe/monorepo`.
 
-Монорепозиторий переносит общие Rust-inspired концепции в отдельные language-specific пакеты. Текущий production-трек — TypeScript/JavaScript, а Python планируется как отдельный пакетный трек с той же концептуальной моделью.
+Монорепозиторий применяет единый language-neutral Contract IR к language-specific проекциям. TypeScript/JavaScript является production-треком; Python runtime уже реализован и находится в staging, а не только планируется. Реализация и успешные тесты служат evidence, но сами по себе не доказывают conformance: операции между языками сопоставляются по `operation_key`, а conforming language обязан предоставлять каждую применимую операцию и как module-callable функцию, и как instance method. См. корневой [`CANON.md`](../../../../CANON.md).
 
 ---
 
@@ -75,12 +75,70 @@ Rust-inspired Result-пакет для явных, композиционных 
 - Контролируемое извлечение через `unwrap`, `unwrapOr`, `unwrapErr`, `expect` и `expectErr`.
 - Продвинутый слой refiners для typed variants, strict matching и сужения результатов.
 - Согласованная модульная структура вместо плоского набора утилит.
+- Опциональные модели `Cause<E>` и `Exit<T, E>` без изменения generic `Result<T, E>`.
 - Type output для TypeScript-пользователей для лучшего DX и более безопасных интеграций.
 - Гибкие форматы поставки: Types, ESM, CJS и UMD.
 
 ---
 
 ## Пакет
+
+Каждая нейтральная операция `Result` доступна в двух эквивалентных формах:
+
+```ts
+map(result, transform);
+result.map(transform);
+```
+
+Каноническая идентичность задается `operation_key` из Contract IR, а не
+конкретным именем языка. Операция `success-option` представлена как
+`ok(result)` и `result.toOption()`, потому что `result.ok` уже является
+обязательным boolean-дискриминатором. Полные правила описаны в
+[`CANON.md`](../../../../CANON.md).
+
+### Опциональные Cause и Exit
+
+`Result<T, E>` остается generic: произвольные `E` по-прежнему допустимы.
+`Failure` является только опциональным структурированным payload. Отдельная
+модель `Cause<E>` содержит ровно шесть вариантов: `Empty`, `Fail`, `Die`,
+`Interrupt`, бинарный `Sequential` и бинарный `Parallel`. `Exit<T, E>` содержит
+ровно `Success` и `Failure`; значение `Exit.Failure(Cause.Empty())` допустимо.
+
+```ts
+import {
+  Cause,
+  Err,
+  Exit,
+  Failure,
+  exitToResult,
+  exitToResultCollapsed,
+  resultToExit,
+} from '@resultsafe/core-fp-result';
+
+const interruption = Failure({
+  schema_version: '1.0.0',
+  code: 'urn:example:interrupted',
+});
+const cause = Cause.Sequential(
+  Cause.Fail('write-failed'),
+  Cause.Interrupt(interruption),
+);
+const exit = Exit.Failure(cause);
+
+const complete = exitToResult(exit);
+const collapsed = exitToResultCollapsed(exit, () => 'operation-failed');
+const projected = resultToExit(Err('write-failed'));
+```
+
+Конструкторы Cause/Exit поверхностно замораживают wrapper и сохраняют identity
+произвольных `T`, `E` и дочерних Cause. `exitToResult` сохраняет полный Cause, а
+`exitToResultCollapsed` требует явную collapse policy. Поле `Failure.causes`
+предназначено только для диагностической ancestry и не заменяет topology Cause.
+
+Core не зависит от Effect runtime. Совместимость с Effect означает только
+явные semantic adapters, а не прямую совместимость API, runtime types,
+representation, wire format, identity, releases или security qualification.
+Подробнее: [Cause and Exit guide](../../../../docs/docs/guides/03-cause-exit.md).
 
 ### `@resultsafe/core-fp-result`
 

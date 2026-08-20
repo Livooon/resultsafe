@@ -1,0 +1,251 @@
+{
+  "document_id": "01a01af6-3bc0-7f48-8923-92bfd8e4fc26",
+  "document_ref": "urn:uuid:01a01af6-3bc0-7f48-8923-92bfd8e4fc26",
+  "document_key": "schema-index",
+  "document_type": "schema_index",
+  "document_revision": 7,
+  "schema_ref": "urn:uuid:01a01b11-f184-71d9-8caa-3534afa944ba",
+  "title": "ResultSafe schema index",
+  "summary": "Complete binding from immutable schema references to package-relative Draft 2020-12 schema files and their purposes.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "schemas": [
+      {
+        "schema_key": "optional-integrations",
+        "schema_ref": "urn:uuid:01a01f50-0002-7000-8000-000000000002",
+        "path": "schemas/optional-integrations.schema.json",
+        "purpose": "Strict optional package paths, peer policies, supported versions, vectors, and local atomic qualification evidence"
+      },
+      {
+        "schema_key": "failure-audit",
+        "schema_ref": "urn:uuid:01a01d13-0738-7609-880a-f556df4124ea",
+        "path": "schemas/failure-audit.schema.json",
+        "purpose": "Strict comparative evidence, weighted option scoring, limitations, and selected Failure architecture"
+      },
+      {
+        "schema_key": "failure-model",
+        "schema_ref": "urn:uuid:01a01d13-0738-7414-bd8b-f0b3802a56ab",
+        "path": "schemas/failure-model.schema.json",
+        "purpose": "Normative optional Failure fields, policies, projections, resource profiles, and scenario references"
+      },
+      {
+        "schema_key": "failure",
+        "schema_ref": "urn:uuid:01a01d13-3258-7290-918b-58b436a80180",
+        "path": "schemas/failure.schema.json",
+        "purpose": "Portable recursive Failure instance validation for schema version 1.0.0"
+      },
+      {
+        "schema_key": "relational-schema",
+        "schema_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000001",
+        "path": "schemas/relational-schema.schema.json",
+        "purpose": "Vendor-neutral relations, keys, constraints, ownership, rebuild, coverage, and tenant overlay rules"
+      },
+      {
+        "schema_key": "sqlite-profile",
+        "schema_ref": "urn:uuid:01a01c00-1000-7000-8000-000000000002",
+        "path": "schemas/sqlite-profile.schema.json",
+        "purpose": "Strict SQLite DDL, fixed metadata, verification, and staged publication profile"
+      },
+      {
+        "schema_key": "uuidv7",
+        "schema_ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431",
+        "path": "schemas/uuidv7.schema.json",
+        "purpose": "RFC 9562 UUIDv7 validation"
+      },
+      {
+        "schema_key": "reference",
+        "schema_ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36",
+        "path": "schemas/reference.schema.json",
+        "purpose": "Absolute resource reference validation"
+      },
+      {
+        "schema_key": "canonical-document",
+        "schema_ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b",
+        "path": "schemas/canonical-document.schema.json",
+        "purpose": "Common canonical document envelope"
+      },
+      {
+        "schema_key": "catalog-record",
+        "schema_ref": "urn:uuid:01a01af6-9802-7bf2-9750-5cce390d59f0",
+        "path": "schemas/catalog-record.schema.json",
+        "purpose": "Typed requirement, decision, finding, risk, contract, projection, family, and standard records"
+      },
+      {
+        "schema_key": "work",
+        "schema_ref": "urn:uuid:01a01af6-9803-7bb0-9bbe-c71dfd3912fb",
+        "path": "schemas/work.schema.json",
+        "purpose": "Staging work and ordered execution steps"
+      },
+      {
+        "schema_key": "contract-ir",
+        "schema_ref": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c",
+        "path": "schemas/contract-ir.schema.json",
+        "purpose": "Language-neutral Result Contract IR"
+      },
+      {
+        "schema_key": "catalog",
+        "schema_ref": "urn:uuid:01a01af6-9805-79c4-bf93-527cd90ba66d",
+        "path": "schemas/catalog.schema.json",
+        "purpose": "Strict typed catalog document"
+      },
+      {
+        "schema_key": "document-registry",
+        "schema_ref": "urn:uuid:01a01af6-9806-7d4a-ae6a-90728c600f68",
+        "path": "schemas/document-registry.schema.json",
+        "purpose": "Document identity and path registry"
+      },
+      {
+        "schema_key": "document-graph",
+        "schema_ref": "urn:uuid:01a01af6-9807-7522-b0e8-557d6f1d7bfd",
+        "path": "schemas/document-graph.schema.json",
+        "purpose": "Document dependency and authority graph"
+      },
+      {
+        "schema_key": "traceability",
+        "schema_ref": "urn:uuid:01a01af6-9808-7ece-ac83-2f765ba0b9c3",
+        "path": "schemas/traceability.schema.json",
+        "purpose": "Evidence-to-verification traceability"
+      },
+      {
+        "schema_key": "scenario",
+        "schema_ref": "urn:uuid:01a01af6-9809-786e-8c44-eb875991e855",
+        "path": "schemas/scenario.schema.json",
+        "purpose": "Executable-style conformance scenario"
+      },
+      {
+        "schema_key": "scenario-catalog",
+        "schema_ref": "urn:uuid:01a01af6-980a-7f91-a389-50c21e3b041f",
+        "path": "schemas/scenario-catalog.schema.json",
+        "purpose": "Scenario catalog and aggregate execution state"
+      },
+      {
+        "schema_key": "qualification",
+        "schema_ref": "urn:uuid:01a01af6-980b-7cfc-a859-bd374f6798a7",
+        "path": "schemas/qualification.schema.json",
+        "purpose": "Truthful qualification receipt"
+      },
+      {
+        "schema_key": "integrity-manifest",
+        "schema_ref": "urn:uuid:01a01af6-980c-7504-bfd0-235440c33890",
+        "path": "schemas/integrity-manifest.schema.json",
+        "purpose": "Canonical file and tree digest manifest"
+      },
+      {
+        "schema_key": "entrypoint",
+        "schema_ref": "urn:uuid:01a01b11-f17f-7ed0-be65-212275e8e7cc",
+        "path": "schemas/entrypoint.schema.json",
+        "purpose": "Authoritative read order and interpretation policy"
+      },
+      {
+        "schema_key": "identity-policy",
+        "schema_ref": "urn:uuid:01a01b11-f180-7185-a968-f99558a3d809",
+        "path": "schemas/identity-policy.schema.json",
+        "purpose": "Identity, reference, key, digest, tenant, and publication rules"
+      },
+      {
+        "schema_key": "allocation-registry",
+        "schema_ref": "urn:uuid:01a01b11-f181-7081-aec1-5d267223c734",
+        "path": "schemas/allocation-registry.schema.json",
+        "purpose": "Persisted append-only UUIDv7 allocations"
+      },
+      {
+        "schema_key": "evidence-catalog",
+        "schema_ref": "urn:uuid:01a01b11-f182-7300-b58a-2ed8b611789c",
+        "path": "schemas/evidence-catalog.schema.json",
+        "purpose": "Bounded source and external audit evidence"
+      },
+      {
+        "schema_key": "validation-plan",
+        "schema_ref": "urn:uuid:01a01b11-f183-79da-8834-4e2a3809068e",
+        "path": "schemas/validation-plan.schema.json",
+        "purpose": "Ordered validation gates and standing constraints"
+      },
+      {
+        "schema_key": "schema-index",
+        "schema_ref": "urn:uuid:01a01b11-f184-71d9-8caa-3534afa944ba",
+        "path": "schemas/schema-index.schema.json",
+        "purpose": "Strict schema identity, path, and purpose registry"
+      },
+      {
+        "schema_key": "compatibility-migration",
+        "schema_ref": "urn:uuid:01a01b58-c2d2-7f3a-80af-8b61fc9dcaf5",
+        "path": "schemas/compatibility-migration.schema.json",
+        "purpose": "Strict observed-to-target breaking-change and migration records"
+      },
+      {
+        "schema_key": "conformance-matrix",
+        "schema_ref": "urn:uuid:01a01d00-0001-7000-8000-000000000001",
+        "path": "schemas/conformance-matrix.schema.json",
+        "purpose": "Exact packed-artifact cross-language neutral operation-surface matrix evidence"
+      },
+      {
+        "schema_key": "wave-plan",
+        "schema_ref": "urn:uuid:01a01c4b-0d17-7d5e-ac7b-c0decf1c517a",
+        "path": "schemas/wave-plan.schema.json",
+        "purpose": "Governed ordered architecture and release-hardening execution waves"
+      },
+      {
+        "schema_key": "cause-audit",
+        "schema_ref": "urn:uuid:01a01f0a-da04-7b65-91c4-77b96153b6ab",
+        "path": "schemas/cause-audit.schema.json",
+        "purpose": "Official-source Cause and Exit architecture audit and weighted decision"
+      },
+      {
+        "schema_key": "cause-model",
+        "schema_ref": "urn:uuid:01a01f0a-da05-7919-b410-d32753e67b0c",
+        "path": "schemas/cause-model.schema.json",
+        "purpose": "Normative optional binary Cause model and scenario ownership"
+      },
+      {
+        "schema_key": "exit-model",
+        "schema_ref": "urn:uuid:01a01f0a-da06-7930-8f32-7c9e231f3087",
+        "path": "schemas/exit-model.schema.json",
+        "purpose": "Normative optional Exit model and invariants"
+      },
+      {
+        "schema_key": "effect-compatibility",
+        "schema_ref": "urn:uuid:01a01f0a-da07-7b11-8d9f-0e89386c0772",
+        "path": "schemas/effect-compatibility.schema.json",
+        "purpose": "Exact semantic Effect mapping coverage and loss policy"
+      },
+      {
+        "schema_key": "cause",
+        "schema_ref": "urn:uuid:01a01f0a-da08-7b85-87bc-dea758e0db27",
+        "path": "schemas/cause.schema.json",
+        "purpose": "Portable Cause instance representation"
+      },
+      {
+        "schema_key": "exit",
+        "schema_ref": "urn:uuid:01a01f0a-da09-7590-9665-b8841a81fe96",
+        "path": "schemas/exit.schema.json",
+        "purpose": "Portable Exit instance representation"
+      },
+      {
+        "schema_key": "cause-exit-conformance-matrix",
+        "schema_ref": "urn:uuid:01a01f0b-0000-7000-8000-000000000001",
+        "path": "schemas/cause-exit-conformance-matrix.schema.json",
+        "purpose": "Strict TypeScript and Python Cause and Exit semantic cells"
+      },
+      {
+        "schema_key": "core-modularity-policy",
+        "schema_ref": "urn:uuid:01a01d86-7c24-7a3e-8f7c-a367ff5ffdc8",
+        "path": "schemas/core-modularity-policy.schema.json",
+        "purpose": "Strict zero-dependency, direct-import, side-effect, integration-separation, and packed-proof policy"
+      },
+      {
+        "schema_key": "public-module-registry",
+        "schema_ref": "urn:uuid:01a01d86-7c26-7583-97d5-55cd12aaf510",
+        "path": "schemas/public-module-registry.schema.json",
+        "purpose": "Exact intended root and direct-subpath TypeScript public module inventory"
+      },
+      {
+        "schema_key": "remediation-plan",
+        "schema_ref": "urn:uuid:01a01d86-7c28-7c7a-b957-1e84d391418b",
+        "path": "schemas/remediation-plan.schema.json",
+        "purpose": "Prioritized audit tasks, dependencies, local atomic acceptance gates, and explicit clean-release blockers"
+      }
+    ]
+  }
+}

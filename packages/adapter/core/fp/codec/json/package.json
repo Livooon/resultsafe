@@ -1,0 +1,35 @@
+{
+  "name": "@resultsafe/core-fp-codec-json",
+  "version": "0.1.0",
+  "description": "Explicit portable JSON codecs for ResultSafe Cause and Exit values.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@resultsafe/core-fp-result": "^0.3.0"
+  },
+  "devDependencies": {
+    "@resultsafe/core-fp-result": "workspace:*",
+    "typescript": "^5.9.2",
+    "vitest": "3.2.4"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,327 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9804-7a85-b3c7-1b041c22ed4c",
+  "title": "ResultSafe executable Contract IR document",
+  "type": "object",
+  "allOf": [
+    { "$ref": "urn:uuid:01a01af6-9801-778a-89d8-17777b859f3b" },
+    {
+      "type": "object",
+      "properties": {
+        "payload": { "$ref": "#/$defs/payload" }
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "symbolKey": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
+    "typeExpression": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*(?:<[^<>]+>)?(?: \\| [A-Za-z][A-Za-z0-9_]*(?:<[^<>]+>)?)*$" },
+    "absoluteRef": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+    "classification": {
+      "enum": ["NEUTRAL_PRIMITIVE", "LANGUAGE_TYPE_PROJECTION", "TYPESCRIPT_EXTENSION", "TYPESCRIPT_TYPE_PROJECTION"]
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stability", "change_class"],
+      "properties": {
+        "stability": { "enum": ["STABLE", "EXPERIMENTAL"] },
+        "change_class": { "enum": ["ADDITIVE", "BEHAVIORAL", "BREAKING"] }
+      }
+    },
+    "projectionApplicability": {
+      "type": "array",
+      "items": { "enum": ["typescript", "python", "relational", "sqlite", "aasdvgs"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_key", "type", "presence"],
+      "properties": {
+        "field_key": { "$ref": "#/$defs/key" },
+        "type": { "$ref": "#/$defs/typeExpression" },
+        "presence": { "enum": ["REQUIRED", "FORBIDDEN"] }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variant_key", "discriminator", "fields"],
+      "properties": {
+        "variant_key": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+        "discriminator": { "anyOf": [{ "type": "string" }, { "type": "boolean" }] },
+        "fields": { "type": "array", "items": { "$ref": "#/$defs/field" }, "minItems": 1 }
+      }
+    },
+    "typeEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type_key", "classification", "type_parameters", "definition_kind", "definition", "immutability_policy", "identity_policy", "projection_applicability", "compatibility"],
+      "properties": {
+        "type_key": { "$ref": "#/$defs/key" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "type_parameters": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" }, "uniqueItems": true },
+        "definition_kind": { "enum": ["TAGGED_SUM", "CALLABLE", "STRUCTURAL", "TYPE_OPERATOR", "BUILDER"] },
+        "definition": { "type": "string", "minLength": 3 },
+        "variants": { "type": "array", "items": { "$ref": "#/$defs/variant" }, "minItems": 2 },
+        "immutability_policy": { "enum": ["SHALLOW_IMMUTABLE_WRAPPER", "TYPE_LEVEL_ONLY", "NOT_APPLICABLE"] },
+        "identity_policy": { "enum": ["PAYLOAD_REFERENCE_PRESERVED", "TYPE_LEVEL_ONLY", "NOT_APPLICABLE"] },
+        "projection_applicability": { "$ref": "#/$defs/projectionApplicability" },
+        "compatibility": { "$ref": "#/$defs/compatibility" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "definition_kind": { "const": "TAGGED_SUM" } }, "required": ["definition_kind"] },
+          "then": { "properties": { "variants": true }, "required": ["variants"] },
+          "else": { "not": { "properties": { "variants": true }, "required": ["variants"] } }
+        }
+      ]
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_key", "type", "evaluation"],
+      "properties": {
+        "input_key": { "$ref": "#/$defs/key" },
+        "type": { "$ref": "#/$defs/typeExpression" },
+        "evaluation": { "enum": ["EAGER", "CALLBACK", "CONFIGURATION"] }
+      }
+    },
+    "surfaceContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["module_callable", "instance_method"],
+      "properties": {
+        "module_callable": { "const": "REQUIRED" },
+        "instance_method": {
+          "oneOf": [
+            { "const": "FORBIDDEN" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["requirement", "receiver_input"],
+              "properties": {
+                "requirement": { "const": "REQUIRED" },
+                "receiver_input": { "const": "result" }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "input", "variant"],
+          "properties": {
+            "kind": { "enum": ["INPUT_VARIANT", "PAYLOAD_VARIANT"] },
+            "input": { "$ref": "#/$defs/key" },
+            "variant": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "input"],
+          "properties": {
+            "kind": { "enum": ["PREDICATE_TRUE", "VALIDATION_SUCCEEDS", "MATCH_FOUND", "MATCH_NOT_FOUND", "KNOWN_VARIANT", "UNKNOWN_VARIANT"] },
+            "input": { "$ref": "#/$defs/key" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": { "kind": { "enum": ["ALWAYS", "OTHERWISE"] } }
+        }
+      ]
+    },
+    "callback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["callback_key", "input_type", "output_type", "eligible_when", "eligible_count", "ineligible_count", "order", "arguments"],
+      "properties": {
+        "callback_key": { "$ref": "#/$defs/key" },
+        "input_type": { "$ref": "#/$defs/typeExpression" },
+        "output_type": { "$ref": "#/$defs/typeExpression" },
+        "eligible_when": { "$ref": "#/$defs/condition" },
+        "eligible_count": { "const": 1 },
+        "ineligible_count": { "const": 0 },
+        "order": { "type": "integer", "minimum": 0 },
+        "arguments": { "type": "array", "items": { "type": "string", "pattern": "^(input|payload|field|variant|matched):[a-z][a-z0-9-]*$" }, "minItems": 1 }
+      }
+    },
+    "instruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op"],
+      "properties": {
+        "op": { "enum": ["INVOKE", "VALIDATE", "SELECT_FIRST_MATCH", "RETURN_INPUT", "RETURN_PAYLOAD", "RETURN_CALLBACK", "RETURN_VARIANT", "RETURN_OPTION", "RETURN_BOOLEAN", "RETURN_NULL", "THROW"] },
+        "callback": { "$ref": "#/$defs/key" },
+        "source": { "type": "string", "pattern": "^(input|payload|callback|literal|matched):[A-Za-z][A-Za-z0-9-]*$" },
+        "variant": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+        "inner_variant": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+        "value": { "anyOf": [{ "type": "string" }, { "type": "boolean" }, { "type": "null" }] },
+        "category": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+        "order": { "enum": ["DECLARATION", "PAYLOAD_KEY", "REGISTRATION"] },
+        "short_circuit": { "type": "boolean" },
+        "on_false": { "enum": ["RETURN_FALSE", "RETURN_NULL"] }
+      }
+    },
+    "branch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "steps"],
+      "properties": {
+        "when": { "$ref": "#/$defs/condition" },
+        "steps": { "type": "array", "items": { "$ref": "#/$defs/instruction" }, "minItems": 1 }
+      }
+    },
+    "exceptionOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "outcome"],
+      "properties": {
+        "source": { "enum": ["NONE", "CALLBACK", "VALIDATOR", "EXTRACTION", "RUNTIME_CONTRACT"] },
+        "outcome": { "enum": ["NO_EXCEPTION_DEFINED", "PROPAGATE_IDENTITY", "REJECT_IDENTITY", "THROW_EXTRACTION_FAILURE", "THROW_UNMATCHED_VARIANT"] },
+        "cause": { "enum": ["PRESERVE_PAYLOAD_REFERENCE", "PRESERVE_EXCEPTION_IDENTITY", "NOT_APPLICABLE"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "source": { "const": "NONE" } }, "required": ["source"] },
+          "then": { "properties": { "outcome": { "const": "NO_EXCEPTION_DEFINED" } }, "not": { "properties": { "cause": true }, "required": ["cause"] } },
+          "else": { "properties": { "cause": true }, "required": ["cause"] }
+        }
+      ]
+    },
+    "operationEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_key", "classification", "surface_contract", "type_parameters", "inputs", "output", "callbacks", "branches", "exception_outcomes", "result_identity", "projection_applicability", "compatibility"],
+      "properties": {
+        "operation_key": { "$ref": "#/$defs/key" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "surface_contract": { "$ref": "#/$defs/surfaceContract" },
+        "type_parameters": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" }, "uniqueItems": true },
+        "inputs": { "type": "array", "items": { "$ref": "#/$defs/parameter" }, "minItems": 1 },
+        "output": { "$ref": "#/$defs/typeExpression" },
+        "callbacks": { "type": "array", "items": { "$ref": "#/$defs/callback" } },
+        "branches": { "type": "array", "items": { "$ref": "#/$defs/branch" }, "minItems": 1 },
+        "exception_outcomes": { "type": "array", "items": { "$ref": "#/$defs/exceptionOutcome" }, "minItems": 1 },
+        "result_identity": { "enum": ["NEW_WRAPPER_PAYLOAD_REFERENCE_PRESERVED", "REUSE_INPUT_WRAPPER", "RETURN_INPUT_PAYLOAD_REFERENCE", "RETURN_CALLBACK_RESULT", "NEW_OPTION_WRAPPER_PAYLOAD_REFERENCE_PRESERVED", "CONDITIONAL_BY_BRANCH", "NOT_APPLICABLE"] },
+        "projection_applicability": { "$ref": "#/$defs/projectionApplicability" },
+        "compatibility": { "$ref": "#/$defs/compatibility" }
+      }
+    },
+    "operationReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_ref", "binding", "inputs", "output"],
+      "properties": {
+        "operation_ref": { "$ref": "#/$defs/key" },
+        "binding": { "enum": ["ALIAS", "CURRIED", "UNCURRIED"] },
+        "inputs": { "type": "array", "items": { "$ref": "#/$defs/parameter" }, "minItems": 1 },
+        "output": { "$ref": "#/$defs/typeExpression" }
+      }
+    },
+    "publicSymbol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_ref", "classification", "form", "entity_key", "projection_applicability"],
+      "properties": {
+        "contract_ref": { "$ref": "#/$defs/absoluteRef" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "form": { "enum": ["TYPE_ENTITY", "OPERATION_ENTITY", "OPERATION_REFERENCE"] },
+        "entity_key": { "$ref": "#/$defs/key" },
+        "operation": { "$ref": "#/$defs/operationReference" },
+        "projection_applicability": { "$ref": "#/$defs/projectionApplicability" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "form": { "const": "OPERATION_REFERENCE" } }, "required": ["form"] },
+          "then": { "properties": { "operation": true }, "required": ["operation"] },
+          "else": { "not": { "properties": { "operation": true }, "required": ["operation"] } }
+        }
+      ]
+    },
+    "publicSymbols": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Result", "ResultData", "ResultLike", "Option", "AsyncValidatorFn", "PayloadKeys", "ValidatorFn", "VariantConfig", "Handler", "MatchBuilder", "Matcher", "SyncRefinedResult", "SyncRefinedResultUnion", "SyncValidatorMap", "UniversalAsyncRefinedResult", "UniversalRefinedResult", "VariantOf", "Ok", "Err", "isErr", "isErrAnd", "isOk", "isOkAnd", "andThen", "err", "expect", "expectErr", "flatten", "inspect", "inspectErr", "map", "mapErr", "match", "ok", "orElse", "tap", "tapErr", "transpose", "unwrap", "unwrapErr", "unwrapOr", "unwrapOrElse", "isTypedVariant", "isTypedVariantOf", "matchVariant", "matchVariantStrict", "refineAsyncResult", "refineAsyncResultU", "refineResult", "refineResultU", "refineVariantMap"],
+      "properties": {
+        "Result": { "$ref": "#/$defs/publicSymbol" }, "ResultData": { "$ref": "#/$defs/publicSymbol" }, "ResultLike": { "$ref": "#/$defs/publicSymbol" }, "Option": { "$ref": "#/$defs/publicSymbol" }, "AsyncValidatorFn": { "$ref": "#/$defs/publicSymbol" }, "PayloadKeys": { "$ref": "#/$defs/publicSymbol" }, "ValidatorFn": { "$ref": "#/$defs/publicSymbol" }, "VariantConfig": { "$ref": "#/$defs/publicSymbol" }, "Handler": { "$ref": "#/$defs/publicSymbol" }, "MatchBuilder": { "$ref": "#/$defs/publicSymbol" }, "Matcher": { "$ref": "#/$defs/publicSymbol" }, "SyncRefinedResult": { "$ref": "#/$defs/publicSymbol" }, "SyncRefinedResultUnion": { "$ref": "#/$defs/publicSymbol" }, "SyncValidatorMap": { "$ref": "#/$defs/publicSymbol" }, "UniversalAsyncRefinedResult": { "$ref": "#/$defs/publicSymbol" }, "UniversalRefinedResult": { "$ref": "#/$defs/publicSymbol" }, "VariantOf": { "$ref": "#/$defs/publicSymbol" }, "Ok": { "$ref": "#/$defs/publicSymbol" }, "Err": { "$ref": "#/$defs/publicSymbol" }, "isErr": { "$ref": "#/$defs/publicSymbol" }, "isErrAnd": { "$ref": "#/$defs/publicSymbol" }, "isOk": { "$ref": "#/$defs/publicSymbol" }, "isOkAnd": { "$ref": "#/$defs/publicSymbol" }, "andThen": { "$ref": "#/$defs/publicSymbol" }, "err": { "$ref": "#/$defs/publicSymbol" }, "expect": { "$ref": "#/$defs/publicSymbol" }, "expectErr": { "$ref": "#/$defs/publicSymbol" }, "flatten": { "$ref": "#/$defs/publicSymbol" }, "inspect": { "$ref": "#/$defs/publicSymbol" }, "inspectErr": { "$ref": "#/$defs/publicSymbol" }, "map": { "$ref": "#/$defs/publicSymbol" }, "mapErr": { "$ref": "#/$defs/publicSymbol" }, "match": { "$ref": "#/$defs/publicSymbol" }, "ok": { "$ref": "#/$defs/publicSymbol" }, "orElse": { "$ref": "#/$defs/publicSymbol" }, "tap": { "$ref": "#/$defs/publicSymbol" }, "tapErr": { "$ref": "#/$defs/publicSymbol" }, "transpose": { "$ref": "#/$defs/publicSymbol" }, "unwrap": { "$ref": "#/$defs/publicSymbol" }, "unwrapErr": { "$ref": "#/$defs/publicSymbol" }, "unwrapOr": { "$ref": "#/$defs/publicSymbol" }, "unwrapOrElse": { "$ref": "#/$defs/publicSymbol" }, "isTypedVariant": { "$ref": "#/$defs/publicSymbol" }, "isTypedVariantOf": { "$ref": "#/$defs/publicSymbol" }, "matchVariant": { "$ref": "#/$defs/publicSymbol" }, "matchVariantStrict": { "$ref": "#/$defs/publicSymbol" }, "refineAsyncResult": { "$ref": "#/$defs/publicSymbol" }, "refineAsyncResultU": { "$ref": "#/$defs/publicSymbol" }, "refineResult": { "$ref": "#/$defs/publicSymbol" }, "refineResultU": { "$ref": "#/$defs/publicSymbol" }, "refineVariantMap": { "$ref": "#/$defs/publicSymbol" }
+      }
+    },
+    "law": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["law_key", "quantified_types", "left", "right", "equivalence", "applies_to"],
+      "properties": {
+        "law_key": { "$ref": "#/$defs/key" },
+        "quantified_types": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" }, "minItems": 1, "uniqueItems": true },
+        "left": { "type": "string", "minLength": 1 },
+        "right": { "type": "string", "minLength": 1 },
+        "equivalence": { "enum": ["VALUE_AND_BRANCH", "REFERENCE_IDENTITY", "OBSERVATIONAL"] },
+        "applies_to": { "type": "array", "items": { "$ref": "#/$defs/key" }, "minItems": 1, "uniqueItems": true }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ir_version", "authority_model", "execution_model", "immutability_identity_policy", "compatibility_policy", "types", "operations", "laws", "projection_applicability", "public_symbols"],
+      "properties": {
+        "ir_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "authority_model": { "const": "CANONICAL_JSON_DERIVED_PROJECTIONS" },
+        "execution_model": {
+          "type": "object", "additionalProperties": false,
+          "required": ["branch_selection", "step_execution", "callback_execution", "exception_execution"],
+          "properties": {
+            "branch_selection": { "const": "FIRST_TRUE_IN_DECLARATION_ORDER" },
+            "step_execution": { "const": "SEQUENTIAL_SHORT_CIRCUIT_ON_RETURN_THROW_OR_REJECT" },
+            "callback_execution": { "const": "ONLY_WHEN_ELIGIBLE_WITH_DECLARED_ARGUMENTS_COUNT_AND_ORDER" },
+            "exception_execution": { "const": "DECLARED_OUTCOME_WITHOUT_IMPLICIT_RESULT_CAPTURE" }
+          }
+        },
+        "immutability_identity_policy": {
+          "type": "object", "additionalProperties": false,
+          "required": ["wrapper", "nested_payload", "pass_through", "constructed_wrapper"],
+          "properties": {
+            "wrapper": { "const": "SHALLOW_IMMUTABLE" },
+            "nested_payload": { "const": "OUTSIDE_CORE_GUARANTEE" },
+            "pass_through": { "const": "REUSE_INPUT_WRAPPER_AND_PAYLOAD_REFERENCE" },
+            "constructed_wrapper": { "const": "NEW_WRAPPER_PRESERVES_PAYLOAD_REFERENCE" }
+          }
+        },
+        "compatibility_policy": {
+          "type": "object", "additionalProperties": false,
+          "required": ["additive", "behavioral", "breaking"],
+          "properties": {
+            "additive": { "type": "string", "minLength": 10 },
+            "behavioral": { "type": "string", "minLength": 10 },
+            "breaking": { "type": "string", "minLength": 10 }
+          }
+        },
+        "types": { "type": "object", "additionalProperties": { "$ref": "#/$defs/typeEntity" }, "minProperties": 15 },
+        "operations": { "type": "object", "additionalProperties": { "$ref": "#/$defs/operationEntity" }, "minProperties": 1 },
+        "laws": { "type": "array", "items": { "$ref": "#/$defs/law" }, "minItems": 4 },
+        "projection_applicability": {
+          "type": "object", "additionalProperties": false,
+          "required": ["typescript", "python", "relational", "sqlite", "aasdvgs"],
+          "properties": {
+            "typescript": { "enum": ["FULL", "STRUCTURAL_ONLY", "NOT_APPLICABLE"] },
+            "python": { "enum": ["FULL", "STRUCTURAL_ONLY", "NOT_APPLICABLE"] },
+            "relational": { "enum": ["FULL", "STRUCTURAL_ONLY", "NOT_APPLICABLE"] },
+            "sqlite": { "enum": ["FULL", "STRUCTURAL_ONLY", "NOT_APPLICABLE"] },
+            "aasdvgs": { "enum": ["FULL", "STRUCTURAL_ONLY", "NOT_APPLICABLE"] }
+          }
+        },
+        "public_symbols": { "$ref": "#/$defs/publicSymbols" }
+      }
+    }
+  }
+}

@@ -1,0 +1,731 @@
+{
+  "document_id": "01a01b58-c2d3-7e74-94a2-e6d6d9414d7d",
+  "document_ref": "urn:uuid:01a01b58-c2d3-7e74-94a2-e6d6d9414d7d",
+  "document_key": "compatibility-migrations",
+  "document_type": "compatibility_catalog",
+  "document_revision": 4,
+  "schema_ref": "urn:uuid:01a01b58-c2d2-7f3a-80af-8b61fc9dcaf5",
+  "title": "ResultSafe compatibility and migration records",
+  "summary": "Architecture-approved migration design for the breaking 0.3.0 candidate; release approval and promotion have not occurred.",
+  "lifecycle": "DRAFT",
+  "created_at": "2026-08-19T00:00:00Z",
+  "updated_at": "2026-08-20T12:00:00Z",
+  "payload": {
+    "source_baseline": "reviewed pre-stabilization TypeScript API",
+    "target_baseline": "staged ResultSafe core stabilization target",
+    "approval_state": "ARCHITECTURE_APPROVED",
+    "review_state": "ARCHITECTURE_REVIEWED",
+    "release_approval_state": "NOT_APPROVED",
+    "promotion_state": "NOT_PROMOTED",
+    "records": [
+      {
+        "record_id": "01a01b58-c2d4-7650-acdf-21552d601c18",
+        "record_ref": "urn:uuid:01a01b58-c2d4-7650-acdf-21552d601c18",
+        "record_key": "concrete-ok-err-branch-types",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-001",
+        "title": "Concrete Ok and Err branch types",
+        "status": "DRAFT",
+        "change_area": "BRANCH_TYPES",
+        "observed_behavior": "Ok and Err constructors return the complete Result union, so callers retain impossible opposite branches.",
+        "target_behavior": "Public Ok<T> and Err<E> aliases represent concrete branches and each constructor returns its corresponding branch.",
+        "old_signatures": [
+          "Ok<T, E = never>(value: T): Result<T, E>",
+          "Err<E, T = never>(error: E): Result<T, E>"
+        ],
+        "new_signatures": [
+          "type Ok<T> = { readonly ok: true; readonly value: T }",
+          "type Err<E> = { readonly ok: false; readonly error: E }",
+          "Ok<T, _E = never>(value: T): Ok<T>",
+          "Err<E, _T = never>(error: E): Err<E>"
+        ],
+        "runtime_impact": "Object shape is unchanged; compile-time branch narrowing becomes exact and assignments relying on a wide constructor result may fail.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const r: Result<number, string> = Ok<number, string>(1);",
+            "after": "const r: Result<number, string> = Ok(1); const branch: Ok<number> = r;"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "PHANTOM_GENERIC",
+          "scope": "The unused second constructor generic remains accepted temporarily.",
+          "removal_release": "NEXT_MAJOR"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c11-70cd-a6ba-3527782d0325",
+          "urn:uuid:01a01af6-3c12-7c3c-b1c3-cf7cbcdc2fab"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be6-737c-98b7-9e97d125268a"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2d5-7713-bdac-8cd8f8ff429b",
+        "record_ref": "urn:uuid:01a01b58-c2d5-7713-bdac-8cd8f8ff429b",
+        "record_key": "constructor-freeze-semantics",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-002",
+        "title": "Constructor freeze semantics",
+        "status": "DRAFT",
+        "change_area": "IMMUTABILITY",
+        "observed_behavior": "Ok and Err produce readonly-at-type-level object literals that remain mutable to JavaScript consumers at runtime.",
+        "target_behavior": "Ok and Err shallow-freeze every newly created wrapper while preserving the original payload reference.",
+        "old_signatures": [
+          "Ok(value) => ({ ok: true, value }) as const",
+          "Err(error) => ({ ok: false, error }) as const"
+        ],
+        "new_signatures": [
+          "Ok(value) => Object.freeze<Ok<T>>({ ok: true, value })",
+          "Err(error) => Object.freeze<Err<E>>({ ok: false, error })"
+        ],
+        "runtime_impact": "Writing, deleting, or redefining wrapper properties now fails or is ignored according to JavaScript strictness; nested payloads are not frozen.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "(Ok(1) as any).value = 2;",
+            "after": "const replacement = Ok(2); // create a new wrapper instead of mutating"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "No mutable-wrapper compatibility path is provided.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c11-70cd-a6ba-3527782d0325",
+          "urn:uuid:01a01af6-3c12-7c3c-b1c3-cf7cbcdc2fab"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be6-737c-98b7-9e97d125268a"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2d6-7f34-8332-1dc4d181811b",
+        "record_ref": "urn:uuid:01a01b58-c2d6-7f34-8332-1dc4d181811b",
+        "record_key": "validator-function-output-contracts",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-003",
+        "title": "Validator function output contracts",
+        "status": "DRAFT",
+        "change_area": "VALIDATORS",
+        "observed_behavior": "ValidatorFn requires a type predicate while AsyncValidatorFn has no generic channel for declaring validated output.",
+        "target_behavior": "ValidatorFn accepts predicates or booleans, and AsyncValidatorFn<T> carries optional type-only output metadata for refined aliases.",
+        "old_signatures": [
+          "type ValidatorFn<T = unknown> = (x: unknown) => x is T",
+          "type AsyncValidatorFn = (value: unknown) => Promise<boolean>"
+        ],
+        "new_signatures": [
+          "type ValidatorFn<T = unknown> = ((x: unknown) => x is T) | ((x: unknown) => boolean)",
+          "type AsyncValidatorFn<T = unknown> = ((value: unknown) => boolean | Promise<boolean>) & { readonly __output?: T }"
+        ],
+        "runtime_impact": "Validator invocation and boolean interpretation are unchanged; asynchronous output metadata is optional and erased at runtime.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const valid: AsyncValidatorFn = async x => typeof x === 'string';",
+            "after": "const valid: AsyncValidatorFn<string> = async x => typeof x === 'string';"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "Ungeneric async validators continue to infer unknown without a shim.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c04-7605-9096-bd4dafd1d0fd",
+          "urn:uuid:01a01af6-3c06-753b-9355-b447c58a1fdd"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3bef-778c-9a38-2ee449d378bd",
+          "urn:uuid:01a01af6-3bf1-708b-827f-deacc6551816"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2d7-759d-87f3-0d7b71ed7f06",
+        "record_ref": "urn:uuid:01a01b58-c2d7-759d-87f3-0d7b71ed7f06",
+        "record_key": "variant-config-and-empty-payload",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-004",
+        "title": "VariantConfig and empty payload representation",
+        "status": "DRAFT",
+        "change_area": "VARIANT_CONFIG",
+        "observed_behavior": "The never string is the no-payload sentinel, forbidden accepts one ignored key, and strictFields is publicly declared but ignored.",
+        "target_behavior": "An empty payload array is canonical, forbidden accepts one or many keys, and refiners enforce forbidden and strict own-field policies.",
+        "old_signatures": [
+          "interface VariantConfig { payload: 'never' | string | readonly string[]; forbidden?: string; strictFields?: boolean }"
+        ],
+        "new_signatures": [
+          "interface VariantConfig { payload: LegacyEmptyPayload | string | readonly string[]; forbidden?: string | readonly string[]; strictFields?: boolean }",
+          "type LegacyEmptyPayload = 'never' // deprecated; use []"
+        ],
+        "runtime_impact": "Forbidden own fields and undeclared own fields under strictFields now cause refinement to return null; legacy never still means no payload temporarily.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const map = { ping: { payload: 'never', forbidden: 'secret' } } as const;",
+            "after": "const map = { ping: { payload: [], forbidden: ['secret'], strictFields: true } } as const;"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "DEPRECATED_INPUT",
+          "scope": "The literal never remains accepted only as a deprecated TypeScript projection input.",
+          "removal_release": "NEXT_MAJOR"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c05-7fa8-876d-47ac0d976b83",
+          "urn:uuid:01a01af6-3c07-7603-b9bc-d467c98f5e77"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3bea-7dc7-9eb5-6e0ba033b301",
+          "urn:uuid:01a01af6-3bf0-78ef-962e-1f029be7d452"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2d8-758a-936e-42bda64880e0",
+        "record_ref": "urn:uuid:01a01b58-c2d8-758a-936e-42bda64880e0",
+        "record_key": "variant-of-distributive-union",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-005",
+        "title": "Distributive VariantOf",
+        "status": "DRAFT",
+        "change_area": "VARIANT_DISTRIBUTION",
+        "observed_behavior": "VariantOf<'a' | 'b'> creates one object whose type field is a union, preventing branch extraction by a literal tag.",
+        "target_behavior": "VariantOf distributes over key unions and creates a union of independently discriminated object types.",
+        "old_signatures": [
+          "type VariantOf<K extends string = string> = { type: K }"
+        ],
+        "new_signatures": [
+          "type VariantOf<K extends string = string> = K extends string ? { type: K } : never"
+        ],
+        "runtime_impact": "There is no emitted JavaScript change; conditional-type distribution changes assignability, Extract results, and matcher branch inference.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "type V = { type: 'a' | 'b' };",
+            "after": "type V = VariantOf<'a' | 'b'>; // {type:'a'} | {type:'b'}"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "Consumers needing the old shape must declare it explicitly.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c10-7928-bc25-bb9629adbab1"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3bf4-7747-974b-30aedd5758a8"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2d9-7e02-946c-acd058fa0d6f",
+        "record_ref": "urn:uuid:01a01b58-c2d9-7e02-946c-acd058fa0d6f",
+        "record_key": "matcher-builders-and-results",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-006",
+        "title": "Matcher builders and result inference",
+        "status": "DRAFT",
+        "change_area": "MATCHERS",
+        "observed_behavior": "Builders lose accumulated handlers, expose strict run too early, retain handled branches, and collapse every handler result to unknown.",
+        "target_behavior": "Immutable builders retain all handlers, track remaining branches, enable strict run only at never, and union handler and fallback outputs.",
+        "old_signatures": [
+          "MatchBuilder<T, R, Handled = never>.with<K extends Exclude<T['type'], Handled>>(...): MatchBuilder<T, R, Handled | K>",
+          "Matcher<T, R>.otherwise(fn: (value: T) => R): { run(): R }",
+          "matchVariant<T>(value: T): Matcher<T, unknown>",
+          "matchVariantStrict<T>(value: T): MatchBuilder<T, unknown>"
+        ],
+        "new_signatures": [
+          "MatchBuilder<T, R = never, Remaining = T>.with<K extends Remaining['type'], U>(...): MatchBuilder<T, R | U, Exclude<Remaining, { type: K }>>",
+          "Matcher<T, R = never, Remaining = T>.otherwise<U>(fn: (value: Remaining) => U): { run(): R | U }",
+          "matchVariant<T>(value: T): Matcher<T>",
+          "matchVariantStrict<T>(value: T): MatchBuilder<T>"
+        ],
+        "runtime_impact": "All registered handlers now remain active in insertion order; fallback runs only when unmatched and strict unmatched failures are limited to runtime contract violations.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const out: unknown = matchVariant(v).with('a', () => 1).with('b', () => 'b').otherwise(() => false).run();",
+            "after": "const out: number | string | boolean = matchVariant(v).with('a', () => 1).with('b', () => 'b').otherwise(() => false).run();"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "No handler-loss or premature-run behavior is retained.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c09-7d3b-89cb-831a246ca467",
+          "urn:uuid:01a01af6-3c0a-7233-b618-362d0f0e1f1c",
+          "urn:uuid:01a01af6-3c2c-768a-b698-b00561778455",
+          "urn:uuid:01a01af6-3c2d-702d-9211-9fe00736cf0c"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3beb-7389-8892-e3671bfbc8a9",
+          "urn:uuid:01a01af6-3bec-7370-aba3-53a3feac8bfc",
+          "urn:uuid:01a01af6-3bed-7f43-b5f5-3b79986f3461"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2da-7290-889e-bc7db1788400",
+        "record_ref": "urn:uuid:01a01b58-c2da-7290-889e-bc7db1788400",
+        "record_key": "match-and-unwrap-fallback-generics",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-007",
+        "title": "Match and unwrap fallback generics",
+        "status": "DRAFT",
+        "change_area": "FALLBACK_GENERICS",
+        "observed_behavior": "Match requires both handlers to share U, while unwrapOr and unwrapOrElse require fallbacks to return the success type T.",
+        "target_behavior": "Each branch or fallback has an independent generic and the public return type is the corresponding output union.",
+        "old_signatures": [
+          "match<T, E, U>(result, okFn: (T) => U, errFn: (E) => U): U",
+          "unwrapOr<T, E>(result: Result<T, E>, defaultValue: T): T",
+          "unwrapOrElse<T, E>(result: Result<T, E>, fn: (E) => T): T"
+        ],
+        "new_signatures": [
+          "match<T, E, A, B>(result, okFn: (T) => A, errFn: (E) => B): A | B",
+          "unwrapOr<T, E, U>(result: Result<T, E>, defaultValue: U): T | U",
+          "unwrapOrElse<T, E, U>(result: Result<T, E>, fn: (E) => U): T | U"
+        ],
+        "runtime_impact": "Branch selection is unchanged; formerly rejected heterogeneous outputs compile, while downstream code must handle the now-visible union.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const n: number = unwrapOr(result, 0);",
+            "after": "const value: number | 'missing' = unwrapOr(result, 'missing' as const);"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "No overload preserves an incorrectly narrowed fallback result.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c20-755a-a1a6-44f7b7939d27",
+          "urn:uuid:01a01af6-3c28-701f-b261-8c33eebd64fb",
+          "urn:uuid:01a01af6-3c29-7717-9658-68e3c250ef94"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3bf4-7747-974b-30aedd5758a8"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2db-740e-aac4-87cf568e0965",
+        "record_ref": "urn:uuid:01a01b58-c2db-740e-aac4-87cf568e0965",
+        "record_key": "result-extraction-error-and-cause",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-008",
+        "title": "Result extraction error and cause",
+        "status": "DRAFT",
+        "change_area": "EXTRACTION_ERRORS",
+        "observed_behavior": "expect, expectErr, unwrap, and unwrapErr throw generic Error instances and discard the inactive branch payload.",
+        "target_behavior": "Extraction failures throw ResultExtractionError and preserve the inactive branch payload as Error.cause.",
+        "old_signatures": [
+          "expect/expectErr/unwrap/unwrapErr failure => throw new Error(message)"
+        ],
+        "new_signatures": [
+          "class ResultExtractionError extends Error { constructor(message: string, payload: unknown) }",
+          "expect/expectErr/unwrap/unwrapErr failure => throw new ResultExtractionError(message, inactivePayload)"
+        ],
+        "runtime_impact": "Catch logic sees a named Error subclass and a cause payload; exact messages remain stable for unwrap and caller-supplied for expect.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "catch (e) { if (e instanceof Error) log(e.message); }",
+            "after": "catch (e) { if (e instanceof ResultExtractionError) log(e.cause); }"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "The subclass remains instanceof Error; no generic-only throw mode exists.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c19-7fef-be30-8099c3eb6c58",
+          "urn:uuid:01a01af6-3c1a-76d7-a0ae-11110066ea76",
+          "urn:uuid:01a01af6-3c26-76ea-8a1e-54632d70abe2",
+          "urn:uuid:01a01af6-3c27-79e2-bafc-1d2e43223e8c"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be7-78e2-b638-75141f101134"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2dc-7e1a-8fd5-887006f926e1",
+        "record_ref": "urn:uuid:01a01b58-c2dc-7e1a-8fd5-887006f926e1",
+        "record_key": "own-property-validation-boundary",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-009",
+        "title": "Own-property validation boundary",
+        "status": "DRAFT",
+        "change_area": "PROPERTY_OWNERSHIP",
+        "observed_behavior": "Several guards and refiners accept inherited discriminators, configuration variants, payloads, and validator functions.",
+        "target_behavior": "Discriminators, map entries, configured payloads, forbidden fields, and validators are interpreted only when they are own properties.",
+        "old_signatures": [
+          "property acceptance: key in object or direct inherited lookup"
+        ],
+        "new_signatures": [
+          "property acceptance: Object.prototype.hasOwnProperty.call(object, key)"
+        ],
+        "runtime_impact": "Prototype-provided schema members no longer validate; affected guards return false and refiners return null instead of invoking inherited validators.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const value = Object.create({ type: 'ok', id: 1 }); // could refine",
+            "after": "const value = { type: 'ok', id: 1 }; // required own fields"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "Inherited schema-member acceptance is intentionally not retained.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c2a-7445-851e-f5980f16cdd9",
+          "urn:uuid:01a01af6-3c30-716c-95d5-c50d3c46caa9",
+          "urn:uuid:01a01af6-3c32-7b98-974f-9709543db4cb"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be9-7189-89b6-5428521ae821",
+          "urn:uuid:01a01af6-3bea-7dc7-9eb5-6e0ba033b301",
+          "urn:uuid:01a01af6-3bee-7a0d-add4-a8e33aea1875"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2dd-7d91-9906-aaa2edd95fd4",
+        "record_ref": "urn:uuid:01a01b58-c2dd-7d91-9906-aaa2edd95fd4",
+        "record_key": "is-typed-variant-of-runtime-schema",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-010",
+        "title": "isTypedVariantOf runtime schema",
+        "status": "DRAFT",
+        "change_area": "VALIDATED_VARIANT_GUARD",
+        "observed_behavior": "A caller-selected generic payload type is asserted without runtime keys because Object.keys on the erased generic is always empty.",
+        "target_behavior": "The guard requires an explicit plain validator object, validates every own schema key, and infers only predicate-established outputs.",
+        "old_signatures": [
+          "isTypedVariantOf<K extends string, T extends Record<string, unknown>>(variant: K): (value: unknown) => value is { type: K } & T"
+        ],
+        "new_signatures": [
+          "isTypedVariantOf<K extends string, TValidators extends Record<string, (value: unknown) => boolean>>(variant: K, validators: TValidators): (value: unknown) => value is { type: K } & ValidatorOutputs<TValidators>"
+        ],
+        "runtime_impact": "Calls now require a second argument; missing fields, invalid values, non-function validators, and non-plain validator schemas return false.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "isTypedVariantOf<'created', { id: string }>('created')(value)",
+            "after": "isTypedVariantOf('created', { id: (x: unknown): x is string => typeof x === 'string' })(value)"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "The unsound one-argument overload is not retained.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c2b-7bb9-97af-bb2350f22ab0"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be8-7cf7-91c3-24699b162038"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2de-7469-a379-2d8dc3b1d1dd",
+        "record_ref": "urn:uuid:01a01b58-c2de-7469-a379-2d8dc3b1d1dd",
+        "record_key": "validator-derived-refiner-output-types",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-011",
+        "title": "Validator-derived refiner output types",
+        "status": "DRAFT",
+        "change_area": "REFINER_OUTPUTS",
+        "observed_behavior": "Refined aliases ignore validator targets and expose configured fields or arbitrary string fields as unknown.",
+        "target_behavior": "Sync predicate targets and explicit AsyncValidatorFn outputs determine field types; unestablished fields remain unknown without arbitrary index widening.",
+        "old_signatures": [
+          "SyncRefinedResult<...> = { type: K } & Record<PayloadKeys<TMap[K]>, unknown>",
+          "UniversalRefinedResult<...> = { type: K } & Record<string, unknown>",
+          "UniversalAsyncRefinedResult<...> = { type: K } & Record<string, unknown>"
+        ],
+        "new_signatures": [
+          "SyncRefinedResult<...> = { type: K } & { [P in PayloadKeys]: PredicateOutput<TValidators[P]> }",
+          "UniversalRefinedResult<...> = { type: K } & { [P in PayloadKeys]: PredicateOutput<TValidators[P]> }",
+          "UniversalAsyncRefinedResult<...> = { type: K } & { [P in PayloadKeys]: AsyncValidatorOutput<TValidators[P]> }"
+        ],
+        "runtime_impact": "Successful refiners still return the original object reference, but configured payload presence and shared sync/async validation rules are now enforced before return.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const refined = refineResult(map)('ok')({ id: isString })(value); refined?.id; // unknown",
+            "after": "const refined = refineResult(map)('ok')({ id: isString })(value); refined?.id.toUpperCase(); // string"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "Unknown remains the fallback only where no validator output is established.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c0b-7fa3-81d0-aea55b1c4fea",
+          "urn:uuid:01a01af6-3c0e-7cb1-b883-e4fd5f3928d5",
+          "urn:uuid:01a01af6-3c0f-7bd1-bb22-45921324e96d",
+          "urn:uuid:01a01af6-3c2e-7816-bd6d-30f8ef59f1f0",
+          "urn:uuid:01a01af6-3c30-716c-95d5-c50d3c46caa9",
+          "urn:uuid:01a01af6-3c32-7b98-974f-9709543db4cb"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3bef-778c-9a38-2ee449d378bd",
+          "urn:uuid:01a01af6-3bf1-708b-827f-deacc6551816"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01b58-c2df-721d-beaf-03037ef14d4d",
+        "record_ref": "urn:uuid:01a01b58-c2df-721d-beaf-03037ef14d4d",
+        "record_key": "inspect-tap-runtime-aliases",
+        "record_revision": 0,
+        "kind": "migration",
+        "code": "RS-MIG-012",
+        "title": "Inspect runtime aliases",
+        "status": "DRAFT",
+        "change_area": "INSPECT_ALIASES",
+        "observed_behavior": "inspect and inspectErr are separately implemented functions with behavior equivalent to tap and tapErr but different function identities.",
+        "target_behavior": "inspect is the tap function binding and inspectErr is the tapErr function binding, making alias status explicit.",
+        "old_signatures": [
+          "function inspect<T, E>(result: Result<T, E>, fn: (value: T) => void): Result<T, E>",
+          "function inspectErr<T, E>(result: Result<T, E>, fn: (error: E) => void): Result<T, E>"
+        ],
+        "new_signatures": [
+          "const inspect: typeof tap = tap",
+          "const inspectErr: typeof tapErr = tapErr"
+        ],
+        "runtime_impact": "Callback and return behavior are unchanged; function identity changes so inspect === tap and inspectErr === tapErr are now true.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "registry.set(inspect, 'inspect'); registry.set(tap, 'tap');",
+            "after": "registry.set(tap, 'tap/inspect'); // aliases share identity"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "ALIAS_ONLY",
+          "scope": "Both exported names remain available as permanent source aliases.",
+          "removal_release": "NOT_APPLICABLE"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c1c-725f-b604-ad3d338fb0c2",
+          "urn:uuid:01a01af6-3c1d-7b6e-9d2f-aa1d00fbd90e",
+          "urn:uuid:01a01af6-3c23-7e49-8d36-66d7671b4133",
+          "urn:uuid:01a01af6-3c24-7f54-81dd-19935a12388f"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3bf3-7160-af99-bcec806b5a6c"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_id": "01a01c4b-0d20-7abc-8def-1234567890ab",
+        "record_ref": "urn:uuid:01a01c4b-0d20-7abc-8def-1234567890ab",
+        "record_key": "resultdata-runtime-result-boundary",
+        "record_revision": 1,
+        "kind": "migration",
+        "code": "RS-MIG-013",
+        "title": "ResultData and runtime Result boundary",
+        "status": "DRAFT",
+        "change_area": "TRANSPORT_BOUNDARY",
+        "observed_behavior": "Result object literals and runtime Result values shared one structural type even though serialization and cloning remove prototype methods.",
+        "target_behavior": "ResultData is the data-only transport algebra, Result is a frozen wrapper with 21 prototype methods, ResultLike is accepted at free-function boundaries, explicit hydration restores local runtime behavior after transport, and Option conversions use the English toOption spelling.",
+        "old_signatures": [
+          "type Result<T,E> = {ok:true,value:T} | {ok:false,error:E}",
+          "JSON.parse/stringify, structuredClone, and object spread were typed as Result despite removing runtime behavior",
+          "Result values exposed only free-function operations"
+        ],
+        "new_signatures": [
+          "type ResultData<T,E> = OkData<T> | ErrData<E>",
+          "type ResultLike<T,E> = Result<T,E> | ResultData<T,E>",
+          "fromResultData(data): Result<T,E>",
+          "hydrateResult(result): Result<T,E>",
+          "Result methods: isErr, isErrAnd, isOk, isOkAnd, andThen, err, expect, expectErr, flatten, map, mapErr, match, toOption, orElse, tap, tapErr, toResultData, transpose, unwrap, unwrapErr, unwrapOr, unwrapOrElse",
+          "ok(result), err(result), and result.toOption() return Option-shaped values"
+        ],
+        "runtime_impact": "Constructors create shallow-frozen objects whose shared methods live on a non-enumerable package-local prototype. JSON, structuredClone, object spread, and shared result types preserve branch data but not that prototype. hydrateResult returns local wrappers unchanged and rewraps transport data or values from another installed package copy. Result and Option conversion preserve payload identity; Err converts to None and ok/toOption are the supported English names.",
+        "release_class": "BREAKING",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const copied: Result<number,string> = {...Ok(1)}; copied.map(String);",
+            "after": "const data: ResultData<number,string> = {...Ok(1)}; const copied = hydrateResult(data); copied.map(String);"
+          },
+          {
+            "language": "typescript",
+            "before": "const restored: Result<number,string> = JSON.parse(json);",
+            "after": "const restored = fromResultData(JSON.parse(json) as ResultData<number,string>);"
+          },
+          {
+            "language": "typescript",
+            "before": "const value = sharedResult as Result<number,string>;",
+            "after": "const value = hydrateResult(sharedResult); // shared Result aliases are transport data"
+          },
+          {
+            "language": "typescript",
+            "before": "const option = ok(result);",
+            "after": "const option = result.toOption(); // equivalent to ok(result); Err becomes None"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "ALIAS_ONLY",
+          "scope": "result-shared temporarily retains deprecated Result, Ok, and Err names as aliases for transport-only ResultData branches; free functions continue to accept ResultLike.",
+          "removal_release": "NEXT_MAJOR"
+        },
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c02-7ec5-af04-6662469de7fc"
+        ],
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be6-737c-98b7-9e97d125268a"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ]
+      },
+      {
+        "record_revision": 0,
+        "kind": "migration",
+        "status": "DRAFT",
+        "release_class": "BREAKING",
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be6-737c-98b7-9e97d125268a"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ],
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c11-70cd-a6ba-3527782d0325"
+        ],
+        "record_id": "01a01f0b-0040-7000-8000-000000000040",
+        "record_ref": "urn:uuid:01a01f0b-0040-7000-8000-000000000040",
+        "record_key": "scenario-subject-reference",
+        "code": "RS-MIG-014",
+        "title": "Generic scenario subject reference",
+        "change_area": "SCENARIO_OWNERSHIP",
+        "observed_behavior": "Canonical scenarios use operation_ref and therefore can point only to contract records even when a model owns the behavior.",
+        "target_behavior": "Canonical scenarios use subject_ref, retain strict contract backreferences, and may point to registered model documents.",
+        "old_signatures": [
+          "Scenario.operation_ref: ContractRef"
+        ],
+        "new_signatures": [
+          "Scenario.subject_ref: ContractRef | ModelDocumentRef"
+        ],
+        "runtime_impact": "Scenario consumers and storage projections must rename the ownership field while preserving the same referenced UUID values.",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "scenario.operation_ref",
+            "after": "scenario.subject_ref"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "Canonical JSON accepts only subject_ref after migration.",
+          "removal_release": "NOT_APPLICABLE"
+        }
+      },
+      {
+        "record_revision": 0,
+        "kind": "migration",
+        "status": "DRAFT",
+        "release_class": "BREAKING",
+        "finding_refs": [
+          "urn:uuid:01a01af6-3be6-737c-98b7-9e97d125268a"
+        ],
+        "evidence_refs": [
+          "urn:uuid:01a01af6-78ab-74a2-8dee-0f3ea4494ebd"
+        ],
+        "contract_refs": [
+          "urn:uuid:01a01af6-3c11-70cd-a6ba-3527782d0325"
+        ],
+        "record_id": "01a01f0b-0041-7000-8000-000000000041",
+        "record_ref": "urn:uuid:01a01f0b-0041-7000-8000-000000000041",
+        "record_key": "optional-cause-exit-api",
+        "code": "RS-MIG-015",
+        "title": "Optional Cause and Exit API",
+        "change_area": "CAUSE_EXIT_MODELS",
+        "observed_behavior": "Generic Result exposes only its success and error branches and has no complete typed defect, interruption, or composition topology.",
+        "target_behavior": "Separate opt-in Cause and Exit APIs add complete failure topology while generic Result signatures and cardinalities remain unchanged.",
+        "old_signatures": [
+          "Result<T,E> only"
+        ],
+        "new_signatures": [
+          "Cause<E> = Empty | Fail | Die | Interrupt | Sequential | Parallel",
+          "Exit<T,E> = Success<T> | Failure<Cause<E>>"
+        ],
+        "runtime_impact": "Existing Result callers are unaffected; consumers adopting the new exports must handle all Cause and Exit variants.",
+        "migration_examples": [
+          {
+            "language": "typescript",
+            "before": "const result = Err(error);",
+            "after": "const exit = ExitFailure(CauseFail(error));"
+          }
+        ],
+        "temporary_compatibility": {
+          "mode": "NONE",
+          "scope": "The new models are optional and require no compatibility shim.",
+          "removal_release": "NOT_APPLICABLE"
+        }
+      }
+    ]
+  }
+}

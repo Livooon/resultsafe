@@ -1,17 +1,8 @@
-import { hasOwn, isObject } from '../internal/object.js';
 import type { AsyncValidatorFn } from '../types/refiners/AsyncValidatorFn.js';
 import type { PayloadKeys } from '../types/refiners/PayloadKeys.js';
 import type { VariantConfig } from '../types/refiners/VariantConfig.js';
 import type { UniversalAsyncRefinedResult } from './types/index.js';
-
-/** Resolves payload keys from variant configuration. @internal */
-const getPayloadKeys = <C extends VariantConfig>(
-  config: C,
-): readonly PayloadKeys<C>[] => {
-  const p = config.payload;
-  if (p === 'never') return [];
-  return (Array.isArray(p) ? p : [p]) as readonly PayloadKeys<C>[];
-};
+import { validateAsync } from './validationKernels.js';
 
 /**
  * Creates an async variant refiner with async payload validators.
@@ -43,26 +34,8 @@ export const refineAsyncResult =
   async (
     value: unknown,
   ): Promise<UniversalAsyncRefinedResult<K, TMap, TValidators> | null> => {
-    if (!isObject(value)) return null;
-    if (!hasOwn(value, 'type')) return null;
-
-    const t = value['type'];
-    if (t !== variant) return null;
-
-    const config = variantMap[variant];
-    if (!config) return null;
-
-    const keys = getPayloadKeys(config);
-    for (const key of keys) {
-      const check = validators?.[key];
-      if (!check) continue;
-
-      const field = value[key as keyof typeof value];
-      const isValid = await check(field); // ✅ Async validation
-      if (!isValid) return null;
-    }
-
-    return value as UniversalAsyncRefinedResult<K, TMap, TValidators>;
+    const result = await validateAsync(value, variant, variantMap, validators);
+    return result as UniversalAsyncRefinedResult<K, TMap, TValidators> | null;
   };
 
 /**

@@ -1,0 +1,67 @@
+{
+  "document_id": "01a01f50-0001-7000-8000-000000000001",
+  "document_ref": "urn:uuid:01a01f50-0001-7000-8000-000000000001",
+  "document_key": "optional-integrations",
+  "document_type": "optional_integration_catalog",
+  "document_revision": 0,
+  "schema_ref": "urn:uuid:01a01f50-0002-7000-8000-000000000002",
+  "title": "ResultSafe optional integration packages",
+  "summary": "Strict package, dependency, version, vector, and qualification policy for explicit JSON codecs and the separate Effect adapter.",
+  "lifecycle": "REVIEW",
+  "created_at": "2026-08-20T18:00:00Z",
+  "updated_at": "2026-08-20T18:00:00Z",
+  "payload": {
+    "policy_version": "1.0.0",
+    "core_package": "@resultsafe/core-fp-result",
+    "core_dependency_from_integrations": "PEER_ONLY",
+    "integration_dependency_from_core": "ZERO",
+    "result_surface_invariant": { "operation_count": 23, "matrix_cell_count": 88 },
+    "packages": [
+      {
+        "integration_id": "01a01f50-0060-7000-8000-000000000060",
+        "integration_ref": "urn:uuid:01a01f50-0060-7000-8000-000000000060",
+        "integration_key": "explicit-json-codecs",
+        "package_name": "@resultsafe/core-fp-codec-json",
+        "package_version": "0.1.0",
+        "package_path": "packages/adapter/core/fp/codec/json",
+        "family_ref": "urn:uuid:01a01f50-0040-7000-8000-000000000040",
+        "projection_ref": "urn:uuid:01a01f50-0050-7000-8000-000000000050",
+        "implementation_status": "QUALIFIED_LOCAL_SNAPSHOT",
+        "peer_dependencies": [{ "package_name": "@resultsafe/core-fp-result", "version": "^0.3.0", "policy": "REQUIRED_PEER" }],
+        "supported_external_versions": [],
+        "exports": ["."],
+        "evidence": [
+          { "evidence_id": "01a01f50-0070-7000-8000-000000000070", "evidence_ref": "urn:uuid:01a01f50-0070-7000-8000-000000000070", "evidence_key": "codec-package-manifest", "kind": "PACKAGE_MANIFEST", "path": "packages/adapter/core/fp/codec/json/package.json", "status": "QUALIFIED_LOCAL_SNAPSHOT" },
+          { "evidence_id": "01a01f50-0071-7000-8000-000000000071", "evidence_ref": "urn:uuid:01a01f50-0071-7000-8000-000000000071", "evidence_key": "codec-json-vectors", "kind": "VECTOR_SET", "path": "packages/adapter/core/fp/codec/json/vectors/codec.json", "status": "QUALIFIED_LOCAL_SNAPSHOT", "valid_vector_count": 8, "malformed_vector_count": 8 },
+          { "evidence_id": "01a01f50-0072-7000-8000-000000000072", "evidence_ref": "urn:uuid:01a01f50-0072-7000-8000-000000000072", "evidence_key": "codec-vector-tests", "kind": "EXECUTABLE_TEST", "path": "packages/adapter/core/fp/codec/json/tests/codec.test.ts", "status": "QUALIFIED_LOCAL_SNAPSHOT" }
+        ],
+        "qualification_gate": "PASS_LOCAL_ATOMIC",
+        "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-7029-80e5-40a0a215a508", "child_kind": "json-codec", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/JSON-CODEC-EVIDENCE.json", "evidence_artifact_sha256": "bd3ec4e9d6288545367a3d5f6589f36136bb3666f33073953e8fa84d2e5843ff", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" }
+      },
+      {
+        "integration_id": "01a01f50-0061-7000-8000-000000000061",
+        "integration_ref": "urn:uuid:01a01f50-0061-7000-8000-000000000061",
+        "integration_key": "separate-effect-adapter",
+        "package_name": "@resultsafe/adapter-core-fp-effect",
+        "package_version": "0.1.0",
+        "package_path": "packages/adapter/core/fp/effect",
+        "family_ref": "urn:uuid:01a01f50-0041-7000-8000-000000000041",
+        "projection_ref": "urn:uuid:01a01f50-0051-7000-8000-000000000051",
+        "implementation_status": "QUALIFIED_LOCAL_SNAPSHOT",
+        "peer_dependencies": [
+          { "package_name": "@resultsafe/core-fp-result", "version": "0.3.0", "policy": "REQUIRED_PEER" },
+          { "package_name": "effect", "version": "3.22.1", "policy": "REQUIRED_PEER_EXACT_SUPPORTED_VERSION" }
+        ],
+        "supported_external_versions": [{ "package_name": "effect", "version": "3.22.1" }],
+        "exports": [".", "./Cause", "./Exit"],
+        "evidence": [
+          { "evidence_id": "01a01f50-0073-7000-8000-000000000073", "evidence_ref": "urn:uuid:01a01f50-0073-7000-8000-000000000073", "evidence_key": "effect-adapter-package-manifest", "kind": "PACKAGE_MANIFEST", "path": "packages/adapter/core/fp/effect/package.json", "status": "QUALIFIED_LOCAL_SNAPSHOT" },
+          { "evidence_id": "01a01f50-0074-7000-8000-000000000074", "evidence_ref": "urn:uuid:01a01f50-0074-7000-8000-000000000074", "evidence_key": "effect-adapter-runtime-tests", "kind": "EXECUTABLE_TEST_SET", "path": "packages/adapter/core/fp/effect/__tests__/runtime", "status": "QUALIFIED_LOCAL_SNAPSHOT" },
+          { "evidence_id": "01a01f50-0075-7000-8000-000000000075", "evidence_ref": "urn:uuid:01a01f50-0075-7000-8000-000000000075", "evidence_key": "effect-adapter-type-contracts", "kind": "TYPE_CONTRACT", "path": "packages/adapter/core/fp/effect/__tests__/types/contracts.ts", "status": "QUALIFIED_LOCAL_SNAPSHOT" }
+        ],
+        "qualification_gate": "PASS_LOCAL_ATOMIC",
+        "atomic_evidence": { "parent_run_id": "01a01dbf-c7c7-77e8-82f9-f1a9b0befe58", "child_run_id": "01a01dbf-c7c7-7fce-9ada-4d2b5888ac21", "child_kind": "effect-adapter", "child_status": "PASS", "evidence_artifact_path": ".resultsafe-candidates/01a01dbf-c7c7-77e8-82f9-f1a9b0befe58/EFFECT-ADAPTER-EVIDENCE.json", "evidence_artifact_sha256": "2b68d39c05829ad8475cb911120d650686359c670772cd91d07b52baeeb55185", "promotion_blocker": "DIRTY_OR_UNCOMMITTED_SOURCE" }
+      }
+    ]
+  }
+}

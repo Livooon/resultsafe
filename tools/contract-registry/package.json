@@ -1,0 +1,34 @@
+{
+  "name": "@resultsafe/contract-registry-tool",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "conformance": "tsx src/conformance.ts",
+    "cause-exit:qualify": "tsx src/cause-exit-qualification.ts",
+    "matrix": "tsx src/matrix.ts",
+    "languages:qualify": "tsx src/qualify-languages.ts",
+    "test:qualification": "tsx --test src/qualification-status.test.ts src/matrix.test.ts src/atomic-qualification.test.ts src/adopt-atomic-qualification.test.ts src/optional-integrations.test.ts",
+    "qualify:atomic": "tsx src/atomic-qualification.ts",
+    "qualify:atomic:adopt": "tsx src/adopt-atomic-qualification.ts",
+    "validate": "tsx src/validate.ts",
+    "integrity": "tsx src/integrity.ts",
+    "verify": "pnpm run test:qualification && pnpm run validate && tsx src/integrity.ts --check && pnpm run typecheck",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "json-canonicalize": "^1.2.0",
+    "jsonc-eslint-parser": "^2.4.0",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.21.0"
+  }
+}

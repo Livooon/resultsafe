@@ -1,39 +1,30 @@
-import { createRequire } from 'node:module';
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
-// Импорт CJS файла через require
-const require = createRequire(import.meta.url);
-const aliases: Record<
-  string,
-  string
-> = require('../../../../../config/aliases/cjs/aliases.cjs');
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 export default defineConfig({
-  root: resolve(__dirname, '..'), // корень пакета types
+  root: packageRoot,
   resolve: {
-    alias: Object.entries(aliases).map(([find, replacement]) => ({
-      find,
-      replacement: resolve(__dirname, '..', replacement),
-    })),
+    alias: {
+      '@resultsafe/core-fp-option': resolve(packageRoot, 'src/index.ts'),
+      '@resultsafe/core-fp-option-shared': resolve(
+        packageRoot,
+        '../option-shared/src/index.ts',
+      ),
+      '@resultsafe/core-fp-result': resolve(
+        packageRoot,
+        '../result/src/index.ts',
+      ),
+      '@resultsafe/core-fp-result-shared': resolve(
+        packageRoot,
+        '../result-shared/src/index.ts',
+      ),
+    },
   },
   test: {
     environment: 'node',
-    globals: true,
-    include: [
-      '__tests__/unit/**/*.test.ts',
-      '__tests__/integration/**/*.test.ts',
-    ],
-    exclude: ['**/*.js'],
-    coverage: {
-      provider: 'v8',
-      all: true,
-      include: ['src/**/*.{ts,tsx}'],
-      reporter: ['text', 'json', 'html'],
-    },
+    include: ['__tests__/**/*.test.ts'],
   },
 });

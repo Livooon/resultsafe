@@ -23,10 +23,12 @@ import type { VariantOf } from './VariantOf.js';
  * @since 0.1.8
  * @public
  */
-export type Matcher<T extends VariantOf, R> = {
-  readonly with: <K extends T['type']>(
+export type Matcher<T extends VariantOf, R = never, Remaining extends T = T> = {
+  readonly with: <K extends Remaining['type'], U>(
     variant: K,
-    fn: (value: Extract<T, { type: K }>) => R,
-  ) => Matcher<T, R>;
-  readonly otherwise: (fn: (value: T) => R) => { readonly run: () => R };
+    fn: (value: Extract<Remaining, { type: K }>) => U,
+  ) => Matcher<T, R | U, Exclude<Remaining, { type: K }>>;
+  readonly otherwise: <U>(fn: (value: Remaining) => U) => {
+    readonly run: () => R | U;
+  };
 };

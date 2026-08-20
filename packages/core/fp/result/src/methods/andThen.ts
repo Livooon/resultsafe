@@ -1,5 +1,6 @@
 import { isOk } from '../guards/isOk.js';
-import { type Result } from '../types/core/index.js';
+import { hydrateResultValue } from '../internal/resultValue.js';
+import { type Result, type ResultLike } from '../types/core/index.js';
 
 /**
  * Chains a computation that returns another `Result`.
@@ -24,7 +25,10 @@ import { type Result } from '../types/core/index.js';
  * ```
  * @public
  */
-export const andThen = <T, U, E>(
-  result: Result<T, E>,
-  fn: (value: T) => Result<U, E>,
-): Result<U, E> => (isOk(result) ? fn(result.value) : (result as Result<U, E>));
+export const andThen = <T, U, E, F>(
+  result: ResultLike<T, E>,
+  fn: (value: T) => ResultLike<U, F>,
+): Result<U, E | F> =>
+  isOk(result)
+    ? hydrateResultValue(fn(result.value))
+    : (hydrateResultValue(result) as unknown as Result<U, E | F>);

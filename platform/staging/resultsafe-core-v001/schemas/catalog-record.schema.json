@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uuid:01a01af6-9802-7bf2-9750-5cce390d59f0",
+  "title": "ResultSafe typed catalog record",
+  "oneOf": [
+    { "$ref": "#/$defs/requirement" },
+    { "$ref": "#/$defs/decision" },
+    { "$ref": "#/$defs/finding" },
+    { "$ref": "#/$defs/risk" },
+    { "$ref": "#/$defs/contract" },
+    { "$ref": "#/$defs/projection" },
+    { "$ref": "#/$defs/package_family" },
+    { "$ref": "#/$defs/standard" }
+  ],
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "required": ["record_id", "record_ref", "record_key", "record_revision", "kind", "code", "title", "status"],
+      "properties": {
+        "record_id": { "$ref": "urn:uuid:01a01af6-97ff-7818-8133-9dd18b7e2431" },
+        "record_ref": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+        "record_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "record_revision": { "type": "integer", "minimum": 0 },
+        "kind": {
+          "enum": ["requirement", "decision", "finding", "risk", "contract", "projection", "package_family", "standard"]
+        },
+        "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9-]+$" },
+        "title": { "type": "string", "minLength": 3 },
+        "status": { "enum": ["DRAFT", "REVIEW", "APPROVED", "IMPLEMENTED", "VERIFIED", "REJECTED", "SUPERSEDED", "PLANNED"] },
+        "requirement_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "uniqueItems": true },
+        "decision_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "uniqueItems": true },
+        "finding_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "uniqueItems": true },
+        "evidence_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "uniqueItems": true }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["statement", "priority", "verification"],
+          "properties": {
+            "kind": { "const": "requirement" },
+            "statement": { "type": "string", "minLength": 20 },
+            "priority": { "enum": ["MUST", "SHOULD", "MAY"] },
+            "verification": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1, "uniqueItems": true }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["decision", "rationale", "consequences"],
+          "properties": {
+            "kind": { "const": "decision" },
+            "decision": { "type": "string", "minLength": 20 },
+            "rationale": { "type": "string", "minLength": 20 },
+            "consequences": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1 }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "finding": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["severity", "observed_behavior", "impact", "remediation"],
+          "properties": {
+            "kind": { "const": "finding" },
+            "severity": { "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] },
+            "observed_behavior": { "type": "string", "minLength": 20 },
+            "impact": { "type": "string", "minLength": 20 },
+            "remediation": { "type": "string", "minLength": 20 }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "risk": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["likelihood", "impact_level", "description", "mitigation"],
+          "properties": {
+            "kind": { "const": "risk" },
+            "likelihood": { "enum": ["LOW", "MEDIUM", "HIGH"] },
+            "impact_level": { "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+            "description": { "type": "string", "minLength": 20 },
+            "mitigation": { "type": "string", "minLength": 20 }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "contract": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["symbol", "category", "semantic_name", "signature_model", "behavior", "scenario_refs", "typescript_source"],
+          "properties": {
+            "kind": { "const": "contract" },
+            "symbol": { "type": "string", "minLength": 1 },
+            "category": { "enum": ["type", "constructor", "guard", "transformation", "extraction", "effect", "option_conversion", "variant", "matcher", "refiner"] },
+            "semantic_name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+            "signature_model": { "type": "string", "minLength": 3 },
+            "behavior": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1 },
+            "scenario_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "minItems": 2, "uniqueItems": true },
+            "typescript_source": { "type": "string", "pattern": "^packages/.*\\.ts$" }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "projection": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["projection_kind", "target_key", "authority", "mapping_rules"],
+          "properties": {
+            "kind": { "const": "projection" },
+            "projection_kind": { "enum": ["LANGUAGE", "RELATIONAL", "DATABASE_PROFILE", "INTEGRATION"] },
+            "target_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+            "authority": { "enum": ["DERIVED", "EXTERNAL_ADMISSION"] },
+            "mapping_rules": { "type": "array", "items": { "type": "string", "minLength": 5 }, "minItems": 1 },
+            "contract_ir_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+            "contract_ir_revision": { "type": "integer", "minimum": 0 },
+            "operation_bindings": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["operation_key", "module_name"],
+                "properties": {
+                  "operation_key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+                  "module_name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+                  "method_name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9_]*$" }
+                }
+              }
+            },
+            "support_bindings": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["operation_key", "module_name", "binding"],
+                "properties": {
+                  "operation_key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+                  "module_name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+                  "binding": { "enum": ["ALIAS", "CURRIED", "UNCURRIED"] }
+                }
+              }
+            },
+            "transport_bindings": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["surface_key", "module_name", "input", "output"],
+                "properties": {
+                  "surface_key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+                  "module_name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
+                  "method_name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9_]*$" },
+                  "input": { "type": "string", "minLength": 1 },
+                  "output": { "type": "string", "minLength": 1 }
+                }
+              }
+            },
+            "model_bindings": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["model_key", "status", "exports"],
+                "properties": {
+                  "model_key": { "enum": ["cause", "exit"] },
+                  "status": { "enum": ["IMPLEMENTED", "PLANNED"] },
+                  "exports": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$" }, "minItems": 1, "uniqueItems": true }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "projection_kind": { "const": "LANGUAGE" } }, "required": ["projection_kind"] },
+          "then": { "required": ["contract_ir_ref", "contract_ir_revision", "operation_bindings"] },
+          "else": {
+            "not": {
+              "anyOf": [
+                { "required": ["contract_ir_ref"] },
+                { "required": ["contract_ir_revision"] },
+                { "required": ["operation_bindings"] },
+                { "required": ["support_bindings"] }
+              ]
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "package_family": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["package_family_key", "role", "lifecycle", "identity_authority", "depends_on_family_refs"],
+          "properties": {
+            "kind": { "const": "package_family" },
+            "package_family_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+            "role": { "enum": ["CONTRACTS", "LANGUAGE_RUNTIME", "STORAGE_PROJECTION", "PROJECTION_COMPILER", "INTEGRATION_ADAPTER"] },
+            "lifecycle": { "enum": ["PROPOSED", "STAGED", "ACTIVE", "DEPRECATED", "RETIRED"] },
+            "identity_authority": { "type": "string", "minLength": 3 },
+            "depends_on_family_refs": { "type": "array", "items": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" }, "uniqueItems": true }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "standard": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/$defs/identity" },
+        {
+          "type": "object",
+          "required": ["standard_ref", "relevance", "binding"],
+          "properties": {
+            "kind": { "const": "standard" },
+            "standard_ref": { "$ref": "urn:uuid:01a01af6-9800-71cc-8102-365165200d36" },
+            "relevance": { "type": "string", "minLength": 10 },
+            "binding": { "enum": ["NORMATIVE", "GUIDANCE"] }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}
