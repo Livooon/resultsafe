@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@resultsafe/core-fp-result": "workspace:*",
+    "@types/node": "^22.10.0",
     "effect": "3.22.1",
     "rimraf": "6.0.1",
     "typescript": "5.9.2",

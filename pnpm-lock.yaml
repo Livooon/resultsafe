@@ -24,18 +24,24 @@ importers:
       '@resultsafe/core-fp-result':
         specifier: workspace:*
         version: link:../../../../../core/fp/result
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.20.1
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@25.9.5)(tsx@4.21.0)
+        version: 3.2.4(@types/node@22.20.1)(tsx@4.21.0)
 
   packages/adapter/core/fp/effect:
     devDependencies:
       '@resultsafe/core-fp-result':
         specifier: workspace:*
         version: link:../../../../core/fp/result
+      '@types/node':
+        specifier: ^22.10.0
+        version: 22.20.1
       effect:
         specifier: 3.22.1
         version: 3.22.1
@@ -47,7 +53,7 @@ importers:
         version: 5.9.2
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@25.9.5)(tsx@4.21.0)
+        version: 3.2.4(@types/node@22.20.1)(tsx@4.21.0)
 
   packages/core/fp/option:
     dependencies:
