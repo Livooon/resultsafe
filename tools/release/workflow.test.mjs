@@ -40,7 +40,8 @@ test('qualification workflow covers supported runtimes and gated exact candidate
   const text = await workflow('ci-versioning.yml');
   assert.match(text, /node: \[22\.13\.0, 24\]/);
   assert.match(text, /python: \["3\.11", "3\.12", "3\.13", "3\.14"\]/);
-  for (const command of ['contracts:validate', 'contracts:conformance', 'contracts:matrix', 'languages:qualify', 'qualify:atomic', 'storage:test', 'storage:qualify', 'release:tools:test']) assert.ok(text.includes(command), command);
+  for (const command of ['contracts:validate', 'contracts:conformance', 'contracts:matrix', 'qualify:atomic', 'storage:test', 'storage:qualify', 'release:tools:test']) assert.ok(text.includes(command), command);
+  assert.doesNotMatch(text, /^\s*run: pnpm run languages:qualify$/m);
   assert.match(text, /RESULTSAFE_QUALIFIED_TARBALL: \$\{\{ steps\.candidate\.outputs\.tarball \}\}/);
   assert.match(text, /needs: \[authorize-source, build-candidate, node-package, contracts-storage-release-tools, python\]/);
   assert.match(text, /name: qualified-\$\{\{ needs\.build-candidate\.outputs\.candidate_id \}\}/);

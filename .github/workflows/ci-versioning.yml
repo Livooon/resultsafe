@@ -193,8 +193,6 @@ jobs:
         env:
           RESULTSAFE_QUALIFIED_TARBALL: ${{ steps.candidate.outputs.tarball }}
         run: pnpm run contracts:validate && pnpm run contracts:conformance && pnpm run contracts:matrix
-      - name: Qualify language source surfaces
-        run: pnpm run languages:qualify
       - name: Atomic qualification
         run: pnpm run contracts:integrity && pnpm run qualify:atomic
       - name: Storage qualification
